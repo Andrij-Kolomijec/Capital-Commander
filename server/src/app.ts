@@ -1,13 +1,33 @@
 import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
 
+import expenseRoutes from "./routes/expenses";
+
+dotenv.config();
 const app = express();
+const port = process.env.PORT;
 
-app.get("/", (req, res) => {
-  res.send("Hello");
+app.use(express.json());
+app.use(cors());
+
+app.use((req, res, next) => {
+  console.log(req.path, req.method);
+  next();
 });
 
-app.get("/hi", (req, res) => {
-  res.send("Hi");
-});
+app.use("/expenses", expenseRoutes);
 
-app.listen(3000, () => console.log("Server running biatch."));
+const mongoDB = process.env.MONGODB_URI as string;
+
+mongoose
+  .connect(mongoDB)
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Connected to MongoDB & listening on port ${port}.`);
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  });
