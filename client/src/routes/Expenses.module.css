@@ -1,0 +1,10 @@
+.expenses {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  text-align: center;
+}
+
+.expenses td {
+  padding: 0 1.5rem;
+}
