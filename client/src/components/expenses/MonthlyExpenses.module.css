@@ -1,0 +1,21 @@
+.table {
+  min-height: 30vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.table tr {
+  display: flex;
+  justify-content: space-between;
+}
+
+.table th,
+.table td {
+  flex: 1;
+  min-width: 42px;
+  text-align: center;
+}
+
+.table td:nth-child(3) {
+  text-align: left;
+}
