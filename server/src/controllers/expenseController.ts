@@ -15,13 +15,13 @@ type ErrorProps = {
 
 // GET all expenses
 export async function getAllExpenses(req: Request, res: Response) {
-  const expenses = await Expense.find({}).sort({ date: -1 });
+  const expenses = await Expense.find({}).sort({ date: 1 });
   setTimeout(() => res.status(200).json({ expenses }), 0);
 }
 
 // validate and POST an expense
 export async function createExpense(req: Request, res: Response) {
-  const { description, date, amount, notes } = req.body;
+  const { description, date, amount, notes, special } = req.body;
 
   let errors: ErrorProps = {};
 
@@ -33,12 +33,8 @@ export async function createExpense(req: Request, res: Response) {
     errors.date = "Invalid date.";
   }
 
-  if (!isValidNumber(amount)) {
+  if (!isValidNumber(+amount)) {
     errors.amount = "Invalid amount.";
-  }
-
-  if (!isValidText(notes)) {
-    errors.notes = "Invalid notes.";
   }
 
   if (Object.keys(errors).length > 0) {
@@ -49,7 +45,13 @@ export async function createExpense(req: Request, res: Response) {
   }
 
   try {
-    const expense = await Expense.create({ description, date, amount, notes });
+    const expense = await Expense.create({
+      description,
+      date,
+      amount,
+      notes,
+      special,
+    });
     res.status(200).json({ message: "Expense saved.", expense });
   } catch (error) {
     if (error instanceof Error) {
@@ -63,7 +65,7 @@ export async function createExpense(req: Request, res: Response) {
 // PATCH an expense
 export async function updateExpense(req: Request, res: Response) {
   const { id } = req.params;
-  const { description, date, amount, notes } = req.body;
+  const { description, date, amount, notes, special } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "Expense to update not found." });

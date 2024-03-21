@@ -3,6 +3,9 @@ import classes from "./Expenses.module.css";
 import { fetchExpenses, type ExpenseItem } from "../utils/http";
 import MonthlyExpenses from "../components/expenses/MonthlyExpenses";
 import InputExpense from "../components/expenses/InputExpense";
+import HousingExpenses from "../components/expenses/HousingExpenses";
+import TransportationExpenses from "../components/expenses/TransportationExpenses";
+import OtherExpenses from "../components/expenses/OtherExpenses";
 
 function groupExpensesByMonth(expenses: ExpenseItem[]) {
   const expensesByMonth: ExpenseItem[][] = [];
@@ -32,8 +35,25 @@ export default function Expenses() {
   if (!data) {
     return <p>No data available.</p>;
   }
+  console.log(data);
 
-  const monthlyExpenses = data && groupExpensesByMonth(data);
+  const normalExpenses = data.filter(
+    (item) => item.special === "none" || !item.special
+  );
+
+  const transportationExpenses = data.filter(
+    (item) => item.special && item.special !== "transportation"
+  );
+
+  const housingExpenses = data.filter(
+    (item) => item.special && item.special !== "housing"
+  );
+
+  const otherExpenses = data.filter(
+    (item) => item.special && item.special !== "other"
+  );
+
+  const monthlyExpenses = groupExpensesByMonth(normalExpenses);
 
   return (
     <>
@@ -41,6 +61,11 @@ export default function Expenses() {
         {monthlyExpenses.map((month, index) => {
           return <MonthlyExpenses month={month} key={index} />;
         })}
+      </div>
+      <div className={classes.expenses}>
+        <HousingExpenses />
+        <TransportationExpenses />
+        <OtherExpenses />
       </div>
       <InputExpense />
     </>
