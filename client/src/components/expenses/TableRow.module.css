@@ -1,0 +1,29 @@
+.row td:nth-child(3) {
+  text-align: left;
+}
+
+.icon-container {
+  position: relative;
+}
+
+.close-icon {
+  position: absolute;
+  margin-left: -20px;
+  height: 20px;
+}
+
+.close-icon:hover {
+  cursor: pointer;
+  filter: invert(22%) sepia(76%) saturate(7166%) hue-rotate(356deg)
+    brightness(96%) contrast(119%);
+}
+
+.notes {
+  background-image: linear-gradient(
+    225deg,
+    red,
+    red 3px,
+    transparent 3px,
+    transparent
+  );
+}

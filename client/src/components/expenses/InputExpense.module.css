@@ -13,6 +13,11 @@
 }
 
 .form input {
-  width: 70%;
+  width: 180px;
+  text-align: center;
+}
+
+.form select {
+  width: 184px;
   text-align: center;
 }

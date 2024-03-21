@@ -1,10 +1,27 @@
 .expenses {
   display: flex;
-  justify-content: center;
   gap: 2rem;
   text-align: center;
+  max-width: 60%;
+  overflow-y: auto;
 }
 
 .expenses td {
   padding: 0 1.5rem;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 100vw;
+  background: grey;
+}
+
+@supports (scrollbar-color: grey transparent) {
+  * {
+    scrollbar-color: grey transparent;
+    /* scrollbar-width: thin; */
+  }
 }
