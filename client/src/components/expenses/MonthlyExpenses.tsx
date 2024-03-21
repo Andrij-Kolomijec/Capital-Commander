@@ -1,7 +1,7 @@
 import classes from "./MonthlyExpenses.module.css";
-import dateFormatter from "../../utils/dateFormatter";
 import { type ExpenseItem, deleteExpense } from "../../utils/http";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import TableRow from "./TableRow";
 
 function calculateAmounts(items: ExpenseItem[]) {
   const groceries = items.reduce((total, item) => {
@@ -46,11 +46,11 @@ export default function MonthlyExpenses({ month }: { month: ExpenseItem[] }) {
       <tbody>
         {month.map((expense) => {
           return (
-            <tr key={expense._id} onClick={() => handleDelete(expense._id!)}>
-              <td>{dateFormatter(expense)}</td>
-              <td>{expense.amount}</td>
-              <td title={expense.notes}>{expense.description}</td>
-            </tr>
+            <TableRow
+              key={expense._id}
+              expense={expense}
+              onDelete={handleDelete}
+            />
           );
         })}
       </tbody>

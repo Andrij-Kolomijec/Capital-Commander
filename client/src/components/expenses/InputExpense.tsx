@@ -22,6 +22,7 @@ export default function InputExpense() {
       date: new Date(formData.get("date") as string),
       amount: Number(formData.get("amount")),
       notes: formData.get("notes") as string | undefined,
+      special: formData.get("special") as string | undefined,
     };
 
     mutate({ ...data });
@@ -40,6 +41,19 @@ export default function InputExpense() {
       <div>
         <label htmlFor="expense-description">Description</label>
         <input id="expense-description" type="text" name="description" />
+      </div>
+      <div>
+        <label htmlFor="expense-notes">Notes</label>
+        <input id="expense-notes" type="text" name="notes" />
+      </div>
+      <div>
+        <label htmlFor="expense-special">Special</label>
+        <select name="special" id="expense-special">
+          <option value="none">--Optional category--</option>
+          <option value="transportation">Transportation</option>
+          <option value="housing">Housing</option>
+          <option value="other">Other</option>
+        </select>
       </div>
       <button>{isPending ? "Submitting..." : "Submit"}</button>
     </form>
