@@ -4,7 +4,7 @@ export type ExpenseItem = {
   date: Date;
   amount: number;
   notes?: string;
-  special?: string;
+  category?: string;
 };
 
 type FetchError = Error & {

@@ -22,7 +22,7 @@ export default function InputExpense() {
       date: new Date(formData.get("date") as string),
       amount: Number(formData.get("amount")),
       notes: formData.get("notes") as string | undefined,
-      special: formData.get("special") as string | undefined,
+      category: formData.get("category") as string | undefined,
     };
 
     mutate({ ...data });
@@ -47,9 +47,9 @@ export default function InputExpense() {
         <input id="expense-notes" type="text" name="notes" />
       </div>
       <div>
-        <label htmlFor="expense-special">Special</label>
-        <select name="special" id="expense-special">
-          <option value="none">--Optional category--</option>
+        <label htmlFor="expense-category">Category</label>
+        <select name="category" id="expense-category">
+          <option value="none">--Optional--</option>
           <option value="transportation">Transportation</option>
           <option value="housing">Housing</option>
           <option value="other">Other</option>

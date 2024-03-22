@@ -38,19 +38,19 @@ export default function Expenses() {
   console.log(data);
 
   const normalExpenses = data.filter(
-    (item) => item.special === "none" || !item.special
+    (item) => item.category === "none" || !item.category
   );
 
   const transportationExpenses = data.filter(
-    (item) => item.special && item.special !== "transportation"
+    (item) => item.category && item.category === "transportation"
   );
 
   const housingExpenses = data.filter(
-    (item) => item.special && item.special !== "housing"
+    (item) => item.category && item.category === "housing"
   );
 
   const otherExpenses = data.filter(
-    (item) => item.special && item.special !== "other"
+    (item) => item.category && item.category === "other"
   );
 
   const monthlyExpenses = groupExpensesByMonth(normalExpenses);
@@ -63,9 +63,9 @@ export default function Expenses() {
         })}
       </div>
       <div className={classes.expenses}>
-        <HousingExpenses />
-        <TransportationExpenses />
-        <OtherExpenses />
+        <HousingExpenses expenses={housingExpenses} />
+        <TransportationExpenses expenses={transportationExpenses} />
+        <OtherExpenses expenses={otherExpenses} />
       </div>
       <InputExpense />
     </>

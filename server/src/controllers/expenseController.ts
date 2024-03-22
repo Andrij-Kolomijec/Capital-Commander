@@ -21,7 +21,7 @@ export async function getAllExpenses(req: Request, res: Response) {
 
 // validate and POST an expense
 export async function createExpense(req: Request, res: Response) {
-  const { description, date, amount, notes, special } = req.body;
+  const { description, date, amount, notes, category } = req.body;
 
   let errors: ErrorProps = {};
 
@@ -50,7 +50,7 @@ export async function createExpense(req: Request, res: Response) {
       date,
       amount,
       notes,
-      special,
+      category,
     });
     res.status(200).json({ message: "Expense saved.", expense });
   } catch (error) {
@@ -65,7 +65,7 @@ export async function createExpense(req: Request, res: Response) {
 // PATCH an expense
 export async function updateExpense(req: Request, res: Response) {
   const { id } = req.params;
-  const { description, date, amount, notes, special } = req.body;
+  const { description, date, amount, notes, category } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "Expense to update not found." });
@@ -83,10 +83,6 @@ export async function updateExpense(req: Request, res: Response) {
 
   if (!isValidNumber(amount)) {
     errors.amount = "Invalid amount.";
-  }
-
-  if (!isValidText(notes)) {
-    errors.notes = "Invalid notes.";
   }
 
   if (Object.keys(errors).length > 0) {

@@ -20,7 +20,7 @@ const expenseSchema = new Schema(
       type: String,
       required: false,
     },
-    special: {
+    category: {
       type: String,
       required: false,
     },
