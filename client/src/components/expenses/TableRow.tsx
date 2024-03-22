@@ -7,9 +7,14 @@ import { ExpenseItem } from "../../utils/http";
 type TableRowProps = {
   expense: ExpenseItem;
   onDelete: (id: number) => void;
+  housing?: boolean;
 };
 
-export default function TableRow({ expense, onDelete }: TableRowProps) {
+export default function TableRow({
+  expense,
+  onDelete,
+  housing = false,
+}: TableRowProps) {
   const [mouseHovered, setMouseHovered] = useState(false);
   return (
     <tr
@@ -26,7 +31,7 @@ export default function TableRow({ expense, onDelete }: TableRowProps) {
             onClick={() => onDelete(expense._id!)}
           />
         )}
-        {dateFormatter(expense)}
+        {housing ? expense.amount * 12 : dateFormatter(expense)}
       </td>
       <td>{expense.amount}</td>
       <td
