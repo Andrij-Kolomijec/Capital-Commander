@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import expenseRoutes from "./routes/expenses";
+import userRoutes from "./routes/users";
 
 dotenv.config();
 const app = express();
@@ -18,6 +19,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/expenses", expenseRoutes);
+app.use("/authentication", userRoutes);
 
 const mongoDB = process.env.MONGODB_URI as string;
 

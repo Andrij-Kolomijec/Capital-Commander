@@ -7,7 +7,11 @@ import {
   updateExpense,
 } from "../controllers/expenseController";
 
+import requireAuth from "../middleware/requireAuth";
+
 const expenseRoutes = express.Router();
+
+// expenseRoutes.use(requireAuth as any);
 
 expenseRoutes.get("/", getAllExpenses);
 
