@@ -8,7 +8,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-type AuthRequest = Request & {
+export type AuthRequest = Request & {
   user: UserDocument;
 };
 

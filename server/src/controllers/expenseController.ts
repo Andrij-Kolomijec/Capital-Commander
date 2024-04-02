@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
 import mongoose from "mongoose";
-
 import Expense from "../models/expenseModel";
 import { isValidDate, isValidNumber, isValidText } from "../utils/validators";
+import { type AuthRequest } from "../middleware/requireAuth";
 
 const router = express.Router();
 
@@ -14,13 +14,14 @@ type ErrorProps = {
 };
 
 // GET all expenses
-export async function getAllExpenses(req: Request, res: Response) {
-  const expenses = await Expense.find({}).sort({ date: 1 });
+export async function getAllExpenses(req: AuthRequest, res: Response) {
+  const user = req.user._id.toString();
+  const expenses = await Expense.find({ user }).sort({ date: 1 });
   setTimeout(() => res.status(200).json({ expenses }), 0);
 }
 
 // validate and POST an expense
-export async function createExpense(req: Request, res: Response) {
+export async function createExpense(req: AuthRequest, res: Response) {
   const { description, date, amount, notes, category } = req.body;
 
   let errors: ErrorProps = {};
@@ -44,6 +45,8 @@ export async function createExpense(req: Request, res: Response) {
     });
   }
 
+  const user = req.user._id.toString();
+
   try {
     const expense = await Expense.create({
       description,
@@ -51,6 +54,7 @@ export async function createExpense(req: Request, res: Response) {
       amount,
       notes,
       category,
+      user,
     });
     res.status(200).json({ message: "Expense saved.", expense });
   } catch (error) {

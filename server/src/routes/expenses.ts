@@ -13,9 +13,9 @@ const expenseRoutes = express.Router();
 
 expenseRoutes.use(requireAuth as any);
 
-expenseRoutes.get("/", getAllExpenses);
+expenseRoutes.get("/", getAllExpenses as any);
 
-expenseRoutes.post("/", createExpense);
+expenseRoutes.post("/", createExpense as any);
 
 expenseRoutes.patch("/:id", updateExpense);
 
