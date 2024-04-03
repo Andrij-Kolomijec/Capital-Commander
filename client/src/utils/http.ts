@@ -125,13 +125,13 @@ export async function authenticate({ userData, mode }: AuthData) {
   localStorage.setItem("token", token);
   localStorage.setItem("email", email);
 
-  // const expiration = new Date();
-  // expiration.setHours(expiration.getHours() + 1);
-  // localStorage.setItem("expiration", expiration.toISOString());
+  const expiration = new Date();
+  expiration.setHours(expiration.getHours() + 12);
+  localStorage.setItem("expiration", expiration.toISOString());
 }
 
 export async function logout() {
   localStorage.removeItem("token");
   localStorage.removeItem("email");
-  // localStorage.removeItem("expiration");
+  localStorage.removeItem("expiration");
 }

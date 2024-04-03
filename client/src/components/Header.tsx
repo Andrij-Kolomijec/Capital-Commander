@@ -1,8 +1,9 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import classes from "./Header.module.css";
-import { getAuthEmail, getAuthToken } from "../utils/authJWT";
+import { getAuthEmail, getAuthToken, getTokenDuration } from "../utils/authJWT";
 import { logout } from "../utils/http";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 export default function Header() {
   const token = getAuthToken();
@@ -22,6 +23,22 @@ export default function Header() {
   function handleClick() {
     mutate();
   }
+
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+    if (token === "EXPIRED") {
+      mutate();
+      return;
+    }
+    const tokenDuration = getTokenDuration();
+
+    setTimeout(() => {
+      mutate();
+    }, tokenDuration);
+  }, [token, mutate]);
+
   return (
     <header className={classes.navigation}>
       <NavLink to="/">Home</NavLink>
