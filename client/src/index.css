@@ -3,6 +3,20 @@
   padding: 0;
 }
 
+/* :root {
+  --active: rgb(0, 0, 0);
+} */
+
+body {
+  background: url("assets/bg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  /* color: antiquewhite; */
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 header {
   height: 10vh;
 }
@@ -17,4 +31,17 @@ main {
 
 footer {
   height: 5vh;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.link {
+  text-decoration: underline;
+}
+
+.link:hover {
+  color: blue;
 }

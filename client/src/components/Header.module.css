@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Tac+One&display=swap");
+
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5vw;
+}
+
+.navigation > h1 {
+  font-family: "Tac One";
+  font-size: 50px;
+  white-space: nowrap;
+  position: relative;
+}
+
+.navigation > h1:hover {
+  cursor: pointer;
+}
+
+.navigation > h1::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* color: antiquewhite; */
+  background: linear-gradient(to left, #0abfbc, antiquewhite);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  width: 0%;
+  overflow: hidden;
+  transition: 1s;
+  white-space: nowrap;
+}
+
+.navigation > h1:hover:before {
+  width: 110%;
+}
+
+.navigation > section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2rem;
+}

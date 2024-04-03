@@ -1,17 +1,13 @@
 .table {
-  display: flex;
-  flex-direction: column;
   margin: 1rem;
-}
-
-.table tr {
-  display: flex;
-  justify-content: space-between;
+  height: fit-content;
+  background-color: rgba(175, 150, 110, 0.5);
+  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
 }
 
 .table th,
 .table td {
-  flex: 1;
-  min-width: 42px;
   text-align: center;
+  white-space: nowrap;
 }

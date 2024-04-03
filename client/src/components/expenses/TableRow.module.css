@@ -1,7 +1,3 @@
-/* .row td:nth-child(3) {
-  text-align: left;
-} */
-
 .icon-container {
   position: relative;
 }
@@ -21,8 +17,8 @@
 .notes {
   background-image: linear-gradient(
     225deg,
-    red,
-    red 3px,
+    rgb(0, 255, 0),
+    rgb(0, 255, 0) 3px,
     transparent 3px,
     transparent
   );
