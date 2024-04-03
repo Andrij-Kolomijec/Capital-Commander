@@ -16,7 +16,7 @@ export default function Header() {
     mutationFn: logout,
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["expenses"] });
-      navigate("/");
+      navigate("/authentication?mode=login");
     },
   });
 
@@ -41,16 +41,19 @@ export default function Header() {
 
   return (
     <header className={classes.navigation}>
-      <NavLink to="/">Home</NavLink>
-      <NavLink to="/expenses">Expenses</NavLink>
-      {!token ? (
-        <NavLink to="/authentication?mode=login">Authentication</NavLink>
-      ) : (
-        <>
-          <button onClick={handleClick}>Logout</button>
-          <p>{email}</p>
-        </>
-      )}
+      <h1 data-text="Capital Commander">Capital Commander</h1>
+      <section>
+        <NavLink to="/">Home</NavLink>
+        {!token ? (
+          <NavLink to="/authentication?mode=login">Authentication</NavLink>
+        ) : (
+          <>
+            <NavLink to="/expenses">Expenses</NavLink>
+            <button onClick={handleClick}>Logout</button>
+            <p>{email}</p>
+          </>
+        )}
+      </section>
     </header>
   );
 }
