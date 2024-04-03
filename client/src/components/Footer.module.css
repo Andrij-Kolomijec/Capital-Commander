@@ -1,0 +1,9 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.5rem;
+}
+
+.footer img {
+  height: 42px;
+}
