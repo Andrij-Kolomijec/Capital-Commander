@@ -1,5 +1,61 @@
-.form {
+.form-wrapper {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 1rem;
+}
+
+.form {
+  background-color: var(--bgColor);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  border: 2px solid;
+  border-radius: 5px;
+  box-shadow: var(--shadow);
+}
+
+.form > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.form label {
+  margin-left: -1rem;
+}
+
+.form p {
+  text-align: center;
+}
+
+.form input {
+  background-color: var(--miscColor);
+  border: 1px solid;
+  box-shadow: var(--shadow);
+}
+
+.form input:focus {
+  outline: 1px ridge var(--active);
+}
+
+.form button {
+  padding: 2px 5px;
+  background-color: var(--bgColor);
+  border: none;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.7);
+  transition: 100ms;
+}
+
+.form button:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  background-color: var(--miscColor);
+}
+
+.error {
+  color: rgb(175, 0, 0);
+  text-shadow: 1px 1px 0px black;
 }

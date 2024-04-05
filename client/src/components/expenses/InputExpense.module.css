@@ -1,23 +1,50 @@
 .form {
+  height: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  width: 20vw;
+  gap: 0.5rem;
 }
 
 .form > div {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   width: 100%;
 }
 
-.form input {
-  width: 180px;
-  text-align: center;
+.form label {
+  font-size: small;
+  margin-left: -1rem;
 }
 
+.form input,
 .form select {
-  width: 184px;
+  background-color: var(--bgColor);
+  border: 1px solid;
+  border-radius: 2px;
+  box-shadow: var(--shadow);
+}
+
+.form input,
+.form select {
   text-align: center;
+  outline: none;
+  width: 180px;
+}
+
+.form > button {
+  background-color: var(--miscColor);
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid;
+  box-shadow: var(--shadow);
+  transition: ease-in-out 300ms;
+}
+
+.form > button:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+  background-color: var(--active);
+  color: var(--miscColor);
 }

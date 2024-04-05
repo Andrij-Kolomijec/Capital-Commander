@@ -3,9 +3,12 @@
   padding: 0;
 }
 
-/* :root {
-  --active: rgb(0, 0, 0);
-} */
+:root {
+  --bgColor: rgba(175, 150, 110, 0.5);
+  --miscColor: rgb(170, 120, 50);
+  --active: #0000b9;
+  --shadow: 0 0 4px 1px rgba(0, 0, 0, 0.2);
+}
 
 body {
   background: url("assets/bg.jpg");
@@ -23,10 +26,6 @@ header {
 
 main {
   min-height: 85vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
 }
 
 footer {
@@ -43,5 +42,5 @@ a {
 }
 
 .link:hover {
-  color: blue;
+  color: var(--active);
 }

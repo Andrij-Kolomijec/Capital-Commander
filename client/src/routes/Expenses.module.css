@@ -1,12 +1,32 @@
-.expenses {
+.expenses-wrapper {
   display: flex;
-  gap: 2rem;
-  text-align: center;
-  max-width: 85%;
-  overflow-y: auto;
+  /* width: 95vw; */
+  justify-content: space-around;
+  /* align-items: center; */
+  margin: 0 2vw;
+  /* border: 1px solid; */
 }
 
-.expenses td {
+.expenses {
+  /* flex: 1; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  /* border: 1px solid yellow; */
+}
+
+.expenses-row {
+  display: flex;
+  gap: 1rem;
+  text-align: center;
+  max-width: 72vw;
+  max-height: 40vh;
+  overflow: auto;
+  /* border: 1px solid; */
+}
+
+.expenses-row td {
   padding: 0 1.5rem;
 }
 
@@ -16,12 +36,12 @@
 
 ::-webkit-scrollbar-thumb {
   border-radius: 100vw;
-  background: grey;
+  background: var(--miscColor);
 }
 
-@supports (scrollbar-color: grey transparent) {
+@supports (scrollbar-color: var(--miscColor) transparent) {
   * {
-    scrollbar-color: grey transparent;
+    scrollbar-color: var(--miscColor) transparent;
     /* scrollbar-width: thin; */
   }
 }
