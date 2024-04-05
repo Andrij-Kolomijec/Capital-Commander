@@ -1,9 +1,10 @@
+import { useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import classes from "./Header.module.css";
 import { getAuthEmail, getAuthToken, getTokenDuration } from "../utils/authJWT";
 import { logout } from "../utils/http";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import logoutIcon from "../assets/logout.svg";
 
 export default function Header() {
   const token = getAuthToken();
@@ -42,18 +43,47 @@ export default function Header() {
   return (
     <header className={classes.navigation}>
       <h1 data-text="Capital Commander">Capital Commander</h1>
-      <section>
-        <NavLink to="/">Home</NavLink>
+      <section className={classes.links}>
+        <NavLink
+          to="/"
+          className={({ isActive }) => (isActive ? classes.active : undefined)}
+          end
+        >
+          <p>Home</p>
+        </NavLink>
         {!token ? (
-          <NavLink to="/authentication?mode=login">Authentication</NavLink>
+          <NavLink
+            to="/authentication?mode=login"
+            className={({ isActive }) =>
+              isActive ? classes.active : undefined
+            }
+          >
+            <p>Authentication</p>
+          </NavLink>
         ) : (
           <>
-            <NavLink to="/expenses">Expenses</NavLink>
-            <button onClick={handleClick}>Logout</button>
-            <p>{email}</p>
+            <NavLink
+              to="/expenses"
+              className={({ isActive }) =>
+                isActive ? classes.active : undefined
+              }
+            >
+              <p>Expenses</p>
+            </NavLink>
           </>
         )}
       </section>
+      {token && (
+        <section className={classes.account}>
+          <i>{email}</i>
+          <img
+            onClick={handleClick}
+            src={logoutIcon}
+            alt="Logout Icon"
+            title="Log Out"
+          />
+        </section>
+      )}
     </header>
   );
 }

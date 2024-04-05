@@ -34,20 +34,30 @@ export default function Authentication() {
   }
 
   return (
-    <>
+    <section className={classes["form-wrapper"]}>
       <form className={classes.form} onSubmit={handleAuth}>
-        <label htmlFor="auth-email">Email</label>
-        <input ref={email} type="email" id="auth-email" name="email" required />
-        <label htmlFor="auth-password">Password</label>
-        <input
-          ref={pass}
-          type="password"
-          id="auth-password"
-          name="password"
-          required
-        />
+        <div>
+          <label htmlFor="auth-email">Email</label>
+          <input
+            ref={email}
+            type="email"
+            id="auth-email"
+            name="email"
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="auth-password">Password</label>
+          <input
+            ref={pass}
+            type="password"
+            id="auth-password"
+            name="password"
+            required
+          />
+        </div>
         {!isLogin && (
-          <>
+          <div>
             <label htmlFor="auth-confirm-password">Confirm password</label>
             <input
               type="password"
@@ -55,17 +65,17 @@ export default function Authentication() {
               name="passwordConfirm"
               required
             />
-          </>
+          </div>
         )}
         <button disabled={isPending}>
-          {isPending ? "Submitting..." : isLogin ? "Log In" : "Sign Up"}
+          {isPending ? "Logging in..." : isLogin ? "Log In" : "Sign Up"}
         </button>
         {isLogin && (
           <button onClick={handleGuestLogin}>Log in as a Guest</button>
         )}
         {isLogin ? (
           <p>
-            Don't have an account? <br /> Click{" "}
+            Don't have an account yet? <br /> Click{" "}
             <Link className="link" to="?mode=signup">
               here
             </Link>{" "}
@@ -81,7 +91,7 @@ export default function Authentication() {
           </p>
         )}
       </form>
-      {isError && <p>{error.info.error}</p>}
-    </>
+      {isError && <p className={classes.error}>{error.info.error}</p>}
+    </section>
   );
 }
