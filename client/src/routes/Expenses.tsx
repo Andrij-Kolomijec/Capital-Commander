@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import classes from "./Expenses.module.css";
 import { fetchExpenses, type ExpenseItem } from "../utils/http";
 import MonthlyExpenses from "../components/expenses/MonthlyExpenses";
@@ -6,6 +7,8 @@ import InputExpense from "../components/expenses/InputExpense";
 import HousingExpenses from "../components/expenses/HousingExpenses";
 import TransportationExpenses from "../components/expenses/TransportationExpenses";
 import OtherExpenses from "../components/expenses/OtherExpenses";
+import PopUp from "../components/PopUp";
+import { AnimatePresence } from "framer-motion";
 
 function groupExpensesByMonth(expenses: ExpenseItem[]) {
   const expensesByMonth: ExpenseItem[][] = [];
@@ -21,6 +24,21 @@ function groupExpensesByMonth(expenses: ExpenseItem[]) {
 }
 
 export default function Expenses() {
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [scrollValue, setScrollValue] = useState<number | null>(null);
+  const [tooltipDisplayed, setTooltipDisplayed] = useState(false);
+
+  useEffect(() => {
+    if (showTooltip && !tooltipDisplayed) {
+      const timer = setTimeout(() => {
+        setShowTooltip(false);
+        setTooltipDisplayed(true);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showTooltip, tooltipDisplayed]);
+
   const { data, isFetching } = useQuery({
     queryKey: ["expenses"],
     queryFn: fetchExpenses,
@@ -35,7 +53,6 @@ export default function Expenses() {
   if (!data) {
     return <p>No data available.</p>;
   }
-  console.log(data);
 
   const normalExpenses = data.filter(
     (item) => item.category === "none" || !item.category
@@ -55,19 +72,59 @@ export default function Expenses() {
 
   const monthlyExpenses = groupExpensesByMonth(normalExpenses);
 
+  function handleShowScrollTooltip(e: React.WheelEvent<HTMLDivElement>) {
+    const currentTime = new Date().getTime();
+    const expirationTime = new Date(
+      localStorage.getItem("expiration")!
+    ).getTime();
+    const differenceInHours = (expirationTime - currentTime) / (1000 * 60 * 60);
+
+    const currentScrollValue = e.currentTarget.scrollLeft;
+
+    if (
+      !tooltipDisplayed &&
+      scrollValue &&
+      scrollValue !== currentScrollValue
+    ) {
+      setTooltipDisplayed(true);
+    } else if (
+      scrollValue === currentScrollValue &&
+      differenceInHours > 11.5 &&
+      !tooltipDisplayed
+    ) {
+      setShowTooltip(!showTooltip);
+    } else if (!tooltipDisplayed) {
+      setScrollValue(currentScrollValue);
+    } else {
+      return;
+    }
+  }
+
   return (
     <>
-      <div className={classes.expenses}>
-        {monthlyExpenses.map((month, index) => {
-          return <MonthlyExpenses month={month} key={index} />;
-        })}
+      <AnimatePresence>
+        {showTooltip && (
+          <PopUp children="Hold shift + scroll to scroll horizontally." />
+        )}
+      </AnimatePresence>
+      <div className={classes["expenses-wrapper"]}>
+        <div className={classes.expenses}>
+          <div
+            className={classes["expenses-row"]}
+            onWheel={handleShowScrollTooltip}
+          >
+            {monthlyExpenses.map((month, index) => {
+              return <MonthlyExpenses month={month} key={index} />;
+            })}
+          </div>
+          <div className={classes["expenses-row"]}>
+            <HousingExpenses expenses={housingExpenses} />
+            <TransportationExpenses expenses={transportationExpenses} />
+            <OtherExpenses expenses={otherExpenses} />
+          </div>
+        </div>
+        <InputExpense />
       </div>
-      <div className={classes.expenses}>
-        <HousingExpenses expenses={housingExpenses} />
-        <TransportationExpenses expenses={transportationExpenses} />
-        <OtherExpenses expenses={otherExpenses} />
-      </div>
-      <InputExpense />
     </>
   );
 }
