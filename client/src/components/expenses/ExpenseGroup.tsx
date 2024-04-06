@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import classes from "./MonthlyExpenses.module.css";
+import classes from "./ExpenseGroup.module.css";
 import { ExpenseItem, deleteExpense, fetchExpenses } from "../../utils/http";
 import TableRow from "./TableRow";
+import Loader from "../Loader";
 
 type ExpenseGroupProps = {
   group: "housing" | "transportation" | "other";
@@ -20,7 +21,7 @@ export default function ExpenseGroup({
   const { data, isFetching } = useQuery({
     queryKey: ["expenses", group],
     queryFn: async () => {
-      const response = await fetchExpenses();
+      const response = await fetchExpenses(group);
 
       const expenses = response.filter(
         (item) => item.category && item.category === group
@@ -43,7 +44,7 @@ export default function ExpenseGroup({
     onMutate: async ({ id }) => {
       await queryClient.cancelQueries({
         queryKey: ["expenses", group],
-        exact: true,
+        // exact: true,
       });
       const previousExpenses = queryClient.getQueryData<ExpenseItem[]>([
         "expenses",
@@ -71,7 +72,7 @@ export default function ExpenseGroup({
   }
 
   if (isFetching) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   if (!data) {

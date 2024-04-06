@@ -25,10 +25,10 @@ export type AuthData = {
 
 const expensesURL = import.meta.env.VITE_PORT_MAIN + "expenses/";
 
-export async function fetchExpenses(): Promise<ExpenseItem[]> {
+export async function fetchExpenses(category = "none"): Promise<ExpenseItem[]> {
   const token = getAuthToken();
 
-  const response = await fetch(expensesURL, {
+  const response = await fetch(expensesURL + category, {
     headers: {
       Authorization: "Bearer " + token,
     },
@@ -97,8 +97,6 @@ export async function deleteExpense({ id }: { id: number }) {
 }
 
 export async function authenticate({ userData, mode }: AuthData) {
-  console.log(userData);
-
   const url = import.meta.env.VITE_PORT_MAIN + "authentication/" + mode;
 
   const response = await fetch(url, {

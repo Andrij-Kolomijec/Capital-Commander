@@ -15,8 +15,9 @@ type ErrorProps = {
 
 // GET all expenses
 export async function getAllExpenses(req: AuthRequest, res: Response) {
+  const { category } = req.params;
   const user = req.user._id.toString();
-  const expenses = await Expense.find({ user }).sort({ date: 1 });
+  const expenses = await Expense.find({ user, category }).sort({ date: 1 });
   setTimeout(() => res.status(200).json({ expenses }), 0);
 }
 
