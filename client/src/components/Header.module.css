@@ -5,6 +5,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 5vw;
+  position: relative;
 }
 
 .navigation > h1 {
@@ -14,8 +15,9 @@
   position: relative;
 }
 
-.navigation > h1:hover {
-  cursor: pointer;
+.navigation > h1:hover,
+.account > i:hover {
+  cursor: default;
 }
 
 .navigation > h1::before {
@@ -23,8 +25,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  /* color: antiquewhite; */
-  background: linear-gradient(to left, #0abfbc, antiquewhite);
+  background: linear-gradient(to left, #0abfbc, var(--active));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -38,9 +39,70 @@
   width: 110%;
 }
 
-.navigation > section {
+.links {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+}
+
+.account {
+  position: absolute;
+  top: 10px;
+  right: 10px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 2rem;
+}
+
+.account > img {
+  margin-left: 1rem;
+  height: 25px;
+  transition: 200ms;
+}
+
+.account > img:hover {
+  cursor: pointer;
+  filter: invert(12%) sepia(97%) saturate(5923%) hue-rotate(245deg)
+    brightness(66%) contrast(142%);
+  transform: scale(1.1);
+}
+
+/* Slide in effect using ::after pseudo element*/
+.navigation p {
+  display: block;
+  position: relative;
+  padding: 0.2em 0;
+  overflow: hidden;
+  transition: color 300ms;
+}
+
+.navigation p:hover {
+  color: var(--active);
+}
+
+.active {
+  color: var(--active);
+}
+
+.navigation p::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: var(--active);
+  opacity: 0;
+  transition: opacity 300ms, transform 300ms;
+  transform: translate3d(-100%, 0, 0);
+  /* transform: scale(0);
+  transform-origin: center; */
+}
+
+.navigation p:hover::after,
+.navigation .active p::after {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  /* transform: scale(1); */
 }
