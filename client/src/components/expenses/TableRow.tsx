@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import classes from "./TableRow.module.css";
 import closeIcon from "../../assets/close.svg";
 import dateFormatter from "../../utils/dateFormatter";
@@ -17,7 +18,22 @@ export default function TableRow({
 }: TableRowProps) {
   const [mouseHovered, setMouseHovered] = useState(false);
   return (
-    <tr
+    <motion.tr
+      key={expense._id}
+      variants={{
+        hidden: { scale: 0, opacity: 0 },
+        visible: {
+          opacity: 1,
+          scale: [0.8, 1.1, 1],
+          transition: { duration: 0.5 },
+        },
+      }}
+      exit={{ scale: 0, opacity: 0, transition: { duration: 0.2 } }}
+      // initial={{ height: 0, opacity: 0 }}
+      // animate={{ height: "auto", opacity: 1 }}
+      // exit={{ height: 0, opacity: 0 }}
+      layout // makes the moved rows not to pop
+      transition={{ type: "spring" }}
       className={classes.row}
       onMouseEnter={() => setMouseHovered(true)}
       onMouseLeave={() => setMouseHovered(false)}
@@ -40,6 +56,6 @@ export default function TableRow({
       >
         {expense.description}
       </td>
-    </tr>
+    </motion.tr>
   );
 }

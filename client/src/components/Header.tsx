@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import classes from "./Header.module.css";
 import { getAuthEmail, getAuthToken, getTokenDuration } from "../utils/authJWT";
 import { logout } from "../utils/http";
@@ -49,7 +50,17 @@ export default function Header() {
           className={({ isActive }) => (isActive ? classes.active : undefined)}
           end
         >
-          <p>Home</p>
+          {({ isActive }) => (
+            <>
+              <p>Home</p>
+              {isActive && (
+                <motion.div
+                  layoutId="tab-indicator"
+                  className={classes["active-tab-indicator"]}
+                />
+              )}
+            </>
+          )}
         </NavLink>
         {!token ? (
           <NavLink
@@ -58,7 +69,17 @@ export default function Header() {
               isActive ? classes.active : undefined
             }
           >
-            <p>Authentication</p>
+            {({ isActive }) => (
+              <>
+                <p>Authentication</p>
+                {isActive && (
+                  <motion.div
+                    layoutId="tab-indicator"
+                    className={classes["active-tab-indicator"]}
+                  />
+                )}
+              </>
+            )}
           </NavLink>
         ) : (
           <>
@@ -68,7 +89,17 @@ export default function Header() {
                 isActive ? classes.active : undefined
               }
             >
-              <p>Expenses</p>
+              {({ isActive }) => (
+                <>
+                  <p>Expenses</p>
+                  {isActive && (
+                    <motion.div
+                      layoutId="tab-indicator"
+                      className={classes["active-tab-indicator"]}
+                    />
+                  )}
+                </>
+              )}
             </NavLink>
           </>
         )}

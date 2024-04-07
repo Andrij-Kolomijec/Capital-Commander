@@ -69,13 +69,13 @@
 }
 
 /* Slide in effect using ::after pseudo element*/
-.navigation p {
+/* .navigation p {
   display: block;
   position: relative;
   padding: 0.2em 0;
   overflow: hidden;
   transition: color 300ms;
-}
+} */
 
 .navigation p:hover {
   color: var(--active);
@@ -85,7 +85,11 @@
   color: var(--active);
 }
 
-.navigation p::after {
+.active-tab-indicator {
+  border: 2px solid var(--active);
+}
+
+/*.navigation p::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -95,14 +99,14 @@
   background-color: var(--active);
   opacity: 0;
   transition: opacity 300ms, transform 300ms;
-  transform: translate3d(-100%, 0, 0);
-  /* transform: scale(0);
+  transform: translate3d(-100%, 0, 0); */
+/* transform: scale(0);
   transform-origin: center; */
-}
+/* }
 
 .navigation p:hover::after,
 .navigation .active p::after {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
-  /* transform: scale(1); */
-}
+  transform: translate3d(0, 0, 0); */
+/* transform: scale(1); */
+/* } */

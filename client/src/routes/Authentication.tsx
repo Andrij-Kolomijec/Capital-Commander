@@ -1,8 +1,9 @@
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import classes from "./Authentication.module.css";
-import { useMutation } from "@tanstack/react-query";
-import { AuthData, authenticate } from "../utils/http";
 import { useRef } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { AnimatePresence, motion } from "framer-motion";
+import classes from "./Authentication.module.css";
+import { AuthData, authenticate } from "../utils/http";
 
 export default function Authentication() {
   const [searchParams /*, setSearchParams*/] = useSearchParams();
@@ -34,7 +35,12 @@ export default function Authentication() {
   }
 
   return (
-    <section className={classes["form-wrapper"]}>
+    <motion.section
+      // layout
+      initial={{ opacity: 0, y: -30 }}
+      animate={{ opacity: 1, y: 0 }}
+      className={classes["form-wrapper"]}
+    >
       <form className={classes.form} onSubmit={handleAuth}>
         <div>
           <label htmlFor="auth-email">Email</label>
@@ -56,23 +62,38 @@ export default function Authentication() {
             required
           />
         </div>
-        {!isLogin && (
-          <div>
-            <label htmlFor="auth-confirm-password">Confirm password</label>
-            <input
-              type="password"
-              id="auth-confirm-password"
-              name="passwordConfirm"
-              required
-            />
-          </div>
-        )}
-        <button disabled={isPending}>
-          {isPending ? "Logging in..." : isLogin ? "Log In" : "Sign Up"}
-        </button>
-        {isLogin && (
-          <button onClick={handleGuestLogin}>Log in as a Guest</button>
-        )}
+        <AnimatePresence>
+          {!isLogin && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0 }}
+            >
+              <label htmlFor="auth-confirm-password">Confirm password</label>
+              <input
+                type="password"
+                id="auth-confirm-password"
+                name="passwordConfirm"
+                required
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <motion.div layout>
+          <button disabled={isPending}>
+            {isPending ? "Logging in..." : isLogin ? "Log In" : "Sign Up"}
+          </button>
+          <AnimatePresence>
+            {isLogin && (
+              <button
+                onClick={handleGuestLogin}
+                className={classes["button-guest"]}
+              >
+                Log in as a Guest
+              </button>
+            )}
+          </AnimatePresence>
+        </motion.div>
         {isLogin ? (
           <p>
             Don't have an account yet? <br /> Click{" "}
@@ -92,6 +113,6 @@ export default function Authentication() {
         )}
       </form>
       {isError && <p className={classes.error}>{error.info.error}</p>}
-    </section>
+    </motion.section>
   );
 }

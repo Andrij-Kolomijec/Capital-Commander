@@ -55,6 +55,10 @@
   background-color: var(--miscColor);
 }
 
+.button-guest {
+  margin-top: 1rem;
+}
+
 .error {
   color: rgb(175, 0, 0);
   text-shadow: 1px 1px 0px black;
