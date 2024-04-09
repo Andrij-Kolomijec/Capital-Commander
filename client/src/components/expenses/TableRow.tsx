@@ -29,16 +29,13 @@ export default function TableRow({
         },
       }}
       exit={{ scale: 0, opacity: 0, transition: { duration: 0.2 } }}
-      // initial={{ height: 0, opacity: 0 }}
-      // animate={{ height: "auto", opacity: 1 }}
-      // exit={{ height: 0, opacity: 0 }}
-      layout // makes the moved rows not to pop
       transition={{ type: "spring" }}
+      layout // makes the moved rows not to pop
       className={classes.row}
       onMouseEnter={() => setMouseHovered(true)}
       onMouseLeave={() => setMouseHovered(false)}
     >
-      <td className={classes["icon-container"]}>
+      <motion.td className={classes["icon-container"]}>
         {mouseHovered && (
           <img
             className={classes["close-icon"]}
@@ -48,7 +45,7 @@ export default function TableRow({
           />
         )}
         {housing ? expense.amount * 12 : dateFormatter(expense)}
-      </td>
+      </motion.td>
       <td>{expense.amount}</td>
       <td
         className={expense.notes ? classes.notes : undefined}

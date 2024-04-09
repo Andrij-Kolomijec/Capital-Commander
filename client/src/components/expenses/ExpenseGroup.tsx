@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import classes from "./ExpenseGroup.module.css";
 import { ExpenseItem, deleteExpense, fetchExpenses } from "../../utils/http";
 import TableRow from "./TableRow";
@@ -79,7 +79,6 @@ export default function ExpenseGroup({
   }
 
   return (
-    // <AnimatePresence>
     <motion.table
       key={group}
       variants={{
@@ -93,11 +92,14 @@ export default function ExpenseGroup({
       initial="hidden"
       animate="visible"
       exit="hidden"
-      layout // table add and delete rows animation (but distorts)
+      layout="size" // table add and delete rows animation (but distorts)
       className={`${classes.table} ${classes["second-row-table"]}`}
     >
-      <caption>{`${group.charAt(0).toUpperCase()}${group.slice(1)}`}</caption>
-      <thead>
+      {/* layout property in both elements below prevents the distortion */}
+      <motion.caption layout>{`${group.charAt(0).toUpperCase()}${group.slice(
+        1
+      )}`}</motion.caption>
+      <motion.thead layout>
         <tr>
           <th scope="col">Year</th>
           <th scope="col">Month</th>
@@ -110,13 +112,13 @@ export default function ExpenseGroup({
           <th scope="col">{yearly ? sum : (sum / 12).toFixed(0)}</th>
           <th scope="col">{sumGroup}</th>
         </tr>
-      </thead>
+      </motion.thead>
       <tbody>
         {/* <AnimatePresence> */}
         {data.map((expense) => {
           return (
             <TableRow
-              key={expense._id + expense.category!}
+              key={expense.category! + expense._id}
               expense={expense}
               onDelete={handleDelete}
               housing={yearly}
@@ -126,6 +128,5 @@ export default function ExpenseGroup({
         {/* </AnimatePresence> */}
       </tbody>
     </motion.table>
-    // </AnimatePresence>
   );
 }

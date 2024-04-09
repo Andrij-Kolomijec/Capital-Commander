@@ -1,11 +1,17 @@
-import classes from "./MonthlyExpenses.module.css";
-import { type ExpenseItem, deleteExpense } from "../../utils/http";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AnimatePresence, motion } from "framer-motion";
+import classes from "./ExpenseGroup.module.css";
+import {
+  type ExpenseItem,
+  deleteExpense,
+  fetchExpenses,
+} from "../../utils/http";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import TableRow from "./TableRow";
+import Loader from "../Loader";
 
 function calculateAmounts(items: ExpenseItem[]) {
   const groceries = items.reduce((total, item) => {
-    return total + +(item.description === "nákup" && item.amount);
+    return total + +(item.description === "groceries" && item.amount);
   }, 0);
   const total = items.reduce((total, item) => {
     return total + item.amount;
@@ -14,13 +20,56 @@ function calculateAmounts(items: ExpenseItem[]) {
   return [groceries, total, other];
 }
 
-export default function MonthlyExpenses({ month }: { month: ExpenseItem[] }) {
+function groupExpensesByMonth(expenses: ExpenseItem[]) {
+  const expensesByMonth: ExpenseItem[][] = [];
+  expenses.forEach((expense) => {
+    const date = new Date(expense.date);
+    const month = date.getMonth();
+    if (!expensesByMonth[month]) {
+      expensesByMonth[month] = [];
+    }
+    expensesByMonth[month].push(expense);
+  });
+  return expensesByMonth.reverse();
+}
+
+export default function MonthlyExpenses() {
   const queryClient = useQueryClient();
+
+  const { data, isFetching, isFetched } = useQuery({
+    queryKey: ["expenses", "none"],
+    queryFn: async () => {
+      const response = await fetchExpenses();
+
+      const noneExpenses = response.filter(
+        (item) => item.category && item.category === "none"
+      );
+
+      return noneExpenses;
+    },
+    staleTime: 1000 * 60 * 10,
+    placeholderData: [],
+  });
 
   const { mutate } = useMutation({
     mutationFn: deleteExpense,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["expenses"] });
+    onMutate: async ({ id }) => {
+      await queryClient.cancelQueries({
+        queryKey: ["expenses", "none"],
+        exact: true,
+      });
+      const previousExpenses = queryClient.getQueryData<ExpenseItem[]>([
+        "expenses",
+        "none",
+      ]);
+      queryClient.setQueryData(
+        ["expenses", "none"],
+        previousExpenses!.filter((i) => i._id !== id)
+      );
+      return { previousExpenses };
+    },
+    onError: (error, data, context) => {
+      queryClient.setQueryData(["expenses", "none"], context!.previousExpenses);
     },
   });
 
@@ -28,32 +77,94 @@ export default function MonthlyExpenses({ month }: { month: ExpenseItem[] }) {
     mutate({ id });
   }
 
-  const [groceries, total, other] = calculateAmounts(month);
+  if (isFetching && !isFetched) {
+    return <Loader />;
+  }
+
+  if (!data) {
+    return <p>No data available.</p>;
+  }
+
+  const monthlyExpenses = groupExpensesByMonth(data);
+
   return (
-    <table className={classes.table}>
-      <thead>
-        <tr>
-          <th scope="col">Groceries</th>
-          <th scope="col">Other</th>
-          <th scope="col">Total ({month.length})</th>
-        </tr>
-        <tr>
-          <th scope="col">{groceries}</th>
-          <th scope="col">{other}</th>
-          <th scope="col">{total}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {month.map((expense) => {
+    <>
+      <AnimatePresence mode="popLayout">
+        {monthlyExpenses.map((month) => {
+          const key = new Date(month[0].date).getUTCMonth();
+          const [groceries, total, other] = calculateAmounts(month);
           return (
-            <TableRow
-              key={expense._id}
-              expense={expense}
-              onDelete={handleDelete}
-            />
+            <motion.table
+              key={key}
+              variants={{
+                visible: {
+                  scale: 1,
+                  opacity: 1,
+                  transition: { staggerChildren: 0.03 },
+                },
+                hidden: { scale: 0, opacity: 0 },
+              }}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              layout
+              className={classes.table}
+            >
+              <motion.thead layout>
+                <tr>
+                  <th scope="col">Groceries</th>
+                  <th scope="col">Other</th>
+                  <motion.th
+                    key={`Total ${month.length}  ${key}`}
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 0.3 }}
+                    scope="col"
+                  >
+                    Total ({month.length})
+                  </motion.th>
+                </tr>
+                <tr>
+                  <motion.th
+                    key={`Groceries ${groceries}  ${key}`}
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 0.3 }}
+                    scope="col"
+                  >
+                    {groceries}
+                  </motion.th>
+                  <motion.th
+                    key={`Other ${other}  ${key}`}
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 0.3 }}
+                    scope="col"
+                  >
+                    {other}
+                  </motion.th>
+                  <motion.th
+                    key={`${total}  ${key}`}
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 0.3 }}
+                    scope="col"
+                  >
+                    {total}
+                  </motion.th>
+                </tr>
+              </motion.thead>
+              <tbody>
+                {month.map((expense) => {
+                  return (
+                    <TableRow
+                      key={"none" + expense._id}
+                      expense={expense}
+                      onDelete={handleDelete}
+                    />
+                  );
+                })}
+              </tbody>
+            </motion.table>
           );
         })}
-      </tbody>
-    </table>
+      </AnimatePresence>
+    </>
   );
 }

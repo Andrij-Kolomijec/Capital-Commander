@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import classes from "./Expenses.module.css";
 import MonthlyExpenses from "../components/expenses/MonthlyExpenses";
 import InputExpense from "../components/expenses/InputExpense";
 import PopUp from "../components/PopUp";
-import { AnimatePresence } from "framer-motion";
 import ExpenseGroup from "../components/expenses/ExpenseGroup";
 
 export default function Expenses() {
@@ -49,6 +49,18 @@ export default function Expenses() {
     }
   }
 
+  // working but unusable because of limited row height
+  // function handleScroll(e) {
+  // if (e.deltaY > 0) {
+  //   e.target.scrollLeft += 100;
+  // } else if (e.deltaY < 0) {
+  //   e.target.scrollLeft -= 100;
+  // }
+  // e.target.scrollBy({
+  //   left: e.deltaY < 0 ? -100 : 100,
+  // });
+  // }
+
   return (
     <>
       <AnimatePresence>
@@ -59,15 +71,21 @@ export default function Expenses() {
       <div className={classes["expenses-wrapper"]}>
         <div className={classes.expenses}>
           <div
-            className={classes["expenses-row"]}
+            className={`${classes["expenses-row"]} scrollable`}
             onWheel={handleShowScrollTooltip}
           >
             <MonthlyExpenses />
           </div>
-          <div className={classes["expenses-row"]}>
-            <ExpenseGroup group="housing" yearly={true} />
-            <ExpenseGroup group="transportation" summing="gas" />
-            <ExpenseGroup group="other" />
+          <div
+            className={`${classes["expenses-row"]} ${classes["second-row"]}`}
+          >
+            <ExpenseGroup key="housing" group="housing" yearly={true} />
+            <ExpenseGroup
+              key="transportation"
+              group="transportation"
+              summing="gas"
+            />
+            <ExpenseGroup key="other" group="other" />
           </div>
         </div>
         <InputExpense />
