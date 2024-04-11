@@ -5,7 +5,18 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 5vw;
-  position: relative;
+  position: sticky;
+  top: 0;
+  color: black;
+  background: linear-gradient(
+    to bottom,
+    #ffdb58,
+    #ff8c00,
+    var(--miscColor),
+    transparent 101%
+  );
+  z-index: 1;
+  /* background: radial-gradient(circle at center, #aa7832 20%, transparent 80%); */
 }
 
 .navigation > h1 {
@@ -13,6 +24,7 @@
   font-size: 50px;
   white-space: nowrap;
   position: relative;
+  padding-bottom: 1rem;
 }
 
 .navigation > h1:hover,
@@ -45,12 +57,13 @@
   align-items: center;
   justify-content: center;
   gap: 4rem;
+  padding-bottom: 1rem;
 }
 
 .account {
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 20px;
   display: flex;
   align-items: center;
 }
@@ -65,10 +78,10 @@
   cursor: pointer;
   filter: invert(12%) sepia(97%) saturate(5923%) hue-rotate(245deg)
     brightness(66%) contrast(142%);
-  transform: scale(1.1);
+  /* transform: scale(1.1); */
 }
 
-/* Slide in effect using ::after pseudo element*/
+/* Slide in effect using (~~::after pseudo element~~) framer motion*/
 /* .navigation p {
   display: block;
   position: relative;
@@ -76,6 +89,10 @@
   overflow: hidden;
   transition: color 300ms;
 } */
+
+.links a {
+  position: relative;
+}
 
 .navigation p:hover {
   color: var(--active);
@@ -87,6 +104,10 @@
 
 .active-tab-indicator {
   border: 2px solid var(--active);
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
 }
 
 /*.navigation p::after {

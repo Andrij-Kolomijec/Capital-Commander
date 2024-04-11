@@ -5,6 +5,7 @@ import Layout from "./components/Layout";
 import Home from "./routes/Home";
 import Expenses from "./routes/Expenses";
 import Authentication from "./routes/Authentication";
+import About from "./routes/About";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "expenses", element: <Expenses /> },
       { path: "authentication", element: <Authentication /> },
+      { path: "about", element: <About /> },
     ],
   },
 ]);

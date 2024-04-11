@@ -1,0 +1,12 @@
+.about {
+  width: 40%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  text-align: justify;
+}
+
+.about p {
+  text-indent: 3rem;
+}
