@@ -37,16 +37,8 @@ export default function MonthlyExpenses() {
   const queryClient = useQueryClient();
 
   const { data, isFetching, isFetched } = useQuery({
-    queryKey: ["expenses", "none"],
-    queryFn: async () => {
-      const response = await fetchExpenses();
-
-      const noneExpenses = response.filter(
-        (item) => item.category && item.category === "none"
-      );
-
-      return noneExpenses;
-    },
+    queryKey: ["expenses"],
+    queryFn: fetchExpenses,
     staleTime: 1000 * 60 * 10,
     placeholderData: [],
   });
@@ -55,21 +47,20 @@ export default function MonthlyExpenses() {
     mutationFn: deleteExpense,
     onMutate: async ({ id }) => {
       await queryClient.cancelQueries({
-        queryKey: ["expenses", "none"],
+        queryKey: ["expenses"],
         exact: true,
       });
       const previousExpenses = queryClient.getQueryData<ExpenseItem[]>([
         "expenses",
-        "none",
       ]);
       queryClient.setQueryData(
-        ["expenses", "none"],
+        ["expenses"],
         previousExpenses!.filter((i) => i._id !== id)
       );
       return { previousExpenses };
     },
     onError: (error, data, context) => {
-      queryClient.setQueryData(["expenses", "none"], context!.previousExpenses);
+      queryClient.setQueryData(["expenses"], context!.previousExpenses);
     },
   });
 
@@ -85,7 +76,9 @@ export default function MonthlyExpenses() {
     return <p>No data available.</p>;
   }
 
-  const monthlyExpenses = groupExpensesByMonth(data);
+  const expenses = data.filter((item) => item.category === "none");
+
+  const monthlyExpenses = groupExpensesByMonth(expenses);
 
   return (
     <>

@@ -13,7 +13,7 @@ const expenseRoutes = express.Router();
 
 expenseRoutes.use(requireAuth as any);
 
-expenseRoutes.get("/:category", getAllExpenses as any);
+expenseRoutes.get("/", getAllExpenses as any);
 
 expenseRoutes.post("/", createExpense as any);
 

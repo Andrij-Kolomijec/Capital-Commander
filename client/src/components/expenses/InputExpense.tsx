@@ -8,15 +8,18 @@ export default function InputExpense() {
   const { mutate, isPending } = useMutation({
     mutationFn: createExpense,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["expenses"] });
+      queryClient.invalidateQueries({
+        queryKey: ["expenses"],
+        exact: true,
+      });
     },
   });
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
     const formData = new FormData(e.currentTarget);
     // const data = Object.fromEntries(formData);
-
     const data: ExpenseItem = {
       description: formData.get("description") as string,
       date: new Date(formData.get("date") as string),
@@ -55,7 +58,9 @@ export default function InputExpense() {
           <option value="other">Other</option>
         </select>
       </div>
-      <button>{isPending ? "Submitting..." : "Submit"}</button>
+      <button disabled={isPending}>
+        {isPending ? "Submitting..." : "Submit"}
+      </button>
     </form>
   );
 }

@@ -25,10 +25,10 @@ export type AuthData = {
 
 const expensesURL = import.meta.env.VITE_PORT_MAIN + "expenses/";
 
-export async function fetchExpenses(category = "none"): Promise<ExpenseItem[]> {
+export async function fetchExpenses(): Promise<ExpenseItem[]> {
   const token = getAuthToken();
 
-  const response = await fetch(expensesURL + category, {
+  const response = await fetch(expensesURL, {
     headers: {
       Authorization: "Bearer " + token,
     },

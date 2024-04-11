@@ -19,16 +19,8 @@ export default function ExpenseGroup({
   const queryClient = useQueryClient();
 
   const { data, isFetching, isFetched } = useQuery({
-    queryKey: ["expenses", group],
-    queryFn: async () => {
-      const response = await fetchExpenses(group);
-
-      const expenses = response.filter(
-        (item) => item.category && item.category === group
-      );
-
-      return expenses;
-    },
+    queryKey: ["expenses"],
+    queryFn: fetchExpenses,
     staleTime: 1000 * 60 * 10,
     placeholderData: [],
   });
@@ -37,21 +29,20 @@ export default function ExpenseGroup({
     mutationFn: deleteExpense,
     onMutate: async ({ id }) => {
       await queryClient.cancelQueries({
-        queryKey: ["expenses", group],
+        queryKey: ["expenses"],
         // exact: true,
       });
       const previousExpenses = queryClient.getQueryData<ExpenseItem[]>([
         "expenses",
-        group,
       ]);
       queryClient.setQueryData(
-        ["expenses", group],
+        ["expenses"],
         previousExpenses!.filter((i) => i._id !== id)
       );
       return { previousExpenses };
     },
     onError: (error, data, context) => {
-      queryClient.setQueryData(["expenses", group], context!.previousExpenses);
+      queryClient.setQueryData(["expenses"], context!.previousExpenses);
     },
   });
 
@@ -67,13 +58,15 @@ export default function ExpenseGroup({
     return <p>No data available.</p>;
   }
 
-  const sum = data.reduce((total, item) => {
+  const expenses = data.filter((item) => item.category === group);
+
+  const sum = expenses.reduce((total, item) => {
     return total + +item.amount;
   }, 0);
 
   let sumGroup: number | undefined;
   if (summing) {
-    sumGroup = data.reduce((total, item) => {
+    sumGroup = expenses.reduce((total, item) => {
       return total + +(item.description === summing && item.amount);
     }, 0);
   }
@@ -115,7 +108,7 @@ export default function ExpenseGroup({
       </motion.thead>
       <tbody>
         {/* <AnimatePresence> */}
-        {data.map((expense) => {
+        {expenses.map((expense) => {
           return (
             <TableRow
               key={expense.category! + expense._id}
