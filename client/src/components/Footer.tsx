@@ -7,7 +7,7 @@ export default function Footer() {
       <a href="https://github.com/Andrij-Kolomijec">
         <img src={github} alt="GitHub Icon" title="More of my work" />
       </a>
-      <span>
+      {/* <span>
         Background image from&nbsp;
         <a
           title="Visit website"
@@ -16,7 +16,7 @@ export default function Footer() {
         >
           Pexels
         </a>
-      </span>
+      </span> */}
     </footer>
   );
 }

@@ -53,9 +53,9 @@ export default function InputExpense() {
         <label htmlFor="expense-category">Category</label>
         <select name="category" id="expense-category">
           <option value="none">--Optional--</option>
-          <option value="transportation">Transportation</option>
           <option value="housing">Housing</option>
-          <option value="other">Other</option>
+          <option value="transportation">Transportation</option>
+          <option value="other">Miscellaneous</option>
         </select>
       </div>
       <button disabled={isPending}>

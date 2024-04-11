@@ -89,9 +89,11 @@ export default function ExpenseGroup({
       className={`${classes.table} ${classes["second-row-table"]}`}
     >
       {/* layout property in both elements below prevents the distortion */}
-      <motion.caption layout>{`${group.charAt(0).toUpperCase()}${group.slice(
-        1
-      )}`}</motion.caption>
+      <motion.caption layout>
+        {group === "other"
+          ? "Miscellaneous"
+          : `${group.charAt(0).toUpperCase()}${group.slice(1)}`}
+      </motion.caption>
       <motion.thead layout>
         <tr>
           <th scope="col">Year</th>
