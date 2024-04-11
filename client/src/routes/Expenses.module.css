@@ -1,47 +1,48 @@
 .expenses-wrapper {
   display: flex;
-  /* width: 95vw; */
   justify-content: space-around;
-  /* align-items: center; */
   margin: 0 2vw;
-  /* border: 1px solid; */
 }
 
 .expenses {
-  /* flex: 1; */
   display: flex;
   flex-direction: column;
   align-items: center;
   width: fit-content;
-  /* border: 1px solid yellow; */
 }
 
 .expenses-row {
   display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
   gap: 1rem;
   text-align: center;
-  max-width: 72vw;
-  max-height: 40vh;
+  width: 70vw;
+  height: 40vh;
   overflow: auto;
-  /* border: 1px solid; */
+}
+
+.second-row {
+  min-width: 55vw;
+  padding: 0 1rem;
 }
 
 .expenses-row td {
   padding: 0 1.5rem;
 }
 
-::-webkit-scrollbar-track {
+.expenses-wrapper::-webkit-scrollbar-track {
   background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
+.expenses-wrapper::-webkit-scrollbar-thumb {
   border-radius: 100vw;
-  background: var(--miscColor);
+  background: var(--bgColor);
 }
 
-@supports (scrollbar-color: var(--miscColor) transparent) {
-  * {
-    scrollbar-color: var(--miscColor) transparent;
+@supports (scrollbar-color: var(--bgColor) transparent) {
+  .expenses-wrapper {
+    scrollbar-color: var(--bgColor) transparent;
     /* scrollbar-width: thin; */
   }
 }
