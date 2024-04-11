@@ -5,6 +5,7 @@ import MonthlyExpenses from "../components/expenses/MonthlyExpenses";
 import InputExpense from "../components/expenses/InputExpense";
 import PopUp from "../components/PopUp";
 import ExpenseGroup from "../components/expenses/ExpenseGroup";
+import Summary from "../components/expenses/Summary";
 
 export default function Expenses() {
   const [showTooltip, setShowTooltip] = useState(false);
@@ -88,7 +89,10 @@ export default function Expenses() {
             <ExpenseGroup key="other" group="other" />
           </div>
         </div>
-        <InputExpense />
+        <div className={classes.side}>
+          <InputExpense />
+          <Summary />
+        </div>
       </div>
     </>
   );
