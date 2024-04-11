@@ -30,6 +30,7 @@ export default function Header() {
 
   function handleClick() {
     mutate();
+    pixelsScrolled.set(0);
   }
 
   useEffect(() => {

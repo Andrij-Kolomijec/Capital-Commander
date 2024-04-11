@@ -3,7 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import classes from "./Authentication.module.css";
-import { AuthData, authenticate } from "../utils/http";
+import { AuthData, authenticate, type FetchError } from "../utils/http";
 
 export default function Authentication() {
   const [searchParams /*, setSearchParams*/] = useSearchParams();
@@ -112,7 +112,9 @@ export default function Authentication() {
           </p>
         )}
       </form>
-      {isError && <p className={classes.error}>{error.info.error}</p>}
+      {isError && (
+        <p className={classes.error}>{(error as FetchError).info.error}</p>
+      )}
     </motion.section>
   );
 }

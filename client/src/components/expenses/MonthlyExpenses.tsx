@@ -60,6 +60,10 @@ export default function MonthlyExpenses() {
       return { previousExpenses };
     },
     onError: (error, data, context) => {
+      if (error) {
+        console.error("Mutation failed:", error);
+        console.log("Data passed to mutation:", data);
+      }
       queryClient.setQueryData(["expenses"], context!.previousExpenses);
     },
   });

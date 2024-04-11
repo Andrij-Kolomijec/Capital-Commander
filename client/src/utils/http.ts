@@ -11,7 +11,7 @@ export type ExpenseItem = {
 
 export type FetchError = Error & {
   code: number;
-  info: string;
+  info: { error: string };
 };
 
 export type AuthData = {
