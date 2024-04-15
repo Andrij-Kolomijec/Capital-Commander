@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import classes from "./InputExpense.module.css";
 import { ExpenseItem, createExpense } from "../../utils/http";
+import Button from "../Button";
 
 export default function InputExpense() {
   const queryClient = useQueryClient();
@@ -58,9 +59,9 @@ export default function InputExpense() {
           <option value="other">Miscellaneous</option>
         </select>
       </div>
-      <button disabled={isPending}>
+      <Button disabled={isPending}>
         {isPending ? "Submitting..." : "Submit"}
-      </button>
+      </Button>
     </form>
   );
 }

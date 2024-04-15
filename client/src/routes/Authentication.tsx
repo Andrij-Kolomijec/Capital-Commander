@@ -1,9 +1,10 @@
 import { useRef } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import classes from "./Authentication.module.css";
 import { AuthData, authenticate, type FetchError } from "../utils/http";
+import Button from "../components/Button";
 
 export default function Authentication() {
   const [searchParams /*, setSearchParams*/] = useSearchParams();
@@ -34,6 +35,10 @@ export default function Authentication() {
     pass.current!.value = import.meta.env.VITE_PORT_GUEST;
   }
 
+  /* Trying to animate form itself by adding layout to 
+  form, email div and password div (to prevent distortion)
+  causes border-radius to behave strangely. */
+
   return (
     <motion.section
       // layout
@@ -49,6 +54,7 @@ export default function Authentication() {
             type="email"
             id="auth-email"
             name="email"
+            placeholder="Type your username"
             required
           />
         </div>
@@ -59,41 +65,36 @@ export default function Authentication() {
             type="password"
             id="auth-password"
             name="password"
+            placeholder="Type your password"
             required
           />
         </div>
-        <AnimatePresence>
-          {!isLogin && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0 }}
-            >
-              <label htmlFor="auth-confirm-password">Confirm password</label>
-              <input
-                type="password"
-                id="auth-confirm-password"
-                name="passwordConfirm"
-                required
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-        <motion.div layout>
-          <button disabled={isPending}>
+        {!isLogin && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0 }}
+          >
+            <label htmlFor="auth-confirm-password">Confirm password</label>
+            <input
+              type="password"
+              id="auth-confirm-password"
+              name="passwordConfirm"
+              placeholder="Type the password again"
+              required
+            />
+          </motion.div>
+        )}
+        <div className={classes.buttons}>
+          <Button disabled={isPending}>
             {isPending ? "Logging in..." : isLogin ? "Log In" : "Sign Up"}
-          </button>
-          <AnimatePresence>
-            {isLogin && (
-              <button
-                onClick={handleGuestLogin}
-                className={classes["button-guest"]}
-              >
-                Log in as a Guest
-              </button>
-            )}
-          </AnimatePresence>
-        </motion.div>
+          </Button>
+          {isLogin && (
+            <Button onClick={handleGuestLogin} disabled={isPending}>
+              Log in as a Guest
+            </Button>
+          )}
+        </div>
         {isLogin ? (
           <p>
             Don't have an account yet? <br /> Click{" "}

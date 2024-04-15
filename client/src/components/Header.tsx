@@ -64,12 +64,12 @@ export default function Header() {
     "10px",
     "5px",
   ]);
-  const backgroundOpacity = useTransform(
-    pixelsScrolled,
-    scrollThreshold,
-    [1, 0.9]
-  );
-  // const backgroundColorTemplate = useMotionTemplate`rgba(170 120 50 / ${backgroundOpacity})`;
+  // const backgroundOpacity = useTransform(
+  //   pixelsScrolled,
+  //   scrollThreshold,
+  //   [1, 0.9]
+  // );
+  // const backgroundColorTemplate = useMotionTemplate`rgba(141 135 65 / ${backgroundOpacity})`;
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     if (latest < 0) return;
@@ -112,7 +112,10 @@ export default function Header() {
   return (
     <motion.header
       className={classes.navigation}
-      style={{ height, opacity: backgroundOpacity }}
+      style={{
+        height,
+        // background: backgroundColorTemplate,
+      }}
     >
       <motion.h1 style={{ fontSize: textHeight }} data-text="Capital Commander">
         Capital Commander

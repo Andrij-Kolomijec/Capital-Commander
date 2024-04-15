@@ -47,11 +47,11 @@ export default function Reveal({
         style={{
           position: "absolute",
           top: 10,
-          bottom: 10,
+          bottom: 0,
           left: 0,
           right: 0,
-          background: "var(--miscColor)",
-          boxShadow: "0 0 10px 10px var(--miscColor)",
+          background: "var(--active)",
+          // boxShadow: "0 0 10px 10px var(--miscColor)",
         }}
       />
     </div>

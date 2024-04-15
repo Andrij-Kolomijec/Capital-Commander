@@ -1,12 +1,25 @@
 import classes from "./Footer.module.css";
 import github from "../assets/github.svg";
+import { motion } from "framer-motion";
 
 export default function Footer() {
   return (
     <footer className={classes.footer}>
-      <a href="https://github.com/Andrij-Kolomijec">
-        <img src={github} alt="GitHub Icon" title="More of my work" />
-      </a>
+      <motion.a drag href="https://github.com/Andrij-Kolomijec">
+        <motion.img
+          src={github}
+          alt="GitHub Icon"
+          title="More of my work"
+          drag
+          whileDrag={{ scale: 2, rotate: "360deg" }}
+          dragConstraints={{
+            left: -500,
+            right: 500,
+            top: -700,
+            bottom: 0,
+          }}
+        />
+      </motion.a>
       {/* <span>
         Background image from&nbsp;
         <a
