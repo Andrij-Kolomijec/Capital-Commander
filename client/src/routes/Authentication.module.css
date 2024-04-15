@@ -11,20 +11,21 @@
   background-color: var(--bgColor);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  padding: 2rem;
-  border: 2px solid;
-  border-radius: 5px;
+  gap: 3rem;
+  padding: 4rem;
+  border-radius: 10px;
   box-shadow: var(--shadow);
+  width: 13vw;
 }
 
 .form > div {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 }
 
 .form label {
+  font-size: 0.8rem;
   margin-left: -1rem;
 }
 
@@ -33,31 +34,19 @@
 }
 
 .form input {
-  background-color: var(--miscColor);
-  border: 1px solid;
-  box-shadow: var(--shadow);
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid grey;
+  height: 2rem;
+  padding-left: 3px;
 }
 
 .form input:focus {
-  outline: 1px ridge var(--active);
+  outline: none;
 }
 
-.form button {
-  padding: 2px 5px;
-  background-color: var(--bgColor);
-  border: none;
-  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.7);
-  transition: 100ms;
-}
-
-.form button:hover {
-  cursor: pointer;
-  transform: scale(1.1);
-  background-color: var(--miscColor);
-}
-
-.button-guest {
-  margin-top: 1rem;
+.form > .buttons {
+  gap: 2rem;
 }
 
 .error {

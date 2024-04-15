@@ -24,7 +24,6 @@
 }
 
 .second-row {
-  min-width: 55vw;
   padding: 0 1rem;
 }
 
@@ -48,9 +47,9 @@
   background: var(--bgColor);
 }
 
-@supports (scrollbar-color: var(--bgColor) transparent) {
+@supports (scrollbar-color: var(--miscColor) transparent) {
   .expenses-wrapper {
-    scrollbar-color: var(--bgColor) transparent;
+    scrollbar-color: var(--miscColor) transparent;
     /* scrollbar-width: thin; */
   }
 }

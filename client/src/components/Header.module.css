@@ -8,15 +8,15 @@
   position: sticky;
   top: 0;
   color: black;
-  background: linear-gradient(
+  /* background: linear-gradient(
     to bottom,
     #ffdb58,
     #ff8c00,
     var(--miscColor),
     transparent 101%
-  );
+  ); */
+  background: #8d8741;
   z-index: 1;
-  /* background: radial-gradient(circle at center, #aa7832 20%, transparent 80%); */
 }
 
 .navigation > h1 {
@@ -24,7 +24,7 @@
   font-size: 50px;
   white-space: nowrap;
   position: relative;
-  padding-bottom: 1rem;
+  /* padding-bottom: 1rem; */
 }
 
 .navigation > h1:hover,
@@ -37,7 +37,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  background: linear-gradient(to left, #0abfbc, var(--active));
+  background: linear-gradient(to left, var(--miscColor), var(--active));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -57,7 +57,6 @@
   align-items: center;
   justify-content: center;
   gap: 4rem;
-  padding-bottom: 1rem;
 }
 
 .account {

@@ -7,6 +7,8 @@
 
 .footer img {
   height: 40px;
-  filter: invert(48%) sepia(55%) saturate(526%) hue-rotate(356deg)
-    brightness(91%) contrast(87%);
+}
+
+.footer img:hover {
+  cursor: pointer;
 }

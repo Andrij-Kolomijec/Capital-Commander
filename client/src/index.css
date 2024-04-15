@@ -9,19 +9,18 @@ html {
 }
 
 :root {
-  --bgColor: rgba(175, 150, 110, 0.5);
-  --miscColor: rgb(170, 120, 50);
+  --bgColor: rgba(250, 235, 215, 0.5);
+  --miscColor: rgba(250, 235, 215, 0.3);
   --active: #0000b9;
   --shadow: 0 0 4px 1px rgba(0, 0, 0, 0.2);
 }
 
 body {
-  background: linear-gradient(rgb(0, 24, 102), rgb(0, 9, 39));
+  background: linear-gradient(#8d8741 6%, #659dbd);
   /* background-size: cover;
   background-repeat: no-repeat;
   background-position: center; */
   background-attachment: fixed;
-  color: rgb(215, 250, 248);
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -50,9 +49,9 @@ a {
   color: var(--active);
 }
 
-@supports (scrollbar-color: var(--active) var(--miscColor)) {
+@supports (scrollbar-color: var(--active) #faebd7) {
   html {
-    scrollbar-color: var(--active) var(--miscColor);
+    scrollbar-color: var(--active) #faebd7;
     scrollbar-width: thin;
   }
 }

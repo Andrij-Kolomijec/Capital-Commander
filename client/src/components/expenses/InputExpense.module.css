@@ -33,18 +33,6 @@
   width: 180px;
 }
 
-.form > button {
-  background-color: var(--miscColor);
-  padding: 5px 10px;
-  border-radius: 5px;
-  border: 1px solid;
-  box-shadow: var(--shadow);
-  transition: ease-in-out 300ms;
-}
-
-.form > button:hover {
-  cursor: pointer;
-  transform: scale(1.2);
-  background-color: var(--active);
-  color: var(--miscColor);
+.form button {
+  margin: 1rem;
 }
