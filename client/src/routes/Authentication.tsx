@@ -1,13 +1,18 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import classes from "./Authentication.module.css";
 import { AuthData, authenticate, type FetchError } from "../utils/http";
 import Button from "../components/Button";
+import hide from "../assets/hide.svg";
+import show from "../assets/show.svg";
 
 export default function Authentication() {
   const [searchParams /*, setSearchParams*/] = useSearchParams();
+  const [passwordType, setPasswordType] = useState<"password" | "text">(
+    "password"
+  );
   const isLogin = searchParams.get("mode") === "login";
   const navigate = useNavigate();
 
@@ -33,6 +38,13 @@ export default function Authentication() {
   function handleGuestLogin() {
     email.current!.value = "guest@test.org";
     pass.current!.value = import.meta.env.VITE_PORT_GUEST;
+  }
+
+  function togglePasswordType(
+    e: React.MouseEvent<HTMLImageElement, MouseEvent>
+  ) {
+    e.preventDefault();
+    setPasswordType((prev) => (prev === "password" ? "text" : "password"));
   }
 
   /* Trying to animate form itself by adding layout to 
@@ -80,18 +92,24 @@ export default function Authentication() {
         <motion.div variants={inputFields} className={classes.input}>
           <input
             ref={pass}
-            type="password"
+            type={passwordType}
             id="auth-password"
             name="password"
             placeholder=""
             required
           />
           <label htmlFor="auth-password">Password</label>
+          <img
+            src={passwordType === "password" ? hide : show}
+            title="Show password"
+            onClick={togglePasswordType}
+            className={classes["password-toggle"]}
+          />
         </motion.div>
         {!isLogin && (
           <motion.div variants={inputFields} className={classes.input}>
             <input
-              type="password"
+              type={passwordType}
               id="auth-confirm-password"
               name="passwordConfirm"
               placeholder=""
@@ -103,12 +121,18 @@ export default function Authentication() {
         <motion.div
           layout
           variants={inputFields}
+          transition={{
+            type: "spring",
+            duration: 0.2,
+            bounce: 0,
+            stiffness: 150,
+          }}
           className={classes["checkbox-container"]}
         >
           <input type="checkbox" id="remember-me" name="rememberMe" />
           <label htmlFor="remember-me">
             <span className={classes["custom-checkbox"]}></span>
-            Remember Me
+            Remember me
           </label>
         </motion.div>
         <motion.div variants={inputFields} className={classes.buttons}>

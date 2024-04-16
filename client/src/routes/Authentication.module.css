@@ -51,7 +51,6 @@
 
 .checkbox-container [type="checkbox"] {
   opacity: 0;
-  /* position: absolute; */
 }
 
 .checkbox-container [type="checkbox"] + label {
@@ -59,6 +58,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  font-size: small;
   /* gap: 0.5rem; */
 }
 
@@ -120,10 +120,6 @@
 
 /* Custom inputs and labels */
 
-.input {
-  /* transition: transform 0.1s; */
-}
-
 .input label {
   display: block;
   opacity: 1;
@@ -137,6 +133,7 @@
   background-color: transparent;
   border-radius: 0px;
   border-style: none none solid none;
+  border-color: grey;
   padding: 5px;
   transition: transform 0.3s, border-color 0.3s;
 }
@@ -160,3 +157,22 @@
 /* .input:focus-within {
   transform: scale(1.05);
 } */
+
+.input {
+  position: relative;
+}
+
+.password-toggle {
+  display: none;
+  height: 1.2rem;
+  position: absolute;
+  right: -1.5rem;
+}
+
+.password-toggle:hover {
+  cursor: pointer;
+}
+
+.input input:not(:placeholder-shown) ~ img {
+  display: block;
+}
