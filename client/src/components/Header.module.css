@@ -93,7 +93,12 @@
   position: relative;
 }
 
-.navigation p:hover {
+.navigation a:hover {
+  color: var(--active);
+}
+
+.navigation a:focus {
+  outline: none;
   color: var(--active);
 }
 

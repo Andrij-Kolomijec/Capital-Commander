@@ -10,13 +10,15 @@ html {
 
 :root {
   --bgColor: rgba(250, 235, 215, 0.5);
+  --bgUpper: #8d8741;
+  --bgLower: #659dbd;
   --miscColor: rgba(250, 235, 215, 0.3);
   --active: #0000b9;
   --shadow: 0 0 4px 1px rgba(0, 0, 0, 0.2);
 }
 
 body {
-  background: linear-gradient(#8d8741 6%, #659dbd);
+  background: linear-gradient(var(--bgUpper) 6%, var(--bgLower));
   /* background-size: cover;
   background-repeat: no-repeat;
   background-position: center; */
@@ -46,6 +48,11 @@ a {
 }
 
 .link:hover {
+  color: var(--active);
+}
+
+.link:focus {
+  outline: none;
   color: var(--active);
 }
 
