@@ -62,3 +62,10 @@ a {
     scrollbar-width: thin;
   }
 }
+
+@media (max-width: 1000px) {
+  html {
+    margin-right: 0;
+    overflow-x: auto;
+  }
+}

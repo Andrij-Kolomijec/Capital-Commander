@@ -48,3 +48,10 @@
     transparent
   );
 }
+
+@media (max-width: 350px) {
+  .table {
+    margin: 0.5rem;
+    padding: 0;
+  }
+}

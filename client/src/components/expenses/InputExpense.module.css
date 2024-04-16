@@ -35,4 +35,6 @@
 
 .form button {
   margin: 1rem;
+  align-self: center;
+  width: auto;
 }

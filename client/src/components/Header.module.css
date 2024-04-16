@@ -135,3 +135,31 @@
   transform: translate3d(0, 0, 0); */
 /* transform: scale(1); */
 /* } */
+
+@media (max-width: 1100px) {
+  .navigation {
+    flex-wrap: wrap;
+  }
+
+  .navigation > h1 {
+    display: none;
+  }
+}
+
+@media (max-width: 630px) {
+  .navigation {
+    flex-wrap: wrap-reverse;
+    justify-content: center;
+  }
+
+  .account {
+    position: static;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 350px) {
+  .links {
+    gap: 2rem;
+  }
+}

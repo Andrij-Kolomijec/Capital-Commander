@@ -11,3 +11,15 @@
 .about p {
   text-indent: 3rem;
 }
+
+@media (max-width: 1100px) {
+  .about {
+    width: 50%;
+  }
+}
+
+@media (max-width: 700px) {
+  .about {
+    width: 80%;
+  }
+}
