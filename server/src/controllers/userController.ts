@@ -2,25 +2,25 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel";
 import dotenv from "dotenv";
-// const jwt = require("jsonwebtoken");
-// require("dotenv").config();
 
 dotenv.config();
 
-function createToken(_id: String) {
+function createToken(_id: String, remember: boolean) {
   if (!process.env.SECRET) {
     throw new Error("Secret key is not defined in the environment variables.");
   }
-  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "12h" });
+  return jwt.sign({ _id }, process.env.SECRET, {
+    expiresIn: `${remember ? "7d" : "12h"}`,
+  });
 }
 
 export async function userLogin(req: Request, res: Response) {
-  const { email, password } = req.body;
+  const { email, password, rememberMe } = req.body;
 
   try {
     const user = await User.login(email, password);
 
-    const token = createToken(user!._id);
+    const token = createToken(user!._id, rememberMe === "on");
 
     res.status(200).json({ email, token });
   } catch (error) {
@@ -31,7 +31,7 @@ export async function userLogin(req: Request, res: Response) {
 }
 
 export async function userSignup(req: Request, res: Response) {
-  const { email, password, passwordConfirm } = req.body;
+  const { email, password, passwordConfirm, rememberMe } = req.body;
   try {
     if (password !== passwordConfirm) {
       return res.status(422).json({ error: "Passwords must match." });
@@ -39,7 +39,7 @@ export async function userSignup(req: Request, res: Response) {
 
     const user = await User.signup(email, password);
 
-    const token = createToken(user._id);
+    const token = createToken(user._id, rememberMe === "on");
 
     res.status(200).json({ email, token });
   } catch (error) {
