@@ -39,54 +39,80 @@ export default function Authentication() {
   form, email div and password div (to prevent distortion)
   causes border-radius to behave strangely. */
 
+  const section = {
+    hidden: { opacity: 0, y: -30 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  const inputFields = {
+    hidden: { opacity: 0, scale: 0 },
+    visible: { opacity: 1, scale: 1 },
+  };
+
   return (
     <motion.section
       // layout
-      initial={{ opacity: 0, y: -30 }}
-      animate={{ opacity: 1, y: 0 }}
+      variants={section}
+      initial="hidden"
+      animate="visible"
+      transition={{
+        when: "beforeChildren",
+        staggerChildren: 0.05,
+      }}
       className={classes["form-wrapper"]}
     >
       <form className={classes.form} onSubmit={handleAuth}>
-        <div>
-          <label htmlFor="auth-email">Email</label>
+        <motion.div
+          variants={inputFields}
+          whileFocus={{ display: "none" }}
+          className={classes.input}
+        >
           <input
             ref={email}
             type="email"
             id="auth-email"
             name="email"
-            placeholder="Type your username"
+            placeholder=""
             required
           />
-        </div>
-        <div>
-          <label htmlFor="auth-password">Password</label>
+          <label htmlFor="auth-email">Email</label>
+        </motion.div>
+        <motion.div variants={inputFields} className={classes.input}>
           <input
             ref={pass}
             type="password"
             id="auth-password"
             name="password"
-            placeholder="Type your password"
+            placeholder=""
             required
           />
-        </div>
+          <label htmlFor="auth-password">Password</label>
+        </motion.div>
         {!isLogin && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
-          >
-            <label htmlFor="auth-confirm-password">Confirm password</label>
+          <motion.div variants={inputFields} className={classes.input}>
             <input
               type="password"
               id="auth-confirm-password"
               name="passwordConfirm"
-              placeholder="Type the password again"
+              placeholder=""
               required
             />
+            <label htmlFor="auth-confirm-password">Confirm password</label>
           </motion.div>
         )}
-        <div className={classes.buttons}>
-          <Button disabled={isPending}>
+        <motion.div
+          layout
+          variants={inputFields}
+          className={classes["checkbox-container"]}
+        >
+          <input type="checkbox" id="remember-me" name="rememberMe" />
+          <label htmlFor="remember-me">
+            <span className={classes["custom-checkbox"]}></span>
+            Remember Me
+          </label>
+        </motion.div>
+        <motion.div variants={inputFields} className={classes.buttons}>
+          <Button disabled={isPending} loader={isPending}>
             {isPending ? "Logging in..." : isLogin ? "Log In" : "Sign Up"}
           </Button>
           {isLogin && (
@@ -94,23 +120,23 @@ export default function Authentication() {
               Log in as a Guest
             </Button>
           )}
-        </div>
+        </motion.div>
         {isLogin ? (
-          <p>
+          <motion.p variants={inputFields}>
             Don't have an account yet? <br /> Click{" "}
             <Link className="link" to="?mode=signup">
               here
             </Link>{" "}
             to sign up.
-          </p>
+          </motion.p>
         ) : (
-          <p>
+          <motion.p variants={inputFields}>
             Already have an account? <br /> Click{" "}
             <Link className="link" to="?mode=login">
               here
             </Link>{" "}
             to log in.
-          </p>
+          </motion.p>
         )}
       </form>
       {isError && (
