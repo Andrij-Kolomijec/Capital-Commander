@@ -23,7 +23,7 @@ function getAllExpenses(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const user = req.user._id.toString();
         const expenses = yield expenseModel_1.default.find({ user }).sort({ date: 1 });
-        setTimeout(() => res.status(200).json({ expenses }), 0);
+        res.status(200).json({ expenses });
     });
 }
 exports.getAllExpenses = getAllExpenses;

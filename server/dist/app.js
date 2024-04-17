@@ -19,7 +19,7 @@ app.use((req, res, next) => {
     next();
 });
 app.use("/expenses", expenses_1.default);
-app.use("/authentication", users_1.default);
+app.use("/", users_1.default);
 const mongoDB = process.env.MONGODB_URI;
 mongoose_1.default
     .connect(mongoDB)

@@ -67,19 +67,6 @@
   align-items: center;
 }
 
-.account > img {
-  margin-left: 1rem;
-  height: 25px;
-  transition: 200ms;
-}
-
-.account > img:hover {
-  cursor: pointer;
-  filter: invert(12%) sepia(97%) saturate(5923%) hue-rotate(245deg)
-    brightness(66%) contrast(142%);
-  /* transform: scale(1.1); */
-}
-
 /* Slide in effect using (~~::after pseudo element~~) framer motion*/
 /* .navigation p {
   display: block;

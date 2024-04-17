@@ -5,8 +5,6 @@ type ButtonProps = HTMLMotionProps<"button"> &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
     children: React.ReactNode;
     loader?: boolean;
-    bgColor?: string;
-    color?: string;
   };
 
 export default function Button({
@@ -26,7 +24,7 @@ export default function Button({
   const whileInteraction = !loader
     ? {
         scale: 1.1,
-        backgroundColor: "#00b5d4",
+        backgroundColor: props.style ? props.style.backgroundColor : "#00b5d4",
       }
     : {};
 

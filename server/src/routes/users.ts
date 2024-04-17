@@ -1,11 +1,20 @@
 import express from "express";
 
-import { userLogin, userSignup } from "../controllers/userController";
+import {
+  userLogin,
+  userSignup,
+  userDeletion,
+} from "../controllers/userController";
+import requireAuth from "../middleware/requireAuth";
 
 const userRoutes = express.Router();
 
-userRoutes.post("/login", userLogin);
+userRoutes.post("/authentication/login", userLogin);
 
-userRoutes.post("/signup", userSignup);
+userRoutes.post("/authentication/signup", userSignup);
+
+userRoutes.use(requireAuth as any);
+
+userRoutes.delete("/settings", userDeletion as any);
 
 export default userRoutes;

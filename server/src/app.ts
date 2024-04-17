@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/expenses", expenseRoutes);
-app.use("/authentication", userRoutes);
+app.use("/", userRoutes);
 
 const mongoDB = process.env.MONGODB_URI as string;
 

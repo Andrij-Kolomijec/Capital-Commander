@@ -19,6 +19,7 @@ export type AuthData = {
     email: string;
     password: string;
     passwordConfirm?: string;
+    rememberMe?: "on";
   };
   mode: string;
 };
@@ -124,7 +125,7 @@ export async function authenticate({ userData, mode }: AuthData) {
   localStorage.setItem("email", email);
 
   const expiration = new Date();
-  expiration.setHours(expiration.getHours() + 12);
+  expiration.setHours(expiration.getHours() + (userData.rememberMe ? 168 : 12));
   localStorage.setItem("expiration", expiration.toISOString());
 }
 
@@ -132,4 +133,28 @@ export async function logout() {
   localStorage.removeItem("token");
   localStorage.removeItem("email");
   localStorage.removeItem("expiration");
+}
+
+export async function deleteUser() {
+  const token = getAuthToken();
+
+  const response = await fetch(import.meta.env.VITE_PORT_MAIN + "settings/", {
+    method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+
+  if (!response.ok) {
+    const error = new Error(
+      "An error occurred while deleting the user."
+    ) as FetchError;
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  logout();
+
+  return response.json();
 }

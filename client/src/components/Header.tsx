@@ -12,6 +12,8 @@ import classes from "./Header.module.css";
 import { getAuthEmail, getAuthToken, getTokenDuration } from "../utils/authJWT";
 import { logout } from "../utils/http";
 import logoutIcon from "../assets/logout.svg";
+import cogIcon from "../assets/cog.svg";
+import Icon from "./Icon";
 
 export default function Header() {
   const token = getAuthToken();
@@ -201,21 +203,17 @@ export default function Header() {
       {token && (
         <motion.section style={{ top: logoutTop }} className={classes.account}>
           <i>{email}</i>
-          <motion.img
+          <Icon
+            onClick={() => navigate("/settings")}
+            src={cogIcon}
+            alt="Settings Icon"
+            title="Settings"
+          />
+          <Icon
             onClick={handleClick}
             src={logoutIcon}
             alt="Logout Icon"
             title="Log Out"
-            whileHover={{ scale: 1.5 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{
-              type: "spring",
-              duration: 0.1,
-              bounce: 0.5,
-              // stiffness: 10,
-              // mass: 1,
-              damping: 1,
-            }}
           />
         </motion.section>
       )}

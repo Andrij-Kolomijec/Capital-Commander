@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userSignup = exports.userLogin = void 0;
+exports.userDeletion = exports.userSignup = exports.userLogin = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -22,7 +22,7 @@ function createToken(_id, remember) {
         throw new Error("Secret key is not defined in the environment variables.");
     }
     return jsonwebtoken_1.default.sign({ _id }, process.env.SECRET, {
-        expiresIn: `${remember ? "7d" : "12h"}`,
+        expiresIn: `${remember ? "168h" : "12h"}`,
     });
 }
 function userLogin(req, res) {
@@ -60,3 +60,14 @@ function userSignup(req, res) {
     });
 }
 exports.userSignup = userSignup;
+function userDeletion(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const userId = req.user._id.toString();
+        const user = yield userModel_1.default.findOneAndDelete({ _id: userId });
+        if (!user) {
+            return res.status(404).json({ error: "User to delete not found." });
+        }
+        res.status(200).json({ message: "User deleted." });
+    });
+}
+exports.userDeletion = userDeletion;

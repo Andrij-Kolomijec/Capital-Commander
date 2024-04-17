@@ -31,12 +31,12 @@ export function getTokenDuration() {
 }
 
 // route protection via loader - to not display
-// the pages(new, edit) to unauthorized users
+// the pages(expenses, settings) to unauthorized users
 export function checkAuthLoader() {
   const token = getAuthToken();
 
   if (!token) {
-    return redirect("/authentication");
+    return redirect("/authentication?mode=login");
   }
 
   // loaders must at least return null (not undefined)
