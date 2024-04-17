@@ -1,0 +1,8 @@
+.error {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.error > h2 {
+  margin: 2rem;
+}

@@ -6,16 +6,21 @@ import Home from "./routes/Home";
 import Expenses from "./routes/Expenses";
 import Authentication from "./routes/Authentication";
 import About from "./routes/About";
+import Error from "./routes/Error";
+import UserSettings from "./routes/UserSettings";
+import { checkAuthLoader } from "./utils/authJWT";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <Error />,
     children: [
       { index: true, element: <Home /> },
-      { path: "expenses", element: <Expenses /> },
+      { path: "expenses", element: <Expenses />, loader: checkAuthLoader },
       { path: "authentication", element: <Authentication /> },
       { path: "about", element: <About /> },
+      { path: "settings", element: <UserSettings />, loader: checkAuthLoader },
     ],
   },
 ]);
