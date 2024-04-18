@@ -24,6 +24,14 @@ export type AuthData = {
   mode: string;
 };
 
+export type PasswordData = {
+  passwordData: {
+    passwordOld: string;
+    passwordNew: string;
+    passwordNewConfirm: string;
+  };
+};
+
 const expensesURL = import.meta.env.VITE_PORT_MAIN + "expenses/";
 
 export async function fetchExpenses(): Promise<ExpenseItem[]> {
@@ -133,6 +141,30 @@ export async function logout() {
   localStorage.removeItem("token");
   localStorage.removeItem("email");
   localStorage.removeItem("expiration");
+}
+
+export async function changePassword({ passwordData }: PasswordData) {
+  const token = getAuthToken();
+
+  const response = await fetch(import.meta.env.VITE_PORT_MAIN + "settings/", {
+    method: "POST",
+    body: JSON.stringify(passwordData),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+
+  if (!response.ok) {
+    const error = new Error(
+      "An error occurred while changing the password."
+    ) as FetchError;
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  return response.json();
 }
 
 export async function deleteUser() {

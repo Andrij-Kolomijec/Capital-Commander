@@ -4,6 +4,7 @@ import {
   userLogin,
   userSignup,
   userDeletion,
+  userPasswordChange,
 } from "../controllers/userController";
 import requireAuth from "../middleware/requireAuth";
 
@@ -14,6 +15,8 @@ userRoutes.post("/authentication/login", userLogin);
 userRoutes.post("/authentication/signup", userSignup);
 
 userRoutes.use(requireAuth as any);
+
+userRoutes.post("/settings", userPasswordChange as any);
 
 userRoutes.delete("/settings", userDeletion as any);
 

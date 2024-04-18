@@ -57,5 +57,23 @@ userSchema.statics.login = function (email, password) {
         return user;
     });
 };
+userSchema.statics.changePassword = function (id, passwordOld, passwordNew) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!passwordOld || !passwordNew)
+            throw Error("All fields must be filled.");
+        const user = yield this.findOne({ _id: id });
+        const match = yield bcrypt_1.default.compare(passwordOld, user.password);
+        if (!match)
+            throw Error("Incorrect password.");
+        if (!validator_1.default.isStrongPassword(passwordNew))
+            throw Error("Password should have a letter, a capital letter, a number, a special character and be at least 8 characters long.");
+        const salt = yield bcrypt_1.default.genSalt(15);
+        const hash = yield bcrypt_1.default.hash(passwordNew, salt);
+        const updatedUser = yield this.findOneAndUpdate({ _id: id }, { password: hash });
+        if (!updatedUser)
+            throw Error("Error while updating password, try again later.");
+        return updatedUser;
+    });
+};
 const User = mongoose_1.default.model("User", userSchema);
 exports.default = User;

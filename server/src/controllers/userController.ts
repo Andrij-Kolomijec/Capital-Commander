@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel";
 import dotenv from "dotenv";
-import { AuthRequest } from "../middleware/requireAuth";
+import { type AuthRequest } from "../middleware/requireAuth";
 
 dotenv.config();
 
@@ -43,6 +43,24 @@ export async function userSignup(req: Request, res: Response) {
     const token = createToken(user._id, rememberMe === "on");
 
     res.status(200).json({ email, token });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(422).json({ error: error.message });
+    }
+  }
+}
+
+export async function userPasswordChange(req: AuthRequest, res: Response) {
+  const userId = req.user._id.toString();
+  const { passwordOld, passwordNew, passwordNewConfirm } = req.body;
+  if (passwordNew !== passwordNewConfirm) {
+    return res.status(422).json({ error: "New passwords must match." });
+  }
+  try {
+    await User.changePassword(userId, passwordOld, passwordNew);
+    res
+      .status(200)
+      .json({ message: "Success. Your password has been changed." });
   } catch (error) {
     if (error instanceof Error) {
       res.status(422).json({ error: error.message });

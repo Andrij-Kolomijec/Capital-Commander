@@ -1,6 +1,6 @@
+import { Outlet } from "react-router-dom";
 import classes from "./UserSettings.module.css";
 import LinkNav from "../components/common/LinkNav";
-import { Outlet } from "react-router-dom";
 
 export default function UserSettings() {
   return (

@@ -12,6 +12,11 @@ export type UserDocument = Document & {
 type UserModel = Model<UserDocument> & {
   signup(email: string, password: string): Promise<UserDocument>;
   login(email: string, password: string): Promise<UserDocument | null>;
+  changePassword(
+    id: string,
+    passwordOld: string,
+    passwordNew: string
+  ): Promise<UserDocument | null>;
 };
 
 const userSchema = new Schema<UserDocument, UserModel>({
@@ -64,6 +69,36 @@ userSchema.statics.login = async function (
   if (!match) throw Error("Incorrect password.");
 
   return user;
+};
+
+userSchema.statics.changePassword = async function (
+  id: string,
+  passwordOld: string,
+  passwordNew: string
+) {
+  if (!passwordOld || !passwordNew) throw Error("All fields must be filled.");
+
+  const user = await this.findOne({ _id: id });
+  const match = await bcrypt.compare(passwordOld, user!.password);
+  if (!match) throw Error("Incorrect password.");
+
+  if (!validator.isStrongPassword(passwordNew))
+    throw Error(
+      "Password should have a letter, a capital letter, a number, a special character and be at least 8 characters long."
+    );
+
+  const salt = await bcrypt.genSalt(15);
+  const hash = await bcrypt.hash(passwordNew, salt);
+
+  const updatedUser = await this.findOneAndUpdate(
+    { _id: id },
+    { password: hash }
+  );
+
+  if (!updatedUser)
+    throw Error("Error while updating password, try again later.");
+
+  return updatedUser;
 };
 
 const User = mongoose.model<UserDocument, UserModel>("User", userSchema);

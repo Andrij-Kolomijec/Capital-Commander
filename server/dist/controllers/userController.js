@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userDeletion = exports.userSignup = exports.userLogin = void 0;
+exports.userDeletion = exports.userPasswordChange = exports.userSignup = exports.userLogin = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -60,6 +60,27 @@ function userSignup(req, res) {
     });
 }
 exports.userSignup = userSignup;
+function userPasswordChange(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const userId = req.user._id.toString();
+        const { passwordOld, passwordNew, passwordNewConfirm } = req.body;
+        if (passwordNew !== passwordNewConfirm) {
+            return res.status(422).json({ error: "New passwords must match." });
+        }
+        try {
+            yield userModel_1.default.changePassword(userId, passwordOld, passwordNew);
+            res
+                .status(200)
+                .json({ message: "Success. Your password has been changed." });
+        }
+        catch (error) {
+            if (error instanceof Error) {
+                res.status(422).json({ error: error.message });
+            }
+        }
+    });
+}
+exports.userPasswordChange = userPasswordChange;
 function userDeletion(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const userId = req.user._id.toString();

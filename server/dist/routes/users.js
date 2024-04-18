@@ -10,5 +10,6 @@ const userRoutes = express_1.default.Router();
 userRoutes.post("/authentication/login", userController_1.userLogin);
 userRoutes.post("/authentication/signup", userController_1.userSignup);
 userRoutes.use(requireAuth_1.default);
+userRoutes.post("/settings", userController_1.userPasswordChange);
 userRoutes.delete("/settings", userController_1.userDeletion);
 exports.default = userRoutes;
