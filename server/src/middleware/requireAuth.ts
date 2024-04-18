@@ -22,10 +22,11 @@ const requireAuth = async (
   if (!authorization)
     res.status(401).json({ error: "Authorization token required." });
 
+  // authorization looks like 'Bearer ...token...' -> needs to be split
+  const token = authorization!.split(" ")[1];
+
   // check the token
   try {
-    // authorization looks like 'Bearer ...token...' -> needs to be split
-    const token = authorization!.split(" ")[1];
     const payload = jwt.verify(token, process.env.SECRET!) as JwtPayload;
     const _id = payload._id as string;
 

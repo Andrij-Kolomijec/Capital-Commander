@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import classes from "./ExpensesSettings.module.css";
+// import classes from "./ExpensesSettings.module.css";
 
 export default function ExpensesSettings() {
   return (
