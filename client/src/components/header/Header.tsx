@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   motion,
@@ -9,11 +9,16 @@ import {
   useTransform,
 } from "framer-motion";
 import classes from "./Header.module.css";
-import { getAuthEmail, getAuthToken, getTokenDuration } from "../utils/authJWT";
-import { logout } from "../utils/http";
-import logoutIcon from "../assets/logout.svg";
-import cogIcon from "../assets/cog.svg";
+import {
+  getAuthEmail,
+  getAuthToken,
+  getTokenDuration,
+} from "../../utils/authJWT";
+import { logout } from "../../utils/http";
+import logoutIcon from "../../assets/logout.svg";
+import cogIcon from "../../assets/cog.svg";
 import Icon from "./Icon";
+import LinkNav from "../common/LinkNav";
 
 export default function Header() {
   const token = getAuthToken();
@@ -30,8 +35,13 @@ export default function Header() {
     },
   });
 
-  function handleClick() {
+  function handleLogout() {
     mutate();
+    pixelsScrolled.set(0);
+  }
+
+  function handleGoToSettings() {
+    navigate("/settings");
     pixelsScrolled.set(0);
   }
 
@@ -123,94 +133,29 @@ export default function Header() {
         Capital Commander
       </motion.h1>
       <section className={classes.links}>
-        <NavLink
-          to="/"
-          className={({ isActive }) => (isActive ? classes.active : undefined)}
-          end
-          onClick={handleSwitchPage}
-        >
-          {({ isActive }) => (
-            <>
-              <p>Home</p>
-              {isActive && (
-                <motion.div
-                  layoutId="tab-indicator"
-                  className={classes["active-tab-indicator"]}
-                />
-              )}
-            </>
-          )}
-        </NavLink>
-        <NavLink
-          to="/about"
-          className={({ isActive }) => (isActive ? classes.active : undefined)}
-          end
-        >
-          {({ isActive }) => (
-            <>
-              <p>About</p>
-              {isActive && (
-                <motion.div
-                  layoutId="tab-indicator"
-                  className={classes["active-tab-indicator"]}
-                />
-              )}
-            </>
-          )}
-        </NavLink>
+        <LinkNav onClick={handleSwitchPage} to="/" text="Home" />
+        <LinkNav to="/about" text="About" />
         {!token ? (
-          <NavLink
+          <LinkNav
+            onClick={handleSwitchPage}
             to="/authentication?mode=login"
-            className={({ isActive }) =>
-              isActive ? classes.active : undefined
-            }
-            onClick={handleSwitchPage}
-          >
-            {({ isActive }) => (
-              <>
-                <p>Authentication</p>
-                {isActive && (
-                  <motion.div
-                    layoutId="tab-indicator"
-                    className={classes["active-tab-indicator"]}
-                  />
-                )}
-              </>
-            )}
-          </NavLink>
+            text="Authentication"
+          />
         ) : (
-          <NavLink
-            to="/expenses"
-            className={({ isActive }) =>
-              isActive ? classes.active : undefined
-            }
-            onClick={handleSwitchPage}
-          >
-            {({ isActive }) => (
-              <>
-                <p>Expenses</p>
-                {isActive && (
-                  <motion.div
-                    layoutId="tab-indicator"
-                    className={classes["active-tab-indicator"]}
-                  />
-                )}
-              </>
-            )}
-          </NavLink>
+          <LinkNav onClick={handleSwitchPage} to="/expenses" text="Expenses" />
         )}
       </section>
       {token && (
         <motion.section style={{ top: logoutTop }} className={classes.account}>
           <i>{email}</i>
           <Icon
-            onClick={() => navigate("/settings")}
+            onClick={handleGoToSettings}
             src={cogIcon}
             alt="Settings Icon"
             title="Settings"
           />
           <Icon
-            onClick={handleClick}
+            onClick={handleLogout}
             src={logoutIcon}
             alt="Logout Icon"
             title="Log Out"
