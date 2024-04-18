@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import classes from "./Error.module.css";
-import Header from "../components/Header";
+import Header from "../components/header/Header";
 
 export default function Error() {
   const [time, setTime] = useState(3);

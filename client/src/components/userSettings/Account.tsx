@@ -1,8 +1,10 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import classes from "./Account.module.css";
 import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+import classes from "./Account.module.css";
 import { deleteUser } from "../../utils/http";
 import Button from "../common/Button";
+import PasswordChange from "./PasswordChange";
 
 export default function Account() {
   const queryClient = useQueryClient();
@@ -12,7 +14,7 @@ export default function Account() {
     mutationFn: deleteUser,
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["expenses"] });
-      navigate("/authentication");
+      navigate("/authentication?mode=signup");
     },
   });
 
@@ -28,9 +30,33 @@ export default function Account() {
     backgroundColor: "red",
     color: "black",
   };
+
+  const variants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+  };
   return (
-    <Button style={style} onClick={handleDeletion}>
-      Delete account
-    </Button>
+    <>
+      <motion.fieldset
+        variants={variants}
+        initial="hidden"
+        animate="visible"
+        className={`${classes.fieldset} ${classes.password}`}
+      >
+        <legend>Change password</legend>
+        <PasswordChange />
+      </motion.fieldset>
+      <motion.fieldset
+        variants={variants}
+        initial="hidden"
+        animate="visible"
+        className={`${classes.fieldset} ${classes.delete}`}
+      >
+        <legend>Delete account</legend>
+        <Button style={style} onClick={handleDeletion}>
+          Delete account
+        </Button>
+      </motion.fieldset>
+    </>
   );
 }

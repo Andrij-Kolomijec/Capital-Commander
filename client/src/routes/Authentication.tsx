@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import classes from "./Authentication.module.css";
 import { AuthData, authenticate, type FetchError } from "../utils/http";
-import Button from "../components/Button";
+import Button from "../components/common/Button";
 import hide from "../assets/hide.svg";
 import show from "../assets/show.svg";
 
@@ -25,6 +25,8 @@ export default function Authentication() {
 
   function handleAuth(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    setPasswordType("password");
 
     const formData = new FormData(e.currentTarget);
     const userData = Object.fromEntries(formData);
@@ -99,12 +101,16 @@ export default function Authentication() {
             required
           />
           <label htmlFor="auth-password">Password</label>
-          <img
-            src={passwordType === "password" ? hide : show}
-            title="Show password"
-            onClick={togglePasswordType}
-            className={classes["password-toggle"]}
-          />
+          {!isPending && (
+            <img
+              src={passwordType === "password" ? hide : show}
+              title={
+                passwordType === "password" ? "Show password" : "Hide password"
+              }
+              onClick={togglePasswordType}
+              className={classes["password-toggle"]}
+            />
+          )}
         </motion.div>
         {!isLogin && (
           <motion.div variants={inputFields} className={classes.input}>

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import classes from "./ExpenseGroup.module.css";
 import { ExpenseItem, deleteExpense, fetchExpenses } from "../../utils/http";
 import TableRow from "./TableRow";
-import Loader from "../Loader";
+import Loader from "../common/Loader";
 
 type ExpenseGroupProps = {
   group: "housing" | "transportation" | "other";

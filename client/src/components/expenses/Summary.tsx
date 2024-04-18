@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import classes from "./Summary.module.css";
 import { fetchExpenses } from "../../utils/http";
-import Loader from "../Loader";
+import Loader from "../common/Loader";
 import calendar from "../../assets/calendar-month.svg";
 import housing from "../../assets/housing.svg";
 import transportation from "../../assets/transportation.svg";

@@ -24,6 +24,7 @@
 }
 
 .second-row {
+  max-width: 55vw;
   padding: 0 1rem;
 }
 
@@ -86,6 +87,7 @@
   .second-row {
     flex-direction: row;
     height: 40vh;
+    max-width: 90vw;
   }
 }
 

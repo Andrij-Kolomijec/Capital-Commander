@@ -3,14 +3,24 @@ import { AnimatePresence } from "framer-motion";
 import classes from "./Expenses.module.css";
 import MonthlyExpenses from "../components/expenses/MonthlyExpenses";
 import InputExpense from "../components/expenses/InputExpense";
-import PopUp from "../components/PopUp";
+import PopUp from "../components/header/PopUp";
 import ExpenseGroup from "../components/expenses/ExpenseGroup";
 import Summary from "../components/expenses/Summary";
+import { useQuery } from "@tanstack/react-query";
+import { fetchExpenses } from "../utils/http";
+import Loader from "../components/common/Loader";
 
 export default function Expenses() {
   const [showTooltip, setShowTooltip] = useState(false);
   const [scrollValue, setScrollValue] = useState<number | null>(null);
   const [tooltipDisplayed, setTooltipDisplayed] = useState(false);
+
+  const { isFetching, isFetched } = useQuery({
+    queryKey: ["expenses"],
+    queryFn: fetchExpenses,
+    staleTime: 1000 * 60 * 10,
+    placeholderData: [],
+  });
 
   useEffect(() => {
     if (showTooltip && !tooltipDisplayed) {
@@ -48,6 +58,10 @@ export default function Expenses() {
     } else {
       return;
     }
+  }
+
+  if (isFetching && !isFetched) {
+    return <Loader />;
   }
 
   // working but unusable because of limited row height

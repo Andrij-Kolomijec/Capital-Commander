@@ -7,7 +7,7 @@ import {
 } from "../../utils/http";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import TableRow from "./TableRow";
-import Loader from "../Loader";
+import Loader from "../common/Loader";
 
 function calculateAmounts(items: ExpenseItem[]) {
   const groceries = items.reduce((total, item) => {

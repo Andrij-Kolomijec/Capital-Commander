@@ -1,5 +1,5 @@
 import classes from "./About.module.css";
-import Reveal from "../components/Reveal";
+import Reveal from "../components/common/Reveal";
 
 export default function About() {
   return (
