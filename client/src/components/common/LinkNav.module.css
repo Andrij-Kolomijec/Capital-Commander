@@ -1,0 +1,21 @@
+.active {
+  color: var(--active);
+  position: relative;
+}
+
+.active-tab-indicator {
+  border: 2px solid var(--active);
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+}
+
+.link:hover {
+  color: var(--active);
+}
+
+.link:focus {
+  outline: none;
+  color: var(--active);
+}

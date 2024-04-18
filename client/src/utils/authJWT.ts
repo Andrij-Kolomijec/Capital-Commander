@@ -42,3 +42,11 @@ export function checkAuthLoader() {
   // loaders must at least return null (not undefined)
   return null;
 }
+
+export function blockAuthIfLoggedIn() {
+  const token = getAuthToken();
+  if (token) {
+    return redirect("/");
+  }
+  return null;
+}

@@ -8,7 +8,9 @@ import Authentication from "./routes/Authentication";
 import About from "./routes/About";
 import Error from "./routes/Error";
 import UserSettings from "./routes/UserSettings";
-import { checkAuthLoader } from "./utils/authJWT";
+import { blockAuthIfLoggedIn, checkAuthLoader } from "./utils/authJWT";
+import Account from "./components/userSettings/Account";
+import ExpensesSettings from "./components/userSettings/ExpensesSettings";
 
 const router = createBrowserRouter([
   {
@@ -18,9 +20,21 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "expenses", element: <Expenses />, loader: checkAuthLoader },
-      { path: "authentication", element: <Authentication /> },
+      {
+        path: "authentication",
+        element: <Authentication />,
+        loader: blockAuthIfLoggedIn,
+      },
       { path: "about", element: <About /> },
-      { path: "settings", element: <UserSettings />, loader: checkAuthLoader },
+      {
+        path: "settings",
+        element: <UserSettings />,
+        loader: checkAuthLoader,
+        children: [
+          { index: true, element: <Account /> },
+          { path: "expenses", element: <ExpensesSettings /> },
+        ],
+      },
     ],
   },
 ]);
