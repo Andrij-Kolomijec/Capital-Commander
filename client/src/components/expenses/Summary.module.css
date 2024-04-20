@@ -19,6 +19,7 @@
 .icons {
   flex: 1;
   text-align: end;
+  white-space: nowrap;
 }
 
 .summary > div > p {

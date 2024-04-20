@@ -1,9 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import classes from "./InputExpense.module.css";
-import { ExpenseItem, createExpense } from "../../utils/http";
+import { type ExpenseItem, createExpense } from "../../utils/http/expense";
 import Button from "../common/Button";
 
-export default function InputExpense() {
+export default function InputExpense({
+  multiplier = 1,
+}: {
+  multiplier: number;
+}) {
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
@@ -24,7 +28,7 @@ export default function InputExpense() {
     const data: ExpenseItem = {
       description: formData.get("description") as string,
       date: new Date(formData.get("date") as string),
-      amount: Number(formData.get("amount")),
+      amount: Number(formData.get("amount")) / multiplier,
       notes: formData.get("notes") as string | undefined,
       category: formData.get("category") as string | undefined,
     };

@@ -4,7 +4,7 @@ import {
   type ExpenseItem,
   deleteExpense,
   fetchExpenses,
-} from "../../utils/http";
+} from "../../utils/http/expense";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import TableRow from "./TableRow";
 import Loader from "../common/Loader";
@@ -33,7 +33,11 @@ function groupExpensesByMonth(expenses: ExpenseItem[]) {
   return expensesByMonth.reverse();
 }
 
-export default function MonthlyExpenses() {
+export default function MonthlyExpenses({
+  multiplier = 1,
+}: {
+  multiplier: number;
+}) {
   const queryClient = useQueryClient();
 
   const { data, isFetching, isFetched } = useQuery({
@@ -127,7 +131,7 @@ export default function MonthlyExpenses() {
                     transition={{ duration: 0.3 }}
                     scope="col"
                   >
-                    {groceries}
+                    {Math.round(groceries * multiplier * 100) / 100}
                   </motion.th>
                   <motion.th
                     key={`Other ${other}  ${key}`}
@@ -135,7 +139,7 @@ export default function MonthlyExpenses() {
                     transition={{ duration: 0.3 }}
                     scope="col"
                   >
-                    {other}
+                    {Math.round(other * multiplier * 100) / 100}
                   </motion.th>
                   <motion.th
                     key={`${total}  ${key}`}
@@ -143,7 +147,7 @@ export default function MonthlyExpenses() {
                     transition={{ duration: 0.3 }}
                     scope="col"
                   >
-                    {total}
+                    {Math.round(total * multiplier * 100) / 100}
                   </motion.th>
                 </tr>
               </motion.thead>
@@ -152,6 +156,7 @@ export default function MonthlyExpenses() {
                   return (
                     <TableRow
                       key={"none" + expense._id}
+                      multiplier={multiplier}
                       expense={expense}
                       onDelete={handleDelete}
                     />

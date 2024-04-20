@@ -1,17 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import classes from "./ExpenseGroup.module.css";
-import { ExpenseItem, deleteExpense, fetchExpenses } from "../../utils/http";
+import {
+  ExpenseItem,
+  deleteExpense,
+  fetchExpenses,
+} from "../../utils/http/expense";
 import TableRow from "./TableRow";
 import Loader from "../common/Loader";
 
 type ExpenseGroupProps = {
+  multiplier: number;
   group: "housing" | "transportation" | "other";
   summing?: null | string;
   yearly?: boolean;
 };
 
 export default function ExpenseGroup({
+  multiplier = 1,
   group,
   summing = null,
   yearly = false,
@@ -64,15 +70,25 @@ export default function ExpenseGroup({
 
   const expenses = data.filter((item) => item.category === group);
 
-  const sum = expenses.reduce((total, item) => {
-    return total + +item.amount;
-  }, 0);
+  const sum =
+    Math.round(
+      expenses.reduce((total, item) => {
+        return total + +item.amount;
+      }, 0) *
+        multiplier *
+        100
+    ) / 100;
 
   let sumGroup: number | undefined;
   if (summing) {
-    sumGroup = expenses.reduce((total, item) => {
-      return total + +(item.description === summing && item.amount);
-    }, 0);
+    sumGroup =
+      Math.round(
+        expenses.reduce((total, item) => {
+          return total + +(item.description === summing && item.amount);
+        }, 0) *
+          multiplier *
+          100
+      ) / 100;
   }
 
   return (
@@ -118,6 +134,7 @@ export default function ExpenseGroup({
           return (
             <TableRow
               key={expense.category! + expense._id}
+              multiplier={multiplier}
               expense={expense}
               onDelete={handleDelete}
               housing={yearly}

@@ -3,15 +3,17 @@ import { motion } from "framer-motion";
 import classes from "./TableRow.module.css";
 import closeIcon from "../../assets/close.svg";
 import dateFormatter from "../../utils/dateFormatter";
-import { ExpenseItem } from "../../utils/http";
+import { ExpenseItem } from "../../utils/http/expense";
 
 type TableRowProps = {
+  multiplier: number;
   expense: ExpenseItem;
   onDelete: (id: number) => void;
   housing?: boolean;
 };
 
 export default function TableRow({
+  multiplier,
   expense,
   onDelete,
   housing = false,
@@ -46,7 +48,7 @@ export default function TableRow({
         )}
         {housing ? expense.amount * 12 : dateFormatter(expense)}
       </motion.td>
-      <td>{expense.amount}</td>
+      <td>{Math.round(expense.amount * multiplier * 100) / 100}</td>
       <td
         className={expense.notes ? classes.notes : undefined}
         title={expense.notes}
