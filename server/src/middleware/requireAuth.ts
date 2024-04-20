@@ -20,7 +20,7 @@ const requireAuth = async (
   // verify authentication
   const { authorization } = req.headers;
   if (!authorization)
-    res.status(401).json({ error: "Authorization token required." });
+    return res.status(401).json({ error: "Authorization token required." });
 
   // authorization looks like 'Bearer ...token...' -> needs to be split
   const token = authorization!.split(" ")[1];
