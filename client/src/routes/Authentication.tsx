@@ -3,7 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import classes from "./Authentication.module.css";
-import { AuthData, authenticate, type FetchError } from "../utils/http";
+import { AuthData, authenticate, type FetchError } from "../utils/http/user";
 import Button from "../components/common/Button";
 import hide from "../assets/hide.svg";
 import show from "../assets/show.svg";

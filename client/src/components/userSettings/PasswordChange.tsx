@@ -6,7 +6,7 @@ import {
   type PasswordData,
   changePassword,
   type FetchError,
-} from "../../utils/http";
+} from "../../utils/http/user";
 import Button from "../common/Button";
 import hide from "../../assets/hide.svg";
 import show from "../../assets/show.svg";

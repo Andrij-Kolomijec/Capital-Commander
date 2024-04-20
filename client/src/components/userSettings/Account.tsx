@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import classes from "./Account.module.css";
-import { deleteUser } from "../../utils/http";
+import { deleteUser } from "../../utils/http/user";
 import Button from "../common/Button";
 import PasswordChange from "./PasswordChange";
 
