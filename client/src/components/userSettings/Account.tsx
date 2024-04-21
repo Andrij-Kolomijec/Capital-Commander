@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { motion } from "framer-motion";
-import classes from "./Account.module.css";
+// import classes from "./Account.module.css";
 import { deleteUser } from "../../utils/http/user";
 import Button from "../common/Button";
 import PasswordChange from "./PasswordChange";
+import Fieldset from "./Fieldset";
 
 export default function Account() {
   const queryClient = useQueryClient();
@@ -29,6 +29,9 @@ export default function Account() {
   const style = {
     backgroundColor: "red",
     color: "black",
+    margin: "2rem",
+    width: "auto",
+    alignSelf: "center",
   };
 
   const variants = {
@@ -37,26 +40,14 @@ export default function Account() {
   };
   return (
     <>
-      <motion.fieldset
-        variants={variants}
-        initial="hidden"
-        animate="visible"
-        className={`${classes.fieldset} ${classes.password}`}
-      >
-        <legend>Change password</legend>
+      <Fieldset variants={variants} legend="Change password">
         <PasswordChange />
-      </motion.fieldset>
-      <motion.fieldset
-        variants={variants}
-        initial="hidden"
-        animate="visible"
-        className={`${classes.fieldset} ${classes.delete}`}
-      >
-        <legend>Delete account</legend>
+      </Fieldset>
+      <Fieldset variants={variants} legend="Delete account">
         <Button style={style} onClick={handleDeletion}>
           Delete account
         </Button>
-      </motion.fieldset>
+      </Fieldset>
     </>
   );
 }
