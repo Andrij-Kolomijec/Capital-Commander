@@ -1,10 +1,16 @@
-import { motion } from "framer-motion";
 // import classes from "./ExpensesSettings.module.css";
+import BaseCurrency from "./BaseCurrency";
+import Fieldset from "./Fieldset";
 
 export default function ExpensesSettings() {
+  const variants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
-    <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }}>
-      ExpensesSettings
-    </motion.div>
+    <Fieldset variants={variants} legend="Change base currency">
+      <BaseCurrency />
+    </Fieldset>
   );
 }

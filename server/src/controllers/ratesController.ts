@@ -1,18 +1,20 @@
 import express, { Request, Response } from "express";
 import Rates from "../models/ratesModel";
+import { AuthRequest } from "../middleware/requireAuth";
 
 const router = express.Router();
 
-export async function getRates(req: Request, res: Response) {
-  const rates = await Rates.find({});
+export async function getRates(req: AuthRequest, res: Response) {
+  const base = req.user.baseCurrency;
+  const rates = await Rates.find({ base });
   res.status(200).json({ rates });
 }
 
 export async function createRates(req: Request, res: Response) {
-  const { date, base, EUR, USD } = req.body;
+  const { date, base, CZK, EUR, USD } = req.body;
 
   try {
-    const rates = await Rates.create({ date, base, EUR, USD });
+    const rates = await Rates.create({ date, base, CZK, EUR, USD });
     res.status(200).json({ message: "Currency rates created.", rates });
   } catch (error) {
     if (error instanceof Error) {
@@ -24,16 +26,20 @@ export async function createRates(req: Request, res: Response) {
 }
 
 export async function updateRates(req: Request, res: Response) {
+  const { base } = req.body;
+
   const rates = await Rates.findOneAndUpdate(
-    {},
+    { base },
     {
       ...req.body,
-    }
+    },
+    { new: true }
   );
 
   if (!rates) {
     return res.status(404).json({ error: "Updating currency rates failed." });
   }
+  console.log(rates);
 
-  res.status(200).json(rates);
+  res.status(200).json({ rates });
 }

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userDeletion = exports.userPasswordChange = exports.userSignup = exports.userLogin = void 0;
+exports.userBaseCurrencyChange = exports.userDeletion = exports.userPasswordChange = exports.userSignup = exports.userLogin = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -31,7 +31,8 @@ function userLogin(req, res) {
         try {
             const user = yield userModel_1.default.login(email, password);
             const token = createToken(user._id, rememberMe === "on");
-            res.status(200).json({ email, token });
+            const baseCurrency = user.baseCurrency;
+            res.status(200).json({ email, token, baseCurrency });
         }
         catch (error) {
             if (error instanceof Error) {
@@ -50,7 +51,8 @@ function userSignup(req, res) {
             }
             const user = yield userModel_1.default.signup(email, password);
             const token = createToken(user._id, rememberMe === "on");
-            res.status(200).json({ email, token });
+            const baseCurrency = user.baseCurrency;
+            res.status(200).json({ email, token, baseCurrency });
         }
         catch (error) {
             if (error instanceof Error) {
@@ -92,3 +94,21 @@ function userDeletion(req, res) {
     });
 }
 exports.userDeletion = userDeletion;
+function userBaseCurrencyChange(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const userId = req.user._id.toString();
+        const { baseCurrency } = req.body;
+        try {
+            yield userModel_1.default.changeBaseCurrency(userId, baseCurrency);
+            res
+                .status(200)
+                .json({ message: "Success. Your base currency has been changed." });
+        }
+        catch (error) {
+            if (error instanceof Error) {
+                res.status(422).json({ error: error.message });
+            }
+        }
+    });
+}
+exports.userBaseCurrencyChange = userBaseCurrencyChange;

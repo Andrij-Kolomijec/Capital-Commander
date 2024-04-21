@@ -15,7 +15,10 @@ export default function Expenses() {
   const [showTooltip, setShowTooltip] = useState(false);
   const [scrollValue, setScrollValue] = useState<number | null>(null);
   const [tooltipDisplayed, setTooltipDisplayed] = useState(false);
-  const [currency, setCurrency] = useState({ multiplier: 1, currency: "CZK" });
+  const [currency, setCurrency] = useState({
+    multiplier: 1,
+    currency: localStorage.getItem("baseCurrency"),
+  });
 
   const { isFetching, isFetched } = useQuery({
     queryKey: ["expenses"],
@@ -119,7 +122,7 @@ export default function Expenses() {
           <InputExpense multiplier={currency.multiplier} />
           <Summary
             multiplier={currency.multiplier}
-            currency={currency.currency}
+            currency={currency.currency!}
           />
           <CurrencyConverter setCurrency={setCurrency} />
         </div>

@@ -5,10 +5,13 @@ import {
   createRates,
   updateRates,
 } from "../controllers/ratesController";
+import requireAuth from "../middleware/requireAuth";
 
 const ratesRoutes = express.Router();
 
-ratesRoutes.get("/", getRates);
+ratesRoutes.use(requireAuth as any);
+
+ratesRoutes.get("/", getRates as any);
 
 ratesRoutes.post("/", createRates);
 

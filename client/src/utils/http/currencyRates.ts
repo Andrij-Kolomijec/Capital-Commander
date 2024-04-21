@@ -1,14 +1,27 @@
+import { getAuthToken } from "../authJWT";
 import { type FetchError } from "./user";
 
 export type CurrencyData = {
   date: Date;
   base: string;
+  CZK: number;
   EUR: number;
   USD: number;
 };
 
-async function fetchRatesFromAPI() {
-  const response = await fetch(import.meta.env.VITE_PORT_RATES);
+async function fetchRatesFromAPI(base: string) {
+  const token = getAuthToken();
+
+  const response = await fetch(
+    import.meta.env.VITE_PORT_RATES +
+      base +
+      import.meta.env.VITE_PORT_RATES_KEY,
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
 
   if (!response.ok) {
     const error = new Error(
@@ -24,12 +37,21 @@ async function fetchRatesFromAPI() {
   return rates;
 }
 
-async function updateCurrencyRates({ date, base, EUR, USD }: CurrencyData) {
+async function updateCurrencyRates({
+  date,
+  base,
+  CZK,
+  EUR,
+  USD,
+}: CurrencyData) {
+  const token = getAuthToken();
+
   const response = await fetch(import.meta.env.VITE_PORT_MAIN + "currency/", {
     method: "PATCH",
-    body: JSON.stringify({ date, base, EUR, USD }),
+    body: JSON.stringify({ date, base, CZK, EUR, USD }),
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
     },
   });
 
@@ -44,13 +66,17 @@ async function updateCurrencyRates({ date, base, EUR, USD }: CurrencyData) {
 
   const { rates } = await response.json();
 
-  console.log(rates);
-
   return rates;
 }
 
 async function fetchRatesFromDB() {
-  const response = await fetch(import.meta.env.VITE_PORT_MAIN + "currency/");
+  const token = getAuthToken();
+
+  const response = await fetch(import.meta.env.VITE_PORT_MAIN + "currency/", {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
 
   if (!response.ok) {
     const error = new Error(
@@ -73,19 +99,20 @@ export async function getCurrencyRates() {
   const timeDifference = currentTime.getTime() - dbTime.getTime();
 
   if (timeDifference > 1000 * 60 * 60 * 12) {
-    const apiRates = await fetchRatesFromAPI();
-    const allowed = ["EUR", "USD"];
+    const base = localStorage.getItem("baseCurrency") || "CZK";
+    const apiRates = await fetchRatesFromAPI(base);
+    const allowed = ["CZK", "EUR", "USD"];
     const filteredRates = Object.fromEntries(
       Object.entries(apiRates).filter(([key]) => allowed.includes(key))
     );
 
     const response = await updateCurrencyRates({
       date: new Date(),
-      base: "CZK",
+      base,
+      CZK: filteredRates.CZK as number,
       EUR: filteredRates.EUR as number,
       USD: filteredRates.USD as number,
     });
-    console.log(response);
 
     return response;
   }

@@ -23,7 +23,9 @@ export async function userLogin(req: Request, res: Response) {
 
     const token = createToken(user!._id, rememberMe === "on");
 
-    res.status(200).json({ email, token });
+    const baseCurrency = user!.baseCurrency;
+
+    res.status(200).json({ email, token, baseCurrency });
   } catch (error) {
     if (error instanceof Error) {
       res.status(422).json({ error: error.message });
@@ -42,7 +44,9 @@ export async function userSignup(req: Request, res: Response) {
 
     const token = createToken(user._id, rememberMe === "on");
 
-    res.status(200).json({ email, token });
+    const baseCurrency = user!.baseCurrency;
+
+    res.status(200).json({ email, token, baseCurrency });
   } catch (error) {
     if (error instanceof Error) {
       res.status(422).json({ error: error.message });
@@ -78,4 +82,20 @@ export async function userDeletion(req: AuthRequest, res: Response) {
   }
 
   res.status(200).json({ message: "User deleted." });
+}
+
+export async function userBaseCurrencyChange(req: AuthRequest, res: Response) {
+  const userId = req.user._id.toString();
+  const { baseCurrency } = req.body;
+
+  try {
+    await User.changeBaseCurrency(userId, baseCurrency);
+    res
+      .status(200)
+      .json({ message: "Success. Your base currency has been changed." });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(422).json({ error: error.message });
+    }
+  }
 }

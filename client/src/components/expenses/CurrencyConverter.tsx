@@ -30,6 +30,7 @@ export default function CurrencyConverter({
         name="currency"
         id="currency-converter"
         onChange={handleChangeCurrency}
+        defaultValue={localStorage.getItem("baseCurrency") || data[0]?.base}
       >
         <option value="CZK">CZK</option>
         <option value="EUR">EUR</option>

@@ -12,6 +12,10 @@ const ratesSchema = new Schema(
       type: String,
       required: true,
     },
+    CZK: {
+      type: Number,
+      required: true,
+    },
     EUR: {
       type: Number,
       required: true,

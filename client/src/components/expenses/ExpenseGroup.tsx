@@ -71,24 +71,17 @@ export default function ExpenseGroup({
   const expenses = data.filter((item) => item.category === group);
 
   const sum =
-    Math.round(
-      expenses.reduce((total, item) => {
-        return total + +item.amount;
-      }, 0) *
-        multiplier *
-        100
-    ) / 100;
-
+    expenses.reduce((total, item) => {
+      return total + +item.amount;
+    }, 0) * multiplier;
   let sumGroup: number | undefined;
+
   if (summing) {
-    sumGroup =
-      Math.round(
-        expenses.reduce((total, item) => {
-          return total + +(item.description === summing && item.amount);
-        }, 0) *
-          multiplier *
-          100
-      ) / 100;
+    sumGroup = Math.round(
+      expenses.reduce((total, item) => {
+        return total + +(item.description === summing && item.amount);
+      }, 0) * multiplier
+    );
   }
 
   return (
@@ -123,8 +116,8 @@ export default function ExpenseGroup({
           </th>
         </tr>
         <tr>
-          <th scope="col">{yearly ? sum * 12 : sum}</th>
-          <th scope="col">{yearly ? sum : (sum / 12).toFixed(0)}</th>
+          <th scope="col">{Math.round(yearly ? sum * 12 : sum)}</th>
+          <th scope="col">{Math.round(yearly ? sum : sum / 12)}</th>
           <th scope="col">{sumGroup}</th>
         </tr>
       </motion.thead>

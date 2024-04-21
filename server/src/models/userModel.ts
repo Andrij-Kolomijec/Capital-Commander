@@ -7,6 +7,7 @@ const Schema = mongoose.Schema;
 export type UserDocument = Document & {
   email: string;
   password: string;
+  baseCurrency: string;
 };
 
 type UserModel = Model<UserDocument> & {
@@ -17,6 +18,7 @@ type UserModel = Model<UserDocument> & {
     passwordOld: string,
     passwordNew: string
   ): Promise<UserDocument | null>;
+  changeBaseCurrency(id: string, baseCurrency: string): Promise<UserDocument>;
 };
 
 const userSchema = new Schema<UserDocument, UserModel>({
@@ -28,6 +30,10 @@ const userSchema = new Schema<UserDocument, UserModel>({
   password: {
     type: String,
     required: true,
+  },
+  baseCurrency: {
+    type: String,
+    default: "CZK",
   },
 });
 
@@ -97,6 +103,24 @@ userSchema.statics.changePassword = async function (
 
   if (!updatedUser)
     throw Error("Error while updating password, try again later.");
+
+  return updatedUser;
+};
+
+userSchema.statics.changeBaseCurrency = async function (
+  id: string,
+  baseCurrency: string
+) {
+  if (!id) throw Error("Missing user ID.");
+  if (!baseCurrency) throw Error("Missing base currency.");
+
+  const updatedUser = await this.findOneAndUpdate(
+    { _id: id },
+    { baseCurrency }
+  );
+
+  if (!updatedUser)
+    throw Error("Error while updating base currency, try again later.");
 
   return updatedUser;
 };

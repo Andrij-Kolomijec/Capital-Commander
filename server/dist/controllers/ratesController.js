@@ -18,16 +18,17 @@ const ratesModel_1 = __importDefault(require("../models/ratesModel"));
 const router = express_1.default.Router();
 function getRates(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const rates = yield ratesModel_1.default.find({});
+        const base = req.user.baseCurrency;
+        const rates = yield ratesModel_1.default.find({ base });
         res.status(200).json({ rates });
     });
 }
 exports.getRates = getRates;
 function createRates(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { date, base, EUR, USD } = req.body;
+        const { date, base, CZK, EUR, USD } = req.body;
         try {
-            const rates = yield ratesModel_1.default.create({ date, base, EUR, USD });
+            const rates = yield ratesModel_1.default.create({ date, base, CZK, EUR, USD });
             res.status(200).json({ message: "Currency rates created.", rates });
         }
         catch (error) {
@@ -43,11 +44,13 @@ function createRates(req, res) {
 exports.createRates = createRates;
 function updateRates(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const rates = yield ratesModel_1.default.findOneAndUpdate({}, Object.assign({}, req.body));
+        const { base } = req.body;
+        const rates = yield ratesModel_1.default.findOneAndUpdate({ base }, Object.assign({}, req.body), { new: true });
         if (!rates) {
             return res.status(404).json({ error: "Updating currency rates failed." });
         }
-        res.status(200).json(rates);
+        console.log(rates);
+        res.status(200).json({ rates });
     });
 }
 exports.updateRates = updateRates;

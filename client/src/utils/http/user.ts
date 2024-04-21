@@ -46,9 +46,11 @@ export async function authenticate({ userData, mode }: AuthData) {
   const resData = await response.json();
   const token = resData.token;
   const email = resData.email;
+  const baseCurrency = resData.baseCurrency;
 
   localStorage.setItem("token", token);
   localStorage.setItem("email", email);
+  localStorage.setItem("baseCurrency", baseCurrency);
 
   const expiration = new Date();
   expiration.setHours(expiration.getHours() + (userData.rememberMe ? 168 : 12));
@@ -59,6 +61,7 @@ export async function logout() {
   localStorage.removeItem("token");
   localStorage.removeItem("email");
   localStorage.removeItem("expiration");
+  localStorage.removeItem("baseCurrency");
 }
 
 export async function changePassword({ passwordData }: PasswordData) {
@@ -105,6 +108,39 @@ export async function deleteUser() {
   }
 
   logout();
+
+  return response.json();
+}
+
+export async function changeBaseCurrency({
+  baseCurrency,
+}: {
+  baseCurrency: string;
+}) {
+  const token = getAuthToken();
+
+  const response = await fetch(
+    import.meta.env.VITE_PORT_MAIN + "settings/expenses/",
+    {
+      method: "POST",
+      body: JSON.stringify({ baseCurrency }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const error = new Error(
+      "An error occurred while changing base currency."
+    ) as FetchError;
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  localStorage.setItem("baseCurrency", baseCurrency);
 
   return response.json();
 }

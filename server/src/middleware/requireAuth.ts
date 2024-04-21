@@ -30,7 +30,7 @@ const requireAuth = async (
     const payload = jwt.verify(token, process.env.SECRET!) as JwtPayload;
     const _id = payload._id as string;
 
-    req.user = await User.findOne({ _id }).select("_id");
+    req.user = await User.findOne({ _id }).select("_id, baseCurrency");
     next();
   } catch (error) {
     console.log(error);

@@ -26,6 +26,10 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
+    baseCurrency: {
+        type: String,
+        default: "CZK",
+    },
 });
 userSchema.statics.signup = function (email, password) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -72,6 +76,18 @@ userSchema.statics.changePassword = function (id, passwordOld, passwordNew) {
         const updatedUser = yield this.findOneAndUpdate({ _id: id }, { password: hash });
         if (!updatedUser)
             throw Error("Error while updating password, try again later.");
+        return updatedUser;
+    });
+};
+userSchema.statics.changeBaseCurrency = function (id, baseCurrency) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!id)
+            throw Error("Missing user ID.");
+        if (!baseCurrency)
+            throw Error("Missing base currency.");
+        const updatedUser = yield this.findOneAndUpdate({ _id: id }, { baseCurrency });
+        if (!updatedUser)
+            throw Error("Error while updating base currency, try again later.");
         return updatedUser;
     });
 };

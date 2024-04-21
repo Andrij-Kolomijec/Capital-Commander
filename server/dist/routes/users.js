@@ -12,4 +12,5 @@ userRoutes.post("/authentication/signup", userController_1.userSignup);
 userRoutes.use(requireAuth_1.default);
 userRoutes.post("/settings", userController_1.userPasswordChange);
 userRoutes.delete("/settings", userController_1.userDeletion);
+userRoutes.post("/settings/expenses", userController_1.userBaseCurrencyChange);
 exports.default = userRoutes;

@@ -30,7 +30,7 @@ const requireAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     try {
         const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET);
         const _id = payload._id;
-        req.user = yield userModel_1.default.findOne({ _id }).select("_id");
+        req.user = yield userModel_1.default.findOne({ _id }).select("_id, baseCurrency");
         next();
     }
     catch (error) {
