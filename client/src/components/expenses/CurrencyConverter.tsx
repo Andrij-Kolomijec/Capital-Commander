@@ -1,6 +1,7 @@
-// import classes from './CurrencyConverter.module.css';
 import { useQuery } from "@tanstack/react-query";
+import classes from "./CurrencyConverter.module.css";
 import { getCurrencyRates } from "../../utils/http/currencyRates";
+import Select from "../common/Select";
 
 type CurrencyConverterProps = {
   setCurrency: (currency: { multiplier: number; currency: string }) => void;
@@ -23,19 +24,21 @@ export default function CurrencyConverter({
     });
   }
 
+  const style = {
+    margin: "0",
+    fontSize: "1rem",
+  };
+
   return (
-    <div>
+    <div className={classes.wrapper}>
       <label htmlFor="currency-converter">Convert currency</label>
-      <select
+      <Select
         name="currency"
         id="currency-converter"
         onChange={handleChangeCurrency}
         defaultValue={localStorage.getItem("baseCurrency") || data[0]?.base}
-      >
-        <option value="CZK">CZK</option>
-        <option value="EUR">EUR</option>
-        <option value="USD">USD</option>
-      </select>
+        style={style}
+      />
     </div>
   );
 }

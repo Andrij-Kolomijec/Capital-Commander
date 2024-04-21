@@ -1,7 +1,6 @@
-// import classes from "./BaseCurrency.module.css";
-
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { changeBaseCurrency } from "../../utils/http/user";
+import Select from "../common/Select";
 
 export default function BaseCurrency() {
   const queryClient = useQueryClient();
@@ -24,16 +23,12 @@ export default function BaseCurrency() {
 
   return (
     <div>
-      <select
+      <Select
         name="base-currency"
         id="base-currency"
         onChange={handleChangeBaseCurrency}
         defaultValue={localStorage.getItem("baseCurrency")!}
-      >
-        <option value="CZK">CZK</option>
-        <option value="EUR">EUR</option>
-        <option value="USD">USD</option>
-      </select>
+      />
     </div>
   );
 }
