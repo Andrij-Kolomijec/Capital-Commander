@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import classes from "./TableRow.module.css";
-import closeIcon from "../../assets/close.svg";
+import closeIcon from "../../assets/icons/close.svg";
 import dateFormatter from "../../utils/dateFormatter";
 import { ExpenseItem } from "../../utils/http/expense";
 

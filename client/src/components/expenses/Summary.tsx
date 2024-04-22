@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import classes from "./Summary.module.css";
 import { fetchExpenses } from "../../utils/http/expense";
 import Loader from "../common/Loader";
-import calendar from "../../assets/calendar-month.svg";
-import housing from "../../assets/housing.svg";
-import transportation from "../../assets/transportation.svg";
-import miscellaneous from "../../assets/miscellaneous.svg";
+import calendar from "../../assets/icons/calendar-month.svg";
+import housing from "../../assets/icons/housing.svg";
+import transportation from "../../assets/icons/transportation.svg";
+import miscellaneous from "../../assets/icons/miscellaneous.svg";
 
 export default function Summary({ multiplier = 1, currency = "CZK" }) {
   const { data, isFetching, isFetched } = useQuery({

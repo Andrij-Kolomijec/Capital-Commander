@@ -8,8 +8,8 @@ import {
   type FetchError,
 } from "../../utils/http/user";
 import Button from "../common/Button";
-import hide from "../../assets/hide.svg";
-import show from "../../assets/show.svg";
+import hide from "../../assets/icons/hide.svg";
+import show from "../../assets/icons/show.svg";
 
 export default function PasswordChange() {
   const [passwordType, setPasswordType] = useState<"password" | "text">(
@@ -40,7 +40,7 @@ export default function PasswordChange() {
   }
 
   return (
-    <>
+    <div className={classes.wrapper}>
       <form className={classes.form} onSubmit={handlePassChange}>
         <div className={classes.input}>
           <input
@@ -90,6 +90,6 @@ export default function PasswordChange() {
           {(error as FetchError).info.error}
         </motion.p>
       )}
-    </>
+    </div>
   );
 }

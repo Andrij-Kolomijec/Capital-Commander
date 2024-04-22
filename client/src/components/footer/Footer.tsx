@@ -1,5 +1,5 @@
 import classes from "./Footer.module.css";
-import github from "../../assets/github.svg";
+import github from "../../assets/icons/github.svg";
 import { motion } from "framer-motion";
 
 export default function Footer() {

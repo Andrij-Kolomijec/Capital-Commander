@@ -15,8 +15,8 @@ import {
   getTokenDuration,
 } from "../../utils/authJWT";
 import { logout } from "../../utils/http/user";
-import logoutIcon from "../../assets/logout.svg";
-import cogIcon from "../../assets/cog.svg";
+import logoutIcon from "../../assets/icons/logout.svg";
+import cogIcon from "../../assets/icons/cog.svg";
 import Icon from "./Icon";
 import LinkNav from "../common/LinkNav";
 

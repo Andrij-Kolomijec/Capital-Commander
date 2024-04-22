@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import classes from "./Authentication.module.css";
 import { AuthData, authenticate, type FetchError } from "../utils/http/user";
 import Button from "../components/common/Button";
-import hide from "../assets/hide.svg";
-import show from "../assets/show.svg";
+import hide from "../assets/icons/hide.svg";
+import show from "../assets/icons/show.svg";
 
 export default function Authentication() {
   const [searchParams /*, setSearchParams*/] = useSearchParams();
