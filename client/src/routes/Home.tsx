@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import classes from "./Home.module.css";
+import PhotoGallery from "../components/PhotoGallery";
 
 export default function Home() {
   return (
@@ -9,6 +10,7 @@ export default function Home() {
       className={classes.home}
     >
       <h1>Welcome!</h1>
+      <PhotoGallery />
     </motion.div>
   );
 }
