@@ -52,12 +52,12 @@ export default function InputExpense({
       </div>
       <div>
         <label htmlFor="expense-notes">Notes</label>
-        <input id="expense-notes" type="text" name="notes" />
+        <input id="expense-notes" type="text" name="notes" title="Optional" />
       </div>
       <div>
         <label htmlFor="expense-category">Category</label>
-        <select name="category" id="expense-category">
-          <option value="none">--Optional--</option>
+        <select name="category" id="expense-category" title="Optional">
+          <option value="none">--Default--</option>
           <option value="housing">Housing</option>
           <option value="transportation">Transportation</option>
           <option value="other">Miscellaneous</option>

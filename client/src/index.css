@@ -13,7 +13,8 @@ html {
   --bgUpper: #8d8741;
   --bgLower: #659dbd;
   --miscColor: rgba(250, 235, 215, 0.3);
-  --active: #0000b9;
+  /* --active: #0000b9; */
+  --active: #2c0072;
   --shadow: 0 0 4px 1px rgba(0, 0, 0, 0.2);
 }
 

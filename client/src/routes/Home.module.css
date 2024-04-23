@@ -2,4 +2,14 @@
   font-family: "Tac One";
   font-size: 3rem;
   text-align: center;
+
+  & h1 {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .home {
+    font-size: 2rem;
+  }
 }

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import classes from "./PhotoGallery.module.css";
 
 import calculator from "../assets/images/calculator.jpg";
@@ -10,18 +11,32 @@ import globe from "../assets/images/globe.jpg";
 import server from "../assets/images/server.jpg";
 
 export default function PhotoGallery() {
+  const variants = {
+    hidden: { opacity: 0, y: -30 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
     <div className={classes.wrapper}>
-      <section className={classes.gallery}>
-        <img src={calculator} alt="Calculator" />
-        <img src={calendar} alt="Calendar" />
-        <img src={laptop} alt="Laptop" />
-        <img src={globe} alt="Globe" />
-        <img src={clock} alt="Clock" />
-        <img src={car} alt="Car" />
-        <img src={chart} alt="Chart" />
-        <img src={server} alt="Server" />
-      </section>
+      <motion.section
+        variants={variants}
+        initial="hidden"
+        animate="visible"
+        transition={{
+          when: "beforeChildren",
+          staggerChildren: 0.03,
+        }}
+        className={classes.gallery}
+      >
+        <motion.img variants={variants} src={calculator} alt="Calculator" />
+        <motion.img variants={variants} src={calendar} alt="Calendar" />
+        <motion.img variants={variants} src={laptop} alt="Laptop" />
+        <motion.img variants={variants} src={globe} alt="Globe" />
+        <motion.img variants={variants} src={clock} alt="Clock" />
+        <motion.img variants={variants} src={car} alt="Car" />
+        <motion.img variants={variants} src={chart} alt="Chart" />
+        <motion.img variants={variants} src={server} alt="Server" />
+      </motion.section>
     </div>
   );
 }
