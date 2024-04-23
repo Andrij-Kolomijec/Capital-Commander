@@ -12,8 +12,8 @@
 
 ## Description
 
-- An app for tracking expenses.
-- Routing done with **React router**.
+- An app for tracking expenses with an option to change base currency and convert currency (CZK, USD, EUR).
+- Routing done with **React router**. Routes protected with loaders.
 - Loading and submitting data via **Tanstack Query**.
-- Authentication is achieved using **JSON Web Tokens**, with addition of **bcrypt** package.
+- Authentication is achieved using **JSON Web Tokens** (tokens and expiration date are stored in local storage), with addition of **bcrypt** package.
 - Animations implemented using **Framer Motion** library.
