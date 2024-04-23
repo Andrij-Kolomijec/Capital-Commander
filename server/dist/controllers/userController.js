@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userBaseCurrencyChange = exports.userDeletion = exports.userPasswordChange = exports.userSignup = exports.userLogin = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const userModel_1 = __importDefault(require("../models/userModel"));
+const expenseModel_1 = __importDefault(require("../models/expenseModel"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 function createToken(_id, remember) {
@@ -87,10 +88,16 @@ function userDeletion(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const userId = req.user._id.toString();
         const user = yield userModel_1.default.findOneAndDelete({ _id: userId });
+        const expenses = yield expenseModel_1.default.deleteMany({ user: userId });
         if (!user) {
             return res.status(404).json({ error: "User to delete not found." });
         }
-        res.status(200).json({ message: "User deleted." });
+        if (!expenses) {
+            return res
+                .status(404)
+                .json({ error: "User's expenses to delete not found." });
+        }
+        res.status(200).json({ message: "User and their expenses deleted." });
     });
 }
 exports.userDeletion = userDeletion;

@@ -49,7 +49,6 @@ function updateRates(req, res) {
         if (!rates) {
             return res.status(404).json({ error: "Updating currency rates failed." });
         }
-        console.log(rates);
         res.status(200).json({ rates });
     });
 }

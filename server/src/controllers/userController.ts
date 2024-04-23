@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel";
+import Expense from "../models/expenseModel";
 import dotenv from "dotenv";
 import { type AuthRequest } from "../middleware/requireAuth";
 
@@ -76,12 +77,19 @@ export async function userDeletion(req: AuthRequest, res: Response) {
   const userId = req.user._id.toString();
 
   const user = await User.findOneAndDelete({ _id: userId });
+  const expenses = await Expense.deleteMany({ user: userId });
 
   if (!user) {
     return res.status(404).json({ error: "User to delete not found." });
   }
 
-  res.status(200).json({ message: "User deleted." });
+  if (!expenses) {
+    return res
+      .status(404)
+      .json({ error: "User's expenses to delete not found." });
+  }
+
+  res.status(200).json({ message: "User and their expenses deleted." });
 }
 
 export async function userBaseCurrencyChange(req: AuthRequest, res: Response) {
