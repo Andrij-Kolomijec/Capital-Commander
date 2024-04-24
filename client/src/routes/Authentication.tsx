@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import { motion } from "framer-motion";
+import { motion, stagger, useAnimate } from "framer-motion";
 import classes from "./Authentication.module.css";
 import { AuthData, authenticate, type FetchError } from "../utils/http/user";
 import Button from "../components/common/Button";
@@ -23,8 +23,30 @@ export default function Authentication() {
     },
   });
 
+  const [scope, animate] = useAnimate();
+
+  const email = useRef<HTMLInputElement>(null);
+  const pass = useRef<HTMLInputElement>(null);
+  const confirmPass = useRef<HTMLInputElement | null>(null);
+
   function handleAuth(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (
+      !email.current!.value.trim() ||
+      !pass.current!.value.trim() ||
+      (!isLogin && !confirmPass.current?.value.trim())
+    ) {
+      animate(
+        "input",
+        { x: [-20, 0, 20, 0] },
+        {
+          type: "spring",
+          duration: 0.3,
+          delay: stagger(0.1, { startDelay: 0.1 }),
+        }
+      );
+    }
 
     setPasswordType("password");
 
@@ -33,9 +55,6 @@ export default function Authentication() {
 
     mutate({ userData, mode: searchParams.get("mode") } as AuthData);
   }
-
-  const email = useRef<HTMLInputElement>(null);
-  const pass = useRef<HTMLInputElement>(null);
 
   function handleGuestLogin() {
     email.current!.value = "guest@test.org";
@@ -75,7 +94,7 @@ export default function Authentication() {
       }}
       className={classes["form-wrapper"]}
     >
-      <form className={classes.form} onSubmit={handleAuth}>
+      <form ref={scope} className={classes.form} onSubmit={handleAuth}>
         <motion.div
           variants={inputFields}
           whileFocus={{ display: "none" }}
@@ -87,7 +106,7 @@ export default function Authentication() {
             id="auth-email"
             name="email"
             placeholder=""
-            required
+            // required
           />
           <label htmlFor="auth-email">Email</label>
         </motion.div>
@@ -98,7 +117,7 @@ export default function Authentication() {
             id="auth-password"
             name="password"
             placeholder=""
-            required
+            // required
           />
           <label htmlFor="auth-password">Password</label>
           {!isPending && (
@@ -119,7 +138,7 @@ export default function Authentication() {
               id="auth-confirm-password"
               name="passwordConfirm"
               placeholder=""
-              required
+              // required
             />
             <label htmlFor="auth-confirm-password">Confirm password</label>
           </motion.div>
@@ -170,7 +189,9 @@ export default function Authentication() {
         )}
       </form>
       {isError && (
-        <p className={classes.error}>{(error as FetchError).info.error}</p>
+        <motion.p variants={inputFields} className={classes.error}>
+          {(error as FetchError).info.error}
+        </motion.p>
       )}
     </motion.section>
   );

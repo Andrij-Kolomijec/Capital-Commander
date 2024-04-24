@@ -5,9 +5,6 @@ export default function About() {
   return (
     <div className={classes.about}>
       <Reveal>
-        <h2>General</h2>
-      </Reveal>
-      <Reveal>
         <p>
           This project replaces my old way of tracking expenses via excel sheet.
           In addition to that, it has options to change base currency (expense's
@@ -20,7 +17,7 @@ export default function About() {
         </p>
       </Reveal>
       <Reveal>
-        <h2>Tech used</h2>
+        <h2>Tech stack</h2>
       </Reveal>
       <Reveal>
         <ul>
@@ -28,6 +25,7 @@ export default function About() {
           <li>React</li>
           <li>HTML</li>
           <li>CSS</li>
+          <li>Node.js</li>
           <li>MongoDB</li>
           <li>Tanstack Query</li>
           <li>Framer motion</li>

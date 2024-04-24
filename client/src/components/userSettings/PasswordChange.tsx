@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { motion } from "framer-motion";
+import { motion, stagger, useAnimate } from "framer-motion";
 import classes from "./PasswordChange.module.css";
 import {
   type PasswordData,
@@ -15,6 +15,10 @@ export default function PasswordChange() {
   const [passwordType, setPasswordType] = useState<"password" | "text">(
     "password"
   );
+  const [scope, animate] = useAnimate();
+  const oldPassword = useRef<HTMLInputElement | null>(null);
+  const newPassword = useRef<HTMLInputElement | null>(null);
+  const confirmNewPassword = useRef<HTMLInputElement | null>(null);
 
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: changePassword,
@@ -25,6 +29,22 @@ export default function PasswordChange() {
 
   function handlePassChange(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (
+      !oldPassword.current!.value.trim() ||
+      !newPassword.current!.value.trim() ||
+      !confirmNewPassword.current!.value.trim()
+    ) {
+      animate(
+        "input",
+        { x: [-20, 0, 20, 0] },
+        {
+          type: "spring",
+          duration: 0.3,
+          delay: stagger(0.1, { startDelay: 0.1 }),
+        }
+      );
+    }
 
     const formData = new FormData(e.currentTarget);
     const passwordData = Object.fromEntries(formData);
@@ -41,13 +61,14 @@ export default function PasswordChange() {
 
   return (
     <div className={classes.wrapper}>
-      <form className={classes.form} onSubmit={handlePassChange}>
+      <form ref={scope} className={classes.form} onSubmit={handlePassChange}>
         <div className={classes.input}>
           <input
             id="password-old"
             type={passwordType}
             name="passwordOld"
             placeholder=""
+            ref={oldPassword}
           />
           <label htmlFor="password-old">Current password</label>
           <img
@@ -65,6 +86,7 @@ export default function PasswordChange() {
             type={passwordType}
             name="passwordNew"
             placeholder=""
+            ref={newPassword}
           />
           <label htmlFor="password-new">New password</label>
         </div>
@@ -74,6 +96,7 @@ export default function PasswordChange() {
             type={passwordType}
             name="passwordNewConfirm"
             placeholder=""
+            ref={confirmNewPassword}
           />
           <label htmlFor="password-new-confirm">Confirm new password</label>
         </div>
