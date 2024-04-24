@@ -9,7 +9,7 @@ html {
 }
 
 :root {
-  --bgColor: rgba(250, 235, 215, 0.5);
+  --bgColor: rgb(182, 185, 154);
   --bgUpper: #8d8741;
   --bgLower: #659dbd;
   --miscColor: rgba(250, 235, 215, 0.3);
@@ -42,6 +42,13 @@ footer {
 a {
   text-decoration: none;
   color: black;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  /* -webkit-text-fill-color: green; */
+  -webkit-box-shadow: 0 0 0px 1000px var(--bgColor) inset;
+  /* transition: background-color 5000s ease-in-out 0s; */
 }
 
 .link {

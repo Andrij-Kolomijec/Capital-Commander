@@ -73,6 +73,12 @@
   }
 }
 
+@media (max-width: 800px) {
+  .side {
+    flex-direction: column;
+  }
+}
+
 @media (max-width: 600px) {
   .expenses {
     flex-direction: column-reverse;
@@ -95,8 +101,5 @@
   .expenses-wrapper {
     margin: 0;
     padding: 0;
-  }
-  .side {
-    flex-direction: column;
   }
 }

@@ -5,11 +5,13 @@ type ButtonProps = HTMLMotionProps<"button"> &
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
     children: React.ReactNode;
     loader?: boolean;
+    hoverColor?: string;
   };
 
 export default function Button({
   children,
   loader = false,
+  hoverColor = "#00b5d4",
   ...props
 }: ButtonProps) {
   const transition = {
@@ -24,7 +26,7 @@ export default function Button({
   const whileInteraction = !loader
     ? {
         scale: 1.1,
-        backgroundColor: props.style ? props.style.backgroundColor : "#00b5d4",
+        backgroundColor: hoverColor,
       }
     : {};
 

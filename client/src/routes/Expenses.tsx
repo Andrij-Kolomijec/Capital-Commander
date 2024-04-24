@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import classes from "./Expenses.module.css";
 import MonthlyExpenses from "../components/expenses/MonthlyExpenses";
 import InputExpense from "../components/expenses/InputExpense";
@@ -118,14 +118,18 @@ export default function Expenses() {
             />
           </div>
         </div>
-        <div className={classes.side}>
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          className={classes.side}
+        >
           <InputExpense multiplier={currency.multiplier} />
           <Summary
             multiplier={currency.multiplier}
             currency={currency.currency!}
           />
           <CurrencyConverter setCurrency={setCurrency} />
-        </div>
+        </motion.div>
       </div>
     </>
   );

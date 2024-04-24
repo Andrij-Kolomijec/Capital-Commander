@@ -6,6 +6,6 @@
 
 .icon:hover {
   cursor: pointer;
-  filter: invert(12%) sepia(97%) saturate(5923%) hue-rotate(245deg)
-    brightness(66%) contrast(142%);
+  filter: invert(10%) sepia(60%) saturate(6518%) hue-rotate(265deg)
+    brightness(71%) contrast(121%);
 }
