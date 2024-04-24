@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
 import classes from "./PhotoGallery.module.css";
 
-import calculator from "../assets/images/calculator.jpg";
-import calendar from "../assets/images/calendar.jpg";
-import car from "../assets/images/car.jpg";
-import chart from "../assets/images/chart.jpg";
-import clock from "../assets/images/clock.jpg";
-import laptop from "../assets/images/laptop.jpg";
-import globe from "../assets/images/globe.jpg";
-import server from "../assets/images/server.jpg";
+import calculator from "../../assets/images/calculator.jpg";
+import calendar from "../../assets/images/calendar.jpg";
+import car from "../../assets/images/car.jpg";
+import chart from "../../assets/images/chart.jpg";
+import clock from "../../assets/images/clock.jpg";
+import laptop from "../../assets/images/laptop.jpg";
+import globe from "../../assets/images/globe.jpg";
+import server from "../../assets/images/server.jpg";
 
 export default function PhotoGallery() {
   const variants = {

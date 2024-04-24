@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import classes from "./Home.module.css";
-import PhotoGallery from "../components/PhotoGallery";
+import PhotoGallery from "../components/common/PhotoGallery";
 
 export default function Home() {
   return (
