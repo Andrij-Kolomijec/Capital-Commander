@@ -4,19 +4,20 @@ import classes from "./SideNav.module.css";
 import MenuToggle from "./MenuToggle";
 
 const sidebar = {
-  open: (height = 200) => ({
+  open: (height = 120) => ({
     clipPath: `circle(${height * 2 + 200}px at 40px 40px)`,
     transition: {
-      type: "spring",
+      // type: "spring", // causes an error
       stiffness: 20,
       restDelta: 2,
+      duration: 1,
     },
   }),
   closed: {
     clipPath: "circle(15px at 32px 28px)",
     transition: {
       delay: 0.5,
-      type: "spring",
+      // type: "spring",
       stiffness: 400,
       damping: 40,
     },
