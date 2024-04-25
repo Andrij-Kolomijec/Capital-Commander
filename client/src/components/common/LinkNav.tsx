@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
-import classes from "./LinkNav.module.css";
 import { motion } from "framer-motion";
+import classes from "./LinkNav.module.css";
 
 type LinkProps = {
   onClick?: (() => void) | undefined;
