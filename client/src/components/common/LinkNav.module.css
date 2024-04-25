@@ -11,6 +11,12 @@
   right: 0;
 }
 
+@supports (-moz-appearance: none) {
+  .active-tab-indicator {
+    position: static;
+  }
+}
+
 .link:hover {
   color: var(--active);
 }

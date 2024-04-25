@@ -20,7 +20,7 @@ export default function LinkNav({ onClick = undefined, to, text }: LinkProps) {
     >
       {({ isActive }) => (
         <>
-          <p>{text}</p>
+          <motion.p layout>{text}</motion.p>
           {isActive && (
             <motion.div
               layoutId="tab-indicator"
