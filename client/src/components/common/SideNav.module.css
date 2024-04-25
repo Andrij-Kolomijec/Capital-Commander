@@ -1,0 +1,22 @@
+.nav {
+  position: fixed;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  left: 1rem;
+  top: 11vh;
+}
+
+.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  box-shadow: var(--shadow);
+  background: rgba(182, 185, 154, 0.5);
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: -10;
+}

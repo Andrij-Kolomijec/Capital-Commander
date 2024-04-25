@@ -1,0 +1,19 @@
+.button {
+  outline: none;
+  border: none;
+  /* user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none; */
+  cursor: pointer;
+  align-self: flex-start;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.button:is(:hover, :focus) {
+  filter: invert(20%) sepia(26%) saturate(5870%) hue-rotate(251deg)
+    brightness(67%) contrast(134%);
+}
