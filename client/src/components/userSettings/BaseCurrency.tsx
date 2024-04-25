@@ -1,8 +1,13 @@
+import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AnimatePresence } from "framer-motion";
 import { changeBaseCurrency } from "../../utils/http/user";
 import Select from "../common/Select";
+import Modal from "../common/Modal";
+import Button from "../common/Button";
 
 export default function BaseCurrency() {
+  const [showModal, setShowModal] = useState(false);
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
@@ -12,7 +17,7 @@ export default function BaseCurrency() {
         queryKey: ["currency"],
         exact: true,
       });
-      alert("Base currency changed successfully!");
+      setShowModal(true);
     },
   });
 
@@ -23,6 +28,19 @@ export default function BaseCurrency() {
 
   return (
     <div>
+      <AnimatePresence>
+        {showModal && (
+          <Modal title="Base Currency" onClose={() => setShowModal(false)}>
+            <p>Base currency changed successfully!</p>
+            <Button
+              onClick={() => setShowModal(false)}
+              style={{ width: "50%" }}
+            >
+              Close
+            </Button>
+          </Modal>
+        )}
+      </AnimatePresence>
       <Select
         name="base-currency"
         id="base-currency"
