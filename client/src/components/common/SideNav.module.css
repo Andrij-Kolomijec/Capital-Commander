@@ -20,3 +20,18 @@
   bottom: 0;
   z-index: -10;
 }
+
+@media (max-width: 700px) {
+  .nav {
+    flex-direction: row;
+    height: 10%;
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 350px) {
+  .background {
+    background: none;
+    height: 60px;
+  }
+}

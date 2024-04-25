@@ -17,6 +17,10 @@
   }
 }
 
+.link > p {
+  white-space: nowrap;
+}
+
 .link:hover {
   color: var(--active);
 }
