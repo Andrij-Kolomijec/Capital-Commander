@@ -142,7 +142,18 @@ export default function Header() {
             text="Authentication"
           />
         ) : (
-          <LinkNav onClick={handleSwitchPage} to="/expenses" text="Expenses" />
+          <>
+            <LinkNav
+              onClick={handleSwitchPage}
+              to="/expenses"
+              text="Expenses"
+            />
+            <LinkNav
+              onClick={handleSwitchPage}
+              to="/investing"
+              text="Investing"
+            />
+          </>
         )}
       </section>
       {token && (

@@ -1,7 +1,7 @@
 // import classes from "./Account.module.css";
-import PasswordChange from "./PasswordChange";
-import Fieldset from "./Fieldset";
-import DeleteAccount from "./DeleteAccount";
+import PasswordChange from "../../components/userSettings/PasswordChange";
+import Fieldset from "../../components/userSettings/Fieldset";
+import DeleteAccount from "../../components/userSettings/DeleteAccount";
 
 export default function Account() {
   const variants = {

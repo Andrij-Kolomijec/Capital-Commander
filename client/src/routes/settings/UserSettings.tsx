@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
 import classes from "./UserSettings.module.css";
-import LinkNav from "../components/common/LinkNav";
-import SideNav from "../components/common/SideNav";
-import NavItem from "../components/common/NavItem";
+import LinkNav from "../../components/common/LinkNav";
+import SideNav from "../../components/common/SideNav";
+import NavItem from "../../components/common/NavItem";
 
 export default function UserSettings() {
   return (
@@ -13,6 +13,9 @@ export default function UserSettings() {
         </NavItem>
         <NavItem>
           <LinkNav to="/settings/expenses" text="Expenses settings" />
+        </NavItem>
+        <NavItem>
+          <LinkNav to="/settings/investing" text="Investing settings" />
         </NavItem>
       </SideNav>
       <section className={classes.content}>
