@@ -1,10 +1,8 @@
-import express, { Request, Response } from "express";
+import { Request, Response } from "express";
 import mongoose from "mongoose";
 import Expense from "../models/expenseModel";
 import { isValidDate, isValidNumber, isValidText } from "../utils/validators";
 import { type AuthRequest } from "../middleware/requireAuth";
-
-const router = express.Router();
 
 type ErrorProps = {
   description?: string;

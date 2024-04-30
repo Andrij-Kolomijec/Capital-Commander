@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import expenseRoutes from "./routes/expenses";
 import userRoutes from "./routes/users";
 import ratesRoutes from "./routes/rates";
+import investingRoutes from "./routes/investing";
 
 dotenv.config();
 const app = express();
@@ -21,6 +22,7 @@ app.use((req, res, next) => {
 
 app.use("/expenses", expenseRoutes);
 app.use("/currency", ratesRoutes);
+app.use("/investing", investingRoutes);
 app.use("/", userRoutes);
 
 const mongoDB = process.env.MONGODB_URI as string;

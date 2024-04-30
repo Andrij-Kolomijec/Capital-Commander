@@ -13,9 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateRates = exports.createRates = exports.getRates = void 0;
-const express_1 = __importDefault(require("express"));
 const ratesModel_1 = __importDefault(require("../models/ratesModel"));
-const router = express_1.default.Router();
 function getRates(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const base = req.user.baseCurrency;

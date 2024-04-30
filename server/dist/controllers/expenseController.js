@@ -13,11 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteExpense = exports.updateExpense = exports.createExpense = exports.getAllExpenses = void 0;
-const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const expenseModel_1 = __importDefault(require("../models/expenseModel"));
 const validators_1 = require("../utils/validators");
-const router = express_1.default.Router();
 // GET all expenses
 function getAllExpenses(req, res) {
     return __awaiter(this, void 0, void 0, function* () {

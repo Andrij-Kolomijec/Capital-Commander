@@ -1,8 +1,6 @@
-import express, { Request, Response } from "express";
+import { Request, Response } from "express";
 import Rates from "../models/ratesModel";
 import { AuthRequest } from "../middleware/requireAuth";
-
-const router = express.Router();
 
 export async function getRates(req: AuthRequest, res: Response) {
   const base = req.user.baseCurrency;
