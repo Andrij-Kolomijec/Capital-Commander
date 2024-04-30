@@ -46,7 +46,7 @@ export default function About() {
             Updating currency rates happens once every 12 hours for every base
             currency (CZK, EUR, USD). The rates are saved in the database and
             after loading expenses route for the first time - the client checks
-            if they are older than 12 hours, if so, they are re-fetched and
+            if they are older than 6 hours, if so, they are re-fetched and
             database updated. This way the maximum number of requests is
             limited.
           </li>

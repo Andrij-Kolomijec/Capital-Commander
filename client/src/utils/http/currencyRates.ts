@@ -98,7 +98,7 @@ export async function getCurrencyRates() {
   const currentTime = new Date();
   const timeDifference = currentTime.getTime() - dbTime.getTime();
 
-  if (timeDifference > 1000 * 60 * 60 * 12) {
+  if (timeDifference > 1000 * 60 * 60 * 6) {
     const base = localStorage.getItem("baseCurrency") || "CZK";
     const apiRates = await fetchRatesFromAPI(base);
     const allowed = ["CZK", "EUR", "USD"];
