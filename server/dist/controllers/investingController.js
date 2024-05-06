@@ -13,14 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFinancials = exports.getStockTickers = void 0;
-const cross_fetch_1 = __importDefault(require("cross-fetch"));
 const puppeteer_extra_1 = __importDefault(require("puppeteer-extra"));
 const calculateMedian_1 = __importDefault(require("../utils/calculateMedian"));
 const createPage_1 = __importDefault(require("../utils/createPage"));
 function getStockTickers(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const response = yield (0, cross_fetch_1.default)(process.env.NASDAQ);
+            const response = yield fetch(process.env.NASDAQ);
             if (!response.ok) {
                 const error = new Error("An error occurred while fetching data.");
                 // error.code = response.status;
@@ -31,7 +30,7 @@ function getStockTickers(req, res) {
             res.status(200).json({ tickers });
         }
         catch (error) {
-            res.status(500).json({ error: "jerror" });
+            res.status(500).json({ error });
         }
     });
 }

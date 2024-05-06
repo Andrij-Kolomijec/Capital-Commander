@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import fetch from "cross-fetch";
 import puppeteer from "puppeteer-extra";
 import { type Page } from "puppeteer";
 import calculateMedian from "../utils/calculateMedian";
@@ -24,7 +23,7 @@ export async function getStockTickers(req: Request, res: Response) {
     const tickers = await response.json();
     res.status(200).json({ tickers });
   } catch (error) {
-    res.status(500).json({ error: "jerror" });
+    res.status(500).json({ error });
   }
 }
 
