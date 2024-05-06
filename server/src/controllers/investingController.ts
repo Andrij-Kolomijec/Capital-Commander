@@ -1,23 +1,31 @@
 import { Request, Response } from "express";
+import fetch from "cross-fetch";
 import puppeteer from "puppeteer-extra";
 import { type Page } from "puppeteer";
 import calculateMedian from "../utils/calculateMedian";
 import createPage from "../utils/createPage";
 
+type FetchError = Error & {
+  code: number;
+  info: { error: string };
+};
+
 export async function getStockTickers(req: Request, res: Response) {
-  const response = await fetch(
-    "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit=25&offset=0&download=true"
-  );
+  try {
+    const response = await fetch(process.env.NASDAQ!);
 
-  if (!response.ok) {
-    const error = new Error("An error occurred while fetching data.");
-    // error.code = response.status;
-    // error.info = await response.json();
-    throw error;
+    if (!response.ok) {
+      const error = new Error("An error occurred while fetching data.");
+      // error.code = response.status;
+      // error.info = await response.json();
+      throw error;
+    }
+
+    const tickers = await response.json();
+    res.status(200).json({ tickers });
+  } catch (error) {
+    res.status(500).json({ error: "jerror" });
   }
-
-  const tickers = await response.json();
-  res.status(200).json({ tickers });
 }
 
 async function getPEMedian(req: Request, res: Response) {
