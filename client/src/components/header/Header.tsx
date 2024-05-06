@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   motion,
@@ -26,6 +26,7 @@ export default function Header() {
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { mutate } = useMutation({
     mutationFn: logout,
@@ -121,6 +122,10 @@ export default function Header() {
     pixelsScrolled.set(0);
   }
 
+  useEffect(() => {
+    handleSwitchPage();
+  }, [location]);
+
   return (
     <motion.header
       className={classes.navigation}
@@ -133,26 +138,14 @@ export default function Header() {
         Capital Commander
       </motion.h1>
       <section className={classes.links}>
-        <LinkNav onClick={handleSwitchPage} to="/" text="Home" />
+        <LinkNav to="/" text="Home" />
         <LinkNav to="/about" text="About" />
         {!token ? (
-          <LinkNav
-            onClick={handleSwitchPage}
-            to="/authentication?mode=login"
-            text="Authentication"
-          />
+          <LinkNav to="/authentication?mode=login" text="Authentication" />
         ) : (
           <>
-            <LinkNav
-              onClick={handleSwitchPage}
-              to="/expenses"
-              text="Expenses"
-            />
-            <LinkNav
-              onClick={handleSwitchPage}
-              to="/investing"
-              text="Investing"
-            />
+            <LinkNav to="/expenses" text="Expenses" />
+            <LinkNav to="/investing" text="Investing" />
           </>
         )}
       </section>
