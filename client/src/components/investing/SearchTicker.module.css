@@ -1,0 +1,20 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 30vw;
+  white-space: nowrap;
+}
+
+.form input {
+  padding: 2px 5px;
+}
+
+.form ul {
+  max-height: 20vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.form li {
+  list-style-type: none;
+}

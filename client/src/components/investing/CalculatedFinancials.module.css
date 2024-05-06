@@ -1,0 +1,15 @@
+.table-second tr {
+  display: flex;
+}
+
+.table-second thead td {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.table-second td {
+  flex: 1;
+  text-align: center;
+  /* width: 100px; */
+}
