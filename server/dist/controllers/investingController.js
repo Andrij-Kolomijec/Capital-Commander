@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFinancials = exports.getStockTickers = void 0;
 const puppeteer_extra_1 = __importDefault(require("puppeteer-extra"));
 const calculateMedian_1 = __importDefault(require("../utils/calculateMedian"));
+const createPage_1 = __importDefault(require("../utils/createPage"));
 function getStockTickers(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch("https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit=25&offset=0&download=true");
@@ -36,15 +37,8 @@ function getPEMedian(req, res) {
             headless: true,
             defaultViewport: null,
         });
-        const page = yield browser.newPage();
-        const navigationPromise = page.waitForNavigation({
-            waitUntil: "domcontentloaded",
-        });
-        yield page.goto(process.env.MACROTRENDS + ticker + "/ticker/pe-ratio", {
-            waitUntil: "domcontentloaded",
-        });
-        yield navigationPromise;
-        yield page.waitForSelector(".table", { timeout: 60000 });
+        const page = yield (0, createPage_1.default)(browser, ticker + "/ticker/pe-ratio");
+        yield page.waitForSelector(".table", { timeout: 30000 });
         const tableData = yield page.evaluate(() => {
             const table = document.querySelector(".table");
             const items = table.querySelectorAll("tr");
@@ -67,7 +61,7 @@ function getPEMedian(req, res) {
         const tenYearsAgo = new Date(new Date().setFullYear(new Date().getFullYear() - 10)).getFullYear();
         const filteredTableData = tableData
             .filter((item) => new Date(Object.keys(item)[0]) >= new Date(`${tenYearsAgo}-09-01`)
-        // && Object.keys(item)[0].slice(5) === "12-31" // slows UI too much
+        // && Object.keys(item)[0].slice(5) === "12-31"
         )
             .map((item) => +Object.values(item)[0]);
         return { ["PE Ratio (10y Median)"]: (0, calculateMedian_1.default)(filteredTableData) };
@@ -80,15 +74,8 @@ function getROEMedian(req, res) {
             headless: true,
             defaultViewport: null,
         });
-        const page = yield browser.newPage();
-        const navigationPromise = page.waitForNavigation({
-            waitUntil: "domcontentloaded",
-        });
-        yield page.goto(process.env.MACROTRENDS + ticker + "/ticker/roe", {
-            waitUntil: "domcontentloaded",
-        });
-        yield navigationPromise;
-        yield page.waitForSelector(".table", { timeout: 60000 });
+        const page = yield (0, createPage_1.default)(browser, ticker + "/ticker/roe");
+        yield page.waitForSelector(".table", { timeout: 30000 });
         const tableData = yield page.evaluate(() => {
             const table = document.querySelector(".table");
             const items = table.querySelectorAll("tr");
@@ -108,7 +95,16 @@ function getROEMedian(req, res) {
                 .filter((item) => item !== null);
         });
         yield browser.close();
-        return { ROE: tableData };
+        const tenYearsAgo = new Date(new Date().setFullYear(new Date().getFullYear() - 10)).getFullYear();
+        const filteredTableData = tableData
+            .filter((item) => new Date(Object.keys(item)[0]) >= new Date(`${tenYearsAgo}-09-01`)
+        // && Object.keys(item)[0].slice(5) === "12-31"
+        )
+            .map((item) => { var _a; return +((_a = Object.values(item)[0]) === null || _a === void 0 ? void 0 : _a.replace("%", "")); });
+        return {
+            ROE: tableData,
+            ["ROE (10y Median)"]: (0, calculateMedian_1.default)(filteredTableData),
+        };
     });
 }
 function getRestOfFinancials(req, res) {
@@ -118,15 +114,8 @@ function getRestOfFinancials(req, res) {
             headless: true,
             defaultViewport: null,
         });
-        const page = yield browser.newPage();
-        const navigationPromise = page.waitForNavigation({
-            waitUntil: "domcontentloaded",
-        });
-        yield page.goto(process.env.GURUFOCUS + ticker + "/financials", {
-            waitUntil: "domcontentloaded",
-        });
-        yield navigationPromise;
-        yield page.waitForSelector("#data_table_row_18848", { timeout: 60000 });
+        const page = yield (0, createPage_1.default)(browser, ticker + "/financials");
+        yield page.waitForSelector("#data_table_row_18848", { timeout: 30000 });
         const tableData = yield page.evaluate(() => {
             function selectDOMItem(number) {
                 var _a, _b;
@@ -146,7 +135,7 @@ function getRestOfFinancials(req, res) {
                 selectDOMItem("260"),
                 selectDOMItem("290"),
                 selectDOMItem("217"),
-                selectDOMItem("3051"),
+                selectDOMItem("396"),
                 selectDOMItem("221"),
                 selectDOMItem("3083"),
                 selectDOMItem("3206"),

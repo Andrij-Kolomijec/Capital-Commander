@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import puppeteer from "puppeteer-extra";
+import { type Page } from "puppeteer";
 import calculateMedian from "../utils/calculateMedian";
+import createPage from "../utils/createPage";
 
 export async function getStockTickers(req: Request, res: Response) {
   const response = await fetch(
@@ -26,16 +28,9 @@ async function getPEMedian(req: Request, res: Response) {
     defaultViewport: null,
   });
 
-  const page = await browser.newPage();
-  const navigationPromise = page.waitForNavigation({
-    waitUntil: "domcontentloaded",
-  });
-  await page.goto(process.env.MACROTRENDS + ticker + "/ticker/pe-ratio", {
-    waitUntil: "domcontentloaded",
-  });
+  const page: Page = await createPage(browser, ticker + "/ticker/pe-ratio");
 
-  await navigationPromise;
-  await page.waitForSelector(".table", { timeout: 60000 });
+  await page.waitForSelector(".table", { timeout: 30000 });
 
   const tableData = await page.evaluate(() => {
     const table = document.querySelector(".table");
@@ -64,7 +59,7 @@ async function getPEMedian(req: Request, res: Response) {
     .filter(
       (item) =>
         new Date(Object.keys(item!)[0]) >= new Date(`${tenYearsAgo}-09-01`)
-      // && Object.keys(item)[0].slice(5) === "12-31" // slows UI too much
+      // && Object.keys(item)[0].slice(5) === "12-31"
     )
     .map((item) => +Object.values(item!)[0]!);
 
@@ -79,16 +74,9 @@ async function getROEMedian(req: Request, res: Response) {
     defaultViewport: null,
   });
 
-  const page = await browser.newPage();
-  const navigationPromise = page.waitForNavigation({
-    waitUntil: "domcontentloaded",
-  });
-  await page.goto(process.env.MACROTRENDS + ticker + "/ticker/roe", {
-    waitUntil: "domcontentloaded",
-  });
+  const page: Page = await createPage(browser, ticker + "/ticker/roe");
 
-  await navigationPromise;
-  await page.waitForSelector(".table", { timeout: 60000 });
+  await page.waitForSelector(".table", { timeout: 30000 });
 
   const tableData = await page.evaluate(() => {
     const table = document.querySelector(".table");
@@ -109,7 +97,22 @@ async function getROEMedian(req: Request, res: Response) {
 
   await browser.close();
 
-  return { ROE: tableData };
+  const tenYearsAgo = new Date(
+    new Date().setFullYear(new Date().getFullYear() - 10)
+  ).getFullYear();
+
+  const filteredTableData = tableData
+    .filter(
+      (item) =>
+        new Date(Object.keys(item!)[0]) >= new Date(`${tenYearsAgo}-09-01`)
+      // && Object.keys(item)[0].slice(5) === "12-31"
+    )
+    .map((item) => +Object.values(item!)[0]?.replace("%", "")!);
+
+  return {
+    ROE: tableData,
+    ["ROE (10y Median)"]: calculateMedian(filteredTableData),
+  };
 }
 
 async function getRestOfFinancials(req: Request, res: Response) {
@@ -120,16 +123,9 @@ async function getRestOfFinancials(req: Request, res: Response) {
     defaultViewport: null,
   });
 
-  const page = await browser.newPage();
-  const navigationPromise = page.waitForNavigation({
-    waitUntil: "domcontentloaded",
-  });
-  await page.goto(process.env.GURUFOCUS + ticker + "/financials", {
-    waitUntil: "domcontentloaded",
-  });
+  const page: Page = await createPage(browser, ticker + "/financials");
 
-  await navigationPromise;
-  await page.waitForSelector("#data_table_row_18848", { timeout: 60000 });
+  await page.waitForSelector("#data_table_row_18848", { timeout: 30000 });
 
   const tableData = await page.evaluate(() => {
     function selectDOMItem(number: string) {
@@ -154,7 +150,7 @@ async function getRestOfFinancials(req: Request, res: Response) {
       selectDOMItem("260"),
       selectDOMItem("290"),
       selectDOMItem("217"),
-      selectDOMItem("3051"),
+      selectDOMItem("396"),
       selectDOMItem("221"),
       selectDOMItem("3083"),
       selectDOMItem("3206"),
