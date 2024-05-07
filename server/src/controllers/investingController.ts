@@ -3,11 +3,7 @@ import puppeteer from "puppeteer-extra";
 import { type Page } from "puppeteer";
 import calculateMedian from "../utils/calculateMedian";
 import createPage from "../utils/createPage";
-
-type FetchError = Error & {
-  code: number;
-  info: { error: string };
-};
+import { scrapeMacrotrends } from "../utils/scrapePage";
 
 export async function getStockTickers(req: Request, res: Response) {
   try {
@@ -15,12 +11,11 @@ export async function getStockTickers(req: Request, res: Response) {
 
     if (!response.ok) {
       const error = new Error("An error occurred while fetching data.");
-      // error.code = response.status;
-      // error.info = await response.json();
       throw error;
     }
 
     const tickers = await response.json();
+
     res.status(200).json({ tickers });
   } catch (error) {
     res.status(500).json({ error });
@@ -37,40 +32,12 @@ async function getPEMedian(req: Request, res: Response) {
 
   const page: Page = await createPage(browser, ticker + "/ticker/pe-ratio");
 
-  await page.waitForSelector(".table", { timeout: 30000 });
-
-  const tableData = await page.evaluate(() => {
-    const table = document.querySelector(".table");
-    const items = table!.querySelectorAll("tr");
-    return Array.from(items)
-      .map((row) => {
-        const cells = row.querySelectorAll("td");
-        if (cells.length > 0) {
-          const date = cells[0].textContent?.trim();
-          const value = cells[cells.length - 1].textContent?.trim();
-          return { [date!]: value };
-        } else {
-          return null;
-        }
-      })
-      .filter((item) => item !== null);
-  });
-
-  await browser.close();
-
-  const tenYearsAgo = new Date(
-    new Date().setFullYear(new Date().getFullYear() - 10)
-  ).getFullYear();
-
-  const filteredTableData = tableData
-    .filter(
-      (item) =>
-        new Date(Object.keys(item!)[0]) >= new Date(`${tenYearsAgo}-09-01`)
-      // && Object.keys(item)[0].slice(5) === "12-31"
-    )
-    .map((item) => +Object.values(item!)[0]!);
-
-  return { ["PE Ratio (10y Median)"]: calculateMedian(filteredTableData) };
+  try {
+    const { filteredTableData } = await scrapeMacrotrends(page, browser);
+    return { ["PE Ratio (10y Median)"]: calculateMedian(filteredTableData) };
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function getROEMedian(req: Request, res: Response) {
@@ -83,43 +50,18 @@ async function getROEMedian(req: Request, res: Response) {
 
   const page: Page = await createPage(browser, ticker + "/ticker/roe");
 
-  await page.waitForSelector(".table", { timeout: 30000 });
-
-  const tableData = await page.evaluate(() => {
-    const table = document.querySelector(".table");
-    const items = table!.querySelectorAll("tr");
-    return Array.from(items)
-      .map((row) => {
-        const cells = row.querySelectorAll("td");
-        if (cells.length > 0) {
-          const date = cells[0].textContent?.trim();
-          const value = cells[cells.length - 1].textContent?.trim();
-          return { [date!]: value };
-        } else {
-          return null;
-        }
-      })
-      .filter((item) => item !== null);
-  });
-
-  await browser.close();
-
-  const tenYearsAgo = new Date(
-    new Date().setFullYear(new Date().getFullYear() - 10)
-  ).getFullYear();
-
-  const filteredTableData = tableData
-    .filter(
-      (item) =>
-        new Date(Object.keys(item!)[0]) >= new Date(`${tenYearsAgo}-09-01`)
-      // && Object.keys(item)[0].slice(5) === "12-31"
-    )
-    .map((item) => +Object.values(item!)[0]?.replace("%", "")!);
-
-  return {
-    ROE: tableData,
-    ["ROE (10y Median)"]: calculateMedian(filteredTableData),
-  };
+  try {
+    const { tableData, filteredTableData } = await scrapeMacrotrends(
+      page,
+      browser
+    );
+    return {
+      ROE: tableData,
+      ["ROE (10y Median)"]: calculateMedian(filteredTableData),
+    };
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function getRestOfFinancials(req: Request, res: Response) {
@@ -186,9 +128,10 @@ async function getRestOfFinancials(req: Request, res: Response) {
 }
 
 export async function getFinancials(req: Request, res: Response) {
+  // await new Promise((resolve) => setTimeout(resolve, 10000));
   const PEMedian = await getPEMedian(req, res);
-  const ROEMedian = await getROEMedian(req, res);
   const RestOfFinancials = await getRestOfFinancials(req, res);
+  const ROEMedian = await getROEMedian(req, res);
   const financials = { ...PEMedian, ...ROEMedian, ...RestOfFinancials };
   res.status(200).json({ financials });
 }

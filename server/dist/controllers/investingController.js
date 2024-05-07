@@ -16,14 +16,13 @@ exports.getFinancials = exports.getStockTickers = void 0;
 const puppeteer_extra_1 = __importDefault(require("puppeteer-extra"));
 const calculateMedian_1 = __importDefault(require("../utils/calculateMedian"));
 const createPage_1 = __importDefault(require("../utils/createPage"));
+const scrapePage_1 = require("../utils/scrapePage");
 function getStockTickers(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const response = yield fetch(process.env.NASDAQ);
             if (!response.ok) {
                 const error = new Error("An error occurred while fetching data.");
-                // error.code = response.status;
-                // error.info = await response.json();
                 throw error;
             }
             const tickers = yield response.json();
@@ -43,33 +42,13 @@ function getPEMedian(req, res) {
             defaultViewport: null,
         });
         const page = yield (0, createPage_1.default)(browser, ticker + "/ticker/pe-ratio");
-        yield page.waitForSelector(".table", { timeout: 30000 });
-        const tableData = yield page.evaluate(() => {
-            const table = document.querySelector(".table");
-            const items = table.querySelectorAll("tr");
-            return Array.from(items)
-                .map((row) => {
-                var _a, _b;
-                const cells = row.querySelectorAll("td");
-                if (cells.length > 0) {
-                    const date = (_a = cells[0].textContent) === null || _a === void 0 ? void 0 : _a.trim();
-                    const value = (_b = cells[cells.length - 1].textContent) === null || _b === void 0 ? void 0 : _b.trim();
-                    return { [date]: value };
-                }
-                else {
-                    return null;
-                }
-            })
-                .filter((item) => item !== null);
-        });
-        yield browser.close();
-        const tenYearsAgo = new Date(new Date().setFullYear(new Date().getFullYear() - 10)).getFullYear();
-        const filteredTableData = tableData
-            .filter((item) => new Date(Object.keys(item)[0]) >= new Date(`${tenYearsAgo}-09-01`)
-        // && Object.keys(item)[0].slice(5) === "12-31"
-        )
-            .map((item) => +Object.values(item)[0]);
-        return { ["PE Ratio (10y Median)"]: (0, calculateMedian_1.default)(filteredTableData) };
+        try {
+            const { filteredTableData } = yield (0, scrapePage_1.scrapeMacrotrends)(page, browser);
+            return { ["PE Ratio (10y Median)"]: (0, calculateMedian_1.default)(filteredTableData) };
+        }
+        catch (error) {
+            console.log(error);
+        }
     });
 }
 function getROEMedian(req, res) {
@@ -80,36 +59,16 @@ function getROEMedian(req, res) {
             defaultViewport: null,
         });
         const page = yield (0, createPage_1.default)(browser, ticker + "/ticker/roe");
-        yield page.waitForSelector(".table", { timeout: 30000 });
-        const tableData = yield page.evaluate(() => {
-            const table = document.querySelector(".table");
-            const items = table.querySelectorAll("tr");
-            return Array.from(items)
-                .map((row) => {
-                var _a, _b;
-                const cells = row.querySelectorAll("td");
-                if (cells.length > 0) {
-                    const date = (_a = cells[0].textContent) === null || _a === void 0 ? void 0 : _a.trim();
-                    const value = (_b = cells[cells.length - 1].textContent) === null || _b === void 0 ? void 0 : _b.trim();
-                    return { [date]: value };
-                }
-                else {
-                    return null;
-                }
-            })
-                .filter((item) => item !== null);
-        });
-        yield browser.close();
-        const tenYearsAgo = new Date(new Date().setFullYear(new Date().getFullYear() - 10)).getFullYear();
-        const filteredTableData = tableData
-            .filter((item) => new Date(Object.keys(item)[0]) >= new Date(`${tenYearsAgo}-09-01`)
-        // && Object.keys(item)[0].slice(5) === "12-31"
-        )
-            .map((item) => { var _a; return +((_a = Object.values(item)[0]) === null || _a === void 0 ? void 0 : _a.replace("%", "")); });
-        return {
-            ROE: tableData,
-            ["ROE (10y Median)"]: (0, calculateMedian_1.default)(filteredTableData),
-        };
+        try {
+            const { tableData, filteredTableData } = yield (0, scrapePage_1.scrapeMacrotrends)(page, browser);
+            return {
+                ROE: tableData,
+                ["ROE (10y Median)"]: (0, calculateMedian_1.default)(filteredTableData),
+            };
+        }
+        catch (error) {
+            console.log(error);
+        }
     });
 }
 function getRestOfFinancials(req, res) {
@@ -166,9 +125,10 @@ function getRestOfFinancials(req, res) {
 }
 function getFinancials(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        // await new Promise((resolve) => setTimeout(resolve, 10000));
         const PEMedian = yield getPEMedian(req, res);
-        const ROEMedian = yield getROEMedian(req, res);
         const RestOfFinancials = yield getRestOfFinancials(req, res);
+        const ROEMedian = yield getROEMedian(req, res);
         const financials = Object.assign(Object.assign(Object.assign({}, PEMedian), ROEMedian), RestOfFinancials);
         res.status(200).json({ financials });
     });
