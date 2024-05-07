@@ -79,48 +79,53 @@ function getRestOfFinancials(req, res) {
             defaultViewport: null,
         });
         const page = yield (0, createPage_1.default)(browser, ticker + "/financials");
-        yield page.waitForSelector("#data_table_row_18848", { timeout: 30000 });
-        const tableData = yield page.evaluate(() => {
-            function selectDOMItem(number) {
-                var _a, _b;
-                const title = (_a = document.querySelector(`#data_table_row_${number} td`)) === null || _a === void 0 ? void 0 : _a.textContent;
-                const value = (_b = document.querySelector(`#data_table_row_${number} .ttm-value`)) === null || _b === void 0 ? void 0 : _b.textContent;
-                return { [title || "N/A"]: value };
-            }
-            return [
-                selectDOMItem("18848"),
-                selectDOMItem("18838"),
-                selectDOMItem("245"),
-                selectDOMItem("346"),
-                selectDOMItem("3090"),
-                selectDOMItem("120"),
-                selectDOMItem("164"),
-                selectDOMItem("248"),
-                selectDOMItem("260"),
-                selectDOMItem("290"),
-                selectDOMItem("217"),
-                selectDOMItem("396"),
-                selectDOMItem("221"),
-                selectDOMItem("3083"),
-                selectDOMItem("3206"),
-                selectDOMItem("18769"),
-                selectDOMItem("42"),
-                selectDOMItem("297"),
-                selectDOMItem("56"),
-                selectDOMItem("172"),
-                selectDOMItem("446"),
-                selectDOMItem("430"),
-                selectDOMItem("431"),
-            ];
-        });
-        yield browser.close();
-        const keyValuePairs = {};
-        tableData.forEach((item) => {
-            const key = Object.keys(item)[0];
-            const value = item[key];
-            keyValuePairs[key] = value;
-        });
-        return keyValuePairs;
+        try {
+            yield page.waitForSelector("#data_table_row_18848", { timeout: 30000 });
+            const tableData = yield page.evaluate(() => {
+                function selectDOMItem(number) {
+                    var _a, _b;
+                    const title = (_a = document.querySelector(`#data_table_row_${number} td`)) === null || _a === void 0 ? void 0 : _a.textContent;
+                    const value = (_b = document.querySelector(`#data_table_row_${number} .ttm-value`)) === null || _b === void 0 ? void 0 : _b.textContent;
+                    return { [title || "N/A"]: value };
+                }
+                return [
+                    selectDOMItem("18848"),
+                    selectDOMItem("18838"),
+                    selectDOMItem("245"),
+                    selectDOMItem("346"),
+                    selectDOMItem("3090"),
+                    selectDOMItem("120"),
+                    selectDOMItem("164"),
+                    selectDOMItem("248"),
+                    selectDOMItem("260"),
+                    selectDOMItem("290"),
+                    selectDOMItem("217"),
+                    selectDOMItem("396"),
+                    selectDOMItem("221"),
+                    selectDOMItem("3083"),
+                    selectDOMItem("3206"),
+                    selectDOMItem("18769"),
+                    selectDOMItem("42"),
+                    selectDOMItem("297"),
+                    selectDOMItem("56"),
+                    selectDOMItem("172"),
+                    selectDOMItem("446"),
+                    selectDOMItem("430"),
+                    selectDOMItem("431"),
+                ];
+            });
+            yield browser.close();
+            const keyValuePairs = {};
+            tableData.forEach((item) => {
+                const key = Object.keys(item)[0];
+                const value = item[key];
+                keyValuePairs[key] = value;
+            });
+            return keyValuePairs;
+        }
+        catch (error) {
+            console.log(error);
+        }
     });
 }
 function getFinancials(req, res) {

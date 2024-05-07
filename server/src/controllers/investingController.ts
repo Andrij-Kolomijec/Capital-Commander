@@ -73,58 +73,61 @@ async function getRestOfFinancials(req: Request, res: Response) {
   });
 
   const page: Page = await createPage(browser, ticker + "/financials");
+  try {
+    await page.waitForSelector("#data_table_row_18848", { timeout: 30000 });
 
-  await page.waitForSelector("#data_table_row_18848", { timeout: 30000 });
+    const tableData = await page.evaluate(() => {
+      function selectDOMItem(number: string) {
+        const title = document.querySelector(
+          `#data_table_row_${number} td`
+        )?.textContent;
+        const value = document.querySelector(
+          `#data_table_row_${number} .ttm-value`
+        )?.textContent;
+        return { [title || "N/A"]: value };
+      }
 
-  const tableData = await page.evaluate(() => {
-    function selectDOMItem(number: string) {
-      const title = document.querySelector(
-        `#data_table_row_${number} td`
-      )?.textContent;
-      const value = document.querySelector(
-        `#data_table_row_${number} .ttm-value`
-      )?.textContent;
-      return { [title || "N/A"]: value };
-    }
+      return [
+        selectDOMItem("18848"),
+        selectDOMItem("18838"),
+        selectDOMItem("245"),
+        selectDOMItem("346"),
+        selectDOMItem("3090"),
+        selectDOMItem("120"),
+        selectDOMItem("164"),
+        selectDOMItem("248"),
+        selectDOMItem("260"),
+        selectDOMItem("290"),
+        selectDOMItem("217"),
+        selectDOMItem("396"),
+        selectDOMItem("221"),
+        selectDOMItem("3083"),
+        selectDOMItem("3206"),
+        selectDOMItem("18769"),
+        selectDOMItem("42"),
+        selectDOMItem("297"),
+        selectDOMItem("56"),
+        selectDOMItem("172"),
+        selectDOMItem("446"),
+        selectDOMItem("430"),
+        selectDOMItem("431"),
+      ];
+    });
 
-    return [
-      selectDOMItem("18848"),
-      selectDOMItem("18838"),
-      selectDOMItem("245"),
-      selectDOMItem("346"),
-      selectDOMItem("3090"),
-      selectDOMItem("120"),
-      selectDOMItem("164"),
-      selectDOMItem("248"),
-      selectDOMItem("260"),
-      selectDOMItem("290"),
-      selectDOMItem("217"),
-      selectDOMItem("396"),
-      selectDOMItem("221"),
-      selectDOMItem("3083"),
-      selectDOMItem("3206"),
-      selectDOMItem("18769"),
-      selectDOMItem("42"),
-      selectDOMItem("297"),
-      selectDOMItem("56"),
-      selectDOMItem("172"),
-      selectDOMItem("446"),
-      selectDOMItem("430"),
-      selectDOMItem("431"),
-    ];
-  });
+    await browser.close();
 
-  await browser.close();
+    const keyValuePairs: { [key: string]: string | null | undefined } = {};
 
-  const keyValuePairs: { [key: string]: string | null | undefined } = {};
+    tableData.forEach((item) => {
+      const key = Object.keys(item)[0];
+      const value = item[key];
+      keyValuePairs[key] = value;
+    });
 
-  tableData.forEach((item) => {
-    const key = Object.keys(item)[0];
-    const value = item[key];
-    keyValuePairs[key] = value;
-  });
-
-  return keyValuePairs;
+    return keyValuePairs;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function getFinancials(req: Request, res: Response) {
