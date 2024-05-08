@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFinancials = exports.getStockTickers = void 0;
+const axios_1 = __importDefault(require("axios"));
 const puppeteer_extra_1 = __importDefault(require("puppeteer-extra"));
 const calculateMedian_1 = __importDefault(require("../utils/calculateMedian"));
 const createPage_1 = __importDefault(require("../utils/createPage"));
@@ -20,16 +21,18 @@ const scrapePage_1 = require("../utils/scrapePage");
 function getStockTickers(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const response = yield fetch(process.env.NASDAQ);
-            if (!response.ok) {
+            const response = yield axios_1.default.get(process.env.NASDAQ);
+            if (response.status !== 200) {
                 const error = new Error("An error occurred while fetching data.");
                 throw error;
             }
-            const tickers = yield response.json();
+            const tickers = response.data;
             res.status(200).json({ tickers });
         }
         catch (error) {
-            res.status(500).json({ error });
+            if (error instanceof Error) {
+                res.status(500).json({ error: error.message });
+            }
         }
     });
 }

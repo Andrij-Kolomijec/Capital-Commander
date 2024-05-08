@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import axios from "axios";
 import puppeteer from "puppeteer-extra";
 import { type Page } from "puppeteer";
 import calculateMedian from "../utils/calculateMedian";
@@ -7,18 +8,20 @@ import { scrapeMacrotrends } from "../utils/scrapePage";
 
 export async function getStockTickers(req: Request, res: Response) {
   try {
-    const response = await fetch(process.env.NASDAQ!);
+    const response = await axios.get(process.env.NASDAQ!);
 
-    if (!response.ok) {
+    if (response.status !== 200) {
       const error = new Error("An error occurred while fetching data.");
       throw error;
     }
 
-    const tickers = await response.json();
+    const tickers = response.data;
 
     res.status(200).json({ tickers });
   } catch (error) {
-    res.status(500).json({ error });
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    }
   }
 }
 
