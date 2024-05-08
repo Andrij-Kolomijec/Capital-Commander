@@ -1,7 +1,7 @@
 import express from "express";
 
 import {
-  // getFinancials,
+  getFinancials,
   getStockTickers,
 } from "../controllers/investingController";
 import requireAuth from "../middleware/requireAuth";
@@ -12,6 +12,6 @@ investingRoutes.use(requireAuth as any);
 
 investingRoutes.get("/stocks", getStockTickers);
 
-// investingRoutes.get("/stocks/:ticker", getFinancials);
+investingRoutes.get("/stocks/:ticker", getFinancials);
 
 export default investingRoutes;
