@@ -69,7 +69,7 @@ export default function CalculatedFinancials(props: FinancialsProps) {
           </tr>
           <tr>
             <td>Total dividend</td>
-            <td>{totalDividend || "N/A"}</td>
+            <td>{totalDividend}</td>
           </tr>
           <tr>
             <td>Estimated price + dividend</td>
@@ -105,7 +105,7 @@ export default function CalculatedFinancials(props: FinancialsProps) {
                 <td>{index + 1 || "N/A"}</td>
                 <td>{row.totalEquityPerShare || "N/A"}</td>
                 <td>{row.eps || "N/A"}</td>
-                <td>{row.dividend || "N/A"}</td>
+                <td>{row.dividend}</td>
               </tr>
             );
           })}

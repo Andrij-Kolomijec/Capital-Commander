@@ -50,10 +50,14 @@ export default function FinancialsTable({ stock }: { stock: string }) {
 
   financials["Goodwill / Total Equity"] =
     Math.round(
-      (+(financials["Goodwill"] as string).replace(",", "") /
+      ((+(financials["Goodwill"] as string).replace(",", "") || 0) /
         +(financials["Total Stockholders Equity"] as string).replace(",", "")) *
         100
     ) / 100;
+
+  financials["ROIC > WACC"] = `${financials["ROIC %"]} ${
+    +financials["ROIC %"] > +financials["WACC %"] ? ">" : "<"
+  } ${financials["WACC %"]}`;
 
   return (
     <>
@@ -108,19 +112,24 @@ export default function FinancialsTable({ stock }: { stock: string }) {
             <td
               style={{
                 color:
-                  +tickerInfo.lastsale.replace("$", "") > 30 ? "green" : "red",
+                  +tickerInfo.lastsale.replace("$", "") >= 30 ? "green" : "red",
               }}
             >
               {tickerInfo.lastsale}
             </td>
           </tr>
-          {Object.keys(financials).map((key) => {
-            return (
-              <tr key={key}>
-                <FinancialsRow name={key} item={financials[key]} />
-              </tr>
-            );
-          })}
+          {Object.keys(financials)
+            .filter(
+              (key) =>
+                key !== "WACC %" && key !== "ROIC %" && key !== "Goodwill"
+            )
+            .map((key) => {
+              return (
+                <tr key={key}>
+                  <FinancialsRow name={key} item={financials[key]} />
+                </tr>
+              );
+            })}
         </tbody>
       </table>
       <CalculatedFinancials

@@ -24,6 +24,17 @@ export default function FinancialsRow({ name, item }: FinancialsRowProps) {
     item = item.replace(",", "");
   }
 
+  if (name === "ROIC > WACC") {
+    return (
+      <>
+        <td>{name}</td>
+        <td style={{ color: (item as string).includes(">") ? good : bad }}>
+          {item}
+        </td>
+      </>
+    );
+  }
+
   item = Number(item);
 
   switch (name) {
@@ -31,9 +42,9 @@ export default function FinancialsRow({ name, item }: FinancialsRowProps) {
       style.color =
         item! > 8 && item < 10 ? good : item < 15 ? acceptable : bad;
       break;
-    // case "Shiller PE Ratio":
-    //   style.color = item > 8 && item < 10 ? good : item < 15 ? acceptable : bad;
-    //   break;
+    case "Shiller PE Ratio":
+      style.color = item < 15 ? good : item < 20 ? acceptable : bad;
+      break;
     case "Altman Z-Score":
       style.color = item > 3 ? good : bad;
       break;
@@ -49,9 +60,9 @@ export default function FinancialsRow({ name, item }: FinancialsRowProps) {
     case "Price-to-Free-Cash-Flow":
       style.color = item < 10 ? good : item < 15 ? acceptable : bad;
       break;
-    // case "PS Ratio":
-    //   style.color = item > 4 ? good : bad;
-    //   break;
+    case "PS Ratio":
+      style.color = item < 3 ? good : bad;
+      break;
     case "Price-to-Tangible-Book":
       style.color = item < 1.5 ? good : bad;
       break;
@@ -61,9 +72,9 @@ export default function FinancialsRow({ name, item }: FinancialsRowProps) {
     case "Dividend Payout Ratio":
       style.color = item < 1 ? good : bad;
       break;
-    // case "Shares Buyback Ratio %":
-    //   style.color = item > 4 ? good : bad;
-    //   break;
+    case "Shares Buyback Ratio %":
+      style.color = item > 0 ? good : bad;
+      break;
     case "ROE %":
       style.color = item > 17 ? good : bad;
       break;
@@ -79,17 +90,16 @@ export default function FinancialsRow({ name, item }: FinancialsRowProps) {
     case "Debt-to-Equity":
       style.color = item < 1 ? good : item < 2 ? acceptable : bad;
       break;
-    // case "Net Margin %":
-    //   style.color = item > 4 ? good : bad;
-    //   break;
-    // case "EPS without NRI":
-    //   style.color = item > 4 ? good : bad;
-    //   break;
-    case "WACC %":
-      style.color = bad;
+    case "Net Margin %":
+      style.color =
+        item > 10 && item < 20
+          ? good
+          : item > 5 && item < 30
+          ? acceptable
+          : bad;
       break;
-    case "ROIC %":
-      style.color = good;
+    case "EPS without NRI":
+      style.color = item > 5 ? good : item > 3 ? acceptable : bad;
       break;
   }
 

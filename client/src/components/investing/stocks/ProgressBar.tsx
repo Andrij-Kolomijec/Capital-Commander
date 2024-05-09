@@ -35,7 +35,7 @@ export default function ProgressBar({
 
   useEffect(() => {
     if (isFetching) {
-      const fillDuration = 12;
+      const fillDuration = 15;
       const interval = setInterval(() => {
         setProgress((prevProgress) => prevProgress + 100 / fillDuration);
       }, 1000);
@@ -44,7 +44,7 @@ export default function ProgressBar({
         clearInterval(interval);
       };
     } else if (!canSubmit && !isFetching) {
-      const fillDuration = 48;
+      const fillDuration = 45;
       const interval = setInterval(() => {
         setProgress((prevProgress) => prevProgress + 100 / fillDuration);
       }, 1000);
