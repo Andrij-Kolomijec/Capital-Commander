@@ -28,6 +28,7 @@ async function getPEMedian(req: Request, res: Response) {
   const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: null,
+    args: ["--no-sandbox"],
   });
 
   const page: Page = await createPage(browser, ticker + "/ticker/pe-ratio");
@@ -46,6 +47,7 @@ async function getROEMedian(req: Request, res: Response) {
   const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: null,
+    args: ["--no-sandbox"],
   });
 
   const page: Page = await createPage(browser, ticker + "/ticker/roe");
@@ -70,6 +72,7 @@ async function getRestOfFinancials(req: Request, res: Response) {
   const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: null,
+    args: ["--no-sandbox"],
   });
 
   const page: Page = await createPage(browser, ticker + "/financials");
