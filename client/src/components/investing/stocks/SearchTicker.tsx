@@ -37,8 +37,8 @@ export default function SearchTicker({ stock, setStock }: SearchProps) {
   const { data: history } = useQuery<string[]>({
     queryKey: ["history"],
     queryFn: () => [],
-    staleTime: 1000 * 60 * 60 * 24 * 2,
-    // gcTime: 1000 * 60 * 60 * 24 * 2,
+    staleTime: 1000 * 60 * 60 * 2,
+    gcTime: 1000 * 60 * 60 * 2,
     placeholderData: [],
   });
 

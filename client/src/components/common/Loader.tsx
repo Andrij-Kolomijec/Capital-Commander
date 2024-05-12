@@ -1,8 +1,10 @@
 import classes from "./Loader.module.css";
 
-export default function Loader() {
+type LoaderProps = React.HTMLAttributes<HTMLDivElement>;
+
+export default function Loader(props: LoaderProps) {
   return (
-    <div className={classes.wrapper}>
+    <div {...props} className={classes.wrapper}>
       <span className={classes.loader}></span>
     </div>
   );

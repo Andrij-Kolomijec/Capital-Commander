@@ -48,7 +48,7 @@ export default function ProgressBar({
       };
     } else if (!canSubmit && !isFetching) {
       const fetchingDuration = Date.now() - fetchStartTime!;
-      const fillDuration = 60 - fetchingDuration / 1000;
+      const fillDuration = 59 - fetchingDuration / 1000;
       const interval = setInterval(() => {
         setProgress((prevProgress) => prevProgress + 100 / fillDuration);
       }, 1000);

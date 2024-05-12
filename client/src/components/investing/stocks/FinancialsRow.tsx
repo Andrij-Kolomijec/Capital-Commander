@@ -7,9 +7,9 @@ type FinancialsRowProps = {
 
 export default function FinancialsRow({ name, item }: FinancialsRowProps) {
   const style = { color: "black" };
-  const good = "green";
-  const acceptable = "orange";
-  const bad = "red";
+  const good = "rgb(0, 100, 0)";
+  const acceptable = "rgb(180, 100, 0)";
+  const bad = "rgb(140, 0, 0)";
 
   if (item === null || item === undefined || item === "-") {
     return (
