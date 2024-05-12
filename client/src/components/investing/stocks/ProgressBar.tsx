@@ -1,7 +1,6 @@
-// import classes from './ProgressBar.module.css';
-
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import classes from "./ProgressBar.module.css";
 import { getStockData } from "../../../utils/http/investing";
 
 type ProgressBarProps = {
@@ -16,6 +15,7 @@ export default function ProgressBar({
   setCanSubmit,
 }: ProgressBarProps) {
   const [progress, setProgress] = useState(0);
+  const [fetchStartTime, setFetchStartTime] = useState<number | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -27,7 +27,10 @@ export default function ProgressBar({
 
   const { isFetching } = useQuery({
     queryKey: ["stocks", stock],
-    queryFn: () => getStockData(stock),
+    queryFn: () => {
+      setFetchStartTime(Date.now());
+      return getStockData(stock);
+    },
     gcTime: 1000 * 60 * 60 * 2,
     staleTime: 1000 * 60 * 60 * 2,
     placeholderData: [],
@@ -44,7 +47,8 @@ export default function ProgressBar({
         clearInterval(interval);
       };
     } else if (!canSubmit && !isFetching) {
-      const fillDuration = 45;
+      const fetchingDuration = Date.now() - fetchStartTime!;
+      const fillDuration = 60 - fetchingDuration / 1000;
       const interval = setInterval(() => {
         setProgress((prevProgress) => prevProgress + 100 / fillDuration);
       }, 1000);
@@ -52,5 +56,5 @@ export default function ProgressBar({
     }
   }, [isFetching]);
 
-  return <progress value={progress} max="100" />;
+  return <progress className={classes.progress} value={progress} max="100" />;
 }

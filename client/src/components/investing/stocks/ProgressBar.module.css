@@ -1,0 +1,28 @@
+.progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  -webkit-appearance: none;
+  accent-color: var(--active);
+  height: 10px;
+  border-radius: 3px;
+  background-color: var(--bgColor);
+  border: none;
+}
+
+.progress::-moz-progress-bar {
+  background-color: var(--active);
+}
+
+.progress::-webkit-progress-value {
+  background-color: var(--active);
+  border-radius: 3px;
+  transition: width 1s ease-in;
+}
+
+.progress::-webkit-progress-bar {
+  background-color: var(--bgColor);
+  border-radius: 3px;
+}
