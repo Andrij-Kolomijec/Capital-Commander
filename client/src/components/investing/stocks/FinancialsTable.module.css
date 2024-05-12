@@ -1,6 +1,5 @@
 .wrapper {
   display: flex;
-  align-items: flex-start;
   gap: 2rem;
   height: fit-content;
   margin: 1rem;
@@ -8,4 +7,10 @@
   border-radius: 10px;
   background-color: rgba(182, 185, 154, 0.3);
   box-shadow: var(--shadow);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
 }
