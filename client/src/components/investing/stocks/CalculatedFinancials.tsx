@@ -6,11 +6,11 @@ export default function CalculatedFinancials(props: FinancialsProps) {
   let { price, totalStockholdersEquity, sharesOutstanding } = props;
 
   price = +(price as string).replace("$", "");
-  totalStockholdersEquity = +(totalStockholdersEquity as string).replace(
+  totalStockholdersEquity = +(totalStockholdersEquity as string)?.replace(
     ",",
     ""
   );
-  sharesOutstanding = +(sharesOutstanding as string).replace(",", "");
+  sharesOutstanding = +(sharesOutstanding as string)?.replace(",", "");
 
   const totalEquityPerShare =
     Math.round((totalStockholdersEquity / sharesOutstanding) * 100) / 100;
@@ -53,7 +53,7 @@ export default function CalculatedFinancials(props: FinancialsProps) {
     Math.round(((profitIn7YearsInPercent + 1) ** (1 / 7) - 1) * 10000) / 10000;
 
   return (
-    <>
+    <div className={classes.wrapper}>
       <table className={classes["table-first"]}>
         <thead>
           <tr>
@@ -111,6 +111,6 @@ export default function CalculatedFinancials(props: FinancialsProps) {
           })}
         </tbody>
       </table>
-    </>
+    </div>
   );
 }

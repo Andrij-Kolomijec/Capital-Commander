@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import classes from "./SearchTicker.module.css";
 import { getTickers } from "../../../utils/http/investing";
 import ProgressBar from "./ProgressBar";
@@ -24,13 +24,33 @@ export default function SearchTicker({ stock, setStock }: SearchProps) {
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [canSubmit, setCanSubmit] = useState(true);
-  const [history, setHistory] = useState<string[]>([]);
+
+  const queryClient = useQueryClient();
 
   const { data } = useQuery({
     queryKey: ["tickers"],
     queryFn: getTickers,
     staleTime: 1000 * 60 * 60 * 24 * 2,
     placeholderData: [],
+  });
+
+  const { data: history } = useQuery<string[]>({
+    queryKey: ["history"],
+    queryFn: () => [],
+    staleTime: 1000 * 60 * 60 * 24 * 2,
+    // gcTime: 1000 * 60 * 60 * 24 * 2,
+    placeholderData: [],
+  });
+
+  const { mutate } = useMutation({
+    mutationFn: async (ticker: string) => {
+      await queryClient.cancelQueries({
+        queryKey: ["history"],
+      });
+      const prevHistory = queryClient.getQueryData<string[]>(["history"]) || [];
+      const newHistory = [ticker, ...prevHistory.filter((i) => i !== ticker)];
+      return queryClient.setQueryData(["history"], newHistory);
+    },
   });
 
   function handleSuggest(e: React.ChangeEvent<HTMLInputElement>) {
@@ -55,22 +75,26 @@ export default function SearchTicker({ stock, setStock }: SearchProps) {
     symbol: string
   ) {
     e.preventDefault();
-    if (canSubmit || history.includes(symbol.toUpperCase())) {
+    if (canSubmit || history?.includes(symbol.toUpperCase())) {
       setInputValue(symbol.toUpperCase());
       setStock(symbol.toUpperCase().replace("/", "."));
       setSuggestions([]);
-      !history.includes(symbol.toUpperCase()) && setCanSubmit(false);
-      setHistory((prev) => [
-        symbol.toUpperCase(),
-        ...prev.filter((i) => i !== symbol.toLocaleUpperCase()),
-      ]);
+      !history?.includes(symbol.toUpperCase()) && setCanSubmit(false);
+      mutate(symbol);
     } else {
       alert("Please wait a minute before submitting another request!");
     }
   }
 
   return (
-    <>
+    <div className={classes.wrapper}>
+      {!canSubmit && (
+        <ProgressBar
+          stock={stock}
+          canSubmit={canSubmit}
+          setCanSubmit={setCanSubmit}
+        />
+      )}
       <form
         className={classes.form}
         onSubmit={(e) => handleSubmit(e, inputValue)}
@@ -96,22 +120,18 @@ export default function SearchTicker({ stock, setStock }: SearchProps) {
           </ul>
         )}
       </form>
-      {!canSubmit && (
-        <ProgressBar
-          stock={stock}
-          canSubmit={canSubmit}
-          setCanSubmit={setCanSubmit}
-        />
+      {history!.length > 0 && (
+        <ul className={classes.history}>
+          <h4>Search history</h4>
+          {history!.map((ticker) => {
+            return (
+              <li key={ticker} onClick={(e) => handleSubmit(e, ticker)}>
+                {ticker}
+              </li>
+            );
+          })}
+        </ul>
       )}
-      <ul>
-        {history.map((ticker) => {
-          return (
-            <li key={ticker} onClick={(e) => handleSubmit(e, ticker)}>
-              {ticker}
-            </li>
-          );
-        })}
-      </ul>
-    </>
+    </div>
   );
 }

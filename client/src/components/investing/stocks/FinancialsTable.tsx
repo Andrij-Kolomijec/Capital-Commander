@@ -50,8 +50,11 @@ export default function FinancialsTable({ stock }: { stock: string }) {
 
   financials["Goodwill / Total Equity"] =
     Math.round(
-      ((+(financials["Goodwill"] as string).replace(",", "") || 0) /
-        +(financials["Total Stockholders Equity"] as string).replace(",", "")) *
+      ((+(financials["Goodwill"] as string)?.replace(",", "") || 0) /
+        +(financials["Total Stockholders Equity"] as string)?.replace(
+          ",",
+          ""
+        )) *
         100
     ) / 100;
 
@@ -60,7 +63,7 @@ export default function FinancialsTable({ stock }: { stock: string }) {
   } ${financials["WACC %"]}`;
 
   return (
-    <>
+    <div className={classes.wrapper}>
       <table className={classes.table}>
         <tbody>
           <tr>
@@ -140,6 +143,6 @@ export default function FinancialsTable({ stock }: { stock: string }) {
         ROEMedian={financials["ROE (10y Median)"]}
         dividendPayoutRatio={financials["Dividend Payout Ratio"]}
       />
-    </>
+    </div>
   );
 }

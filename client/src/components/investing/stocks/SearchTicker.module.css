@@ -3,10 +3,24 @@
   flex-direction: column;
   width: 30vw;
   white-space: nowrap;
+  position: relative;
 }
 
 .form input {
+  background-color: var(--bgColor);
+  border: 1px solid;
+  border-radius: 2px;
+  box-shadow: var(--shadow);
   padding: 2px 5px;
+}
+
+.form input:focus {
+  outline: 1px dashed var(--active);
+}
+
+.form label {
+  font-size: small;
+  margin-left: -1rem;
 }
 
 .form ul {
@@ -17,4 +31,36 @@
 
 .form li {
   list-style-type: none;
+}
+
+.suggestions {
+  background-color: var(--bgColor);
+  width: 100%;
+  position: absolute;
+  top: 36px;
+}
+
+.suggestions li {
+  padding: 1px 4px;
+}
+
+.suggestions li:hover {
+  cursor: pointer;
+  background-color: var(--miscColor);
+}
+
+.history {
+  position: absolute;
+  top: 0;
+  right: -5vw;
+}
+
+.history > li {
+  list-style-type: none;
+  text-align: center;
+}
+
+.history > li:hover {
+  cursor: pointer;
+  color: var(--active);
 }
