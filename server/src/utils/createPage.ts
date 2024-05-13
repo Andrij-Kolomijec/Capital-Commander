@@ -44,7 +44,7 @@ export default async function createPage(
   });
 
   await page.goto(
-    (url.includes("financials")
+    (url.includes("financials") || url.includes("term/pettm/")
       ? process.env.GURUFOCUS
       : process.env.MACROTRENDS) + url,
     {

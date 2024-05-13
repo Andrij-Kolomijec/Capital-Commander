@@ -21,7 +21,7 @@ export default function ProgressBar({
     const timer = setTimeout(() => {
       setCanSubmit(true);
       setProgress(0);
-    }, 60000);
+    }, 40000);
     return () => clearTimeout(timer);
   }, [canSubmit]);
 
@@ -48,7 +48,7 @@ export default function ProgressBar({
       };
     } else if (!canSubmit && !isFetching) {
       const fetchingDuration = Date.now() - fetchStartTime!;
-      const fillDuration = 59 - fetchingDuration / 1000;
+      const fillDuration = 39 - fetchingDuration / 1000;
       const interval = setInterval(() => {
         setProgress((prevProgress) => prevProgress + 100 / fillDuration);
       }, 1000);

@@ -36,3 +36,18 @@ export async function scrapeMacrotrends(page: Page, browser: Browser) {
 
   return { tableData, filteredTableData };
 }
+
+export async function scrapeGurufocus(page: Page, browser: Browser) {
+  await page.waitForSelector("#pettm_tools", { timeout: 30000 });
+
+  const tableData = await page.evaluate(() => {
+    const item = document.querySelector("#pettm_tools strong")?.textContent;
+    const startIndex = item?.indexOf("Med:");
+    const endIndex = item?.indexOf("Max:");
+    return +item?.slice(startIndex! + 4, endIndex! - 1).trim()!;
+  });
+
+  await browser.close();
+
+  return { tableData };
+}

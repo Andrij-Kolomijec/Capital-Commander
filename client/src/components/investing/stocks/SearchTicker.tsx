@@ -82,7 +82,7 @@ export default function SearchTicker({ stock, setStock }: SearchProps) {
       !history?.includes(symbol.toUpperCase()) && setCanSubmit(false);
       mutate(symbol);
     } else {
-      alert("Please wait a minute before submitting another request!");
+      alert("Please wait twenty seconds before submitting another ticker.");
     }
   }
 

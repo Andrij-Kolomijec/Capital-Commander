@@ -3,7 +3,7 @@ import puppeteer from "puppeteer-extra";
 import { type Page } from "puppeteer";
 import calculateMedian from "../utils/calculateMedian";
 import createPage from "../utils/createPage";
-import { scrapeMacrotrends } from "../utils/scrapePage";
+import { scrapeGurufocus, scrapeMacrotrends } from "../utils/scrapePage";
 
 export async function getStockTickers(req: Request, res: Response) {
   try {
@@ -32,11 +32,11 @@ async function getPEMedian(req: Request, res: Response) {
     ignoreDefaultArgs: ["--disable-extensions"],
   });
 
-  const page: Page = await createPage(browser, ticker + "/ticker/pe-ratio");
+  const page: Page = await createPage(browser, "term/pettm/" + ticker);
 
   try {
-    const { filteredTableData } = await scrapeMacrotrends(page, browser);
-    return { ["PE Ratio (10y Median)"]: calculateMedian(filteredTableData) };
+    const { tableData } = await scrapeGurufocus(page, browser);
+    return { ["PE Ratio (10y Median)"]: tableData };
   } catch (error) {
     console.log(error);
   }
@@ -78,7 +78,10 @@ async function getRestOfFinancials(req: Request, res: Response) {
     ignoreDefaultArgs: ["--disable-extensions"],
   });
 
-  const page: Page = await createPage(browser, ticker + "/financials");
+  const page: Page = await createPage(
+    browser,
+    "stock/" + ticker + "/financials"
+  );
   try {
     await page.waitForSelector("#data_table_row_18848", { timeout: 30000 });
 

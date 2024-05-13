@@ -67,12 +67,11 @@ export default function About() {
               Macrotrends
             </a>{" "}
             websites (in accordance with the terms and conditions and robots.txt
-            files). Puppeteer scrapes Macrotrends twice in short window of time,
-            which prompts website's human confirmation captcha on the third try.
-            To avoid triggering it I have limited number of scraping attempts in
-            a minute, which is tracked by a progress bar. Already searched
-            stocks are stored in cache using Tanstack Query (page refresh resets
-            the cache).
+            files). Scraping Macrotrends triggers website's human confirmation
+            captcha after more than three scraping requests per minute. To avoid
+            this, number of scraping attempts in a minute is limited, which is
+            tracked by a progress bar. Already searched stocks are stored in
+            cache using Tanstack Query (page refresh resets the cache).
           </li>
         </ul>
       </Reveal>
