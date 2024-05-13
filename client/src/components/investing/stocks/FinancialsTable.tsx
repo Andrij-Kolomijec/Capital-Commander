@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
+import { Tooltip } from "react-tooltip";
 import classes from "./FinancialsTable.module.css";
 import Loader from "../../common/Loader";
 import { getStockData, getTickers } from "../../../utils/http/investing";
@@ -7,6 +8,10 @@ import { TickerProps } from "./SearchTicker";
 import CalculatedFinancials from "./CalculatedFinancials";
 import FinancialsRow from "./FinancialsRow";
 import ChartROE, { type ChartROEProps } from "./ChartROE";
+import {
+  fundamentalsColorsExplanation,
+  getTooltipAttributes,
+} from "../../../utils/tooltips";
 
 export type FinancialsProps = Record<string, string | number>;
 
@@ -123,6 +128,7 @@ export default function FinancialsTable({ stock }: { stock: string }) {
               style={{
                 color: +tickerInfo.marketCap > 500000000 ? green : red,
               }}
+              {...getTooltipAttributes(fundamentalsColorsExplanation.marketCap)}
             >
               {(+tickerInfo.marketCap).toLocaleString("en-US", {
                 style: "currency",
@@ -138,6 +144,7 @@ export default function FinancialsTable({ stock }: { stock: string }) {
                 color:
                   +tickerInfo.lastsale.replace("$", "") >= 30 ? green : red,
               }}
+              {...getTooltipAttributes(fundamentalsColorsExplanation.lastsale)}
             >
               {tickerInfo.lastsale}
             </td>
@@ -165,8 +172,9 @@ export default function FinancialsTable({ stock }: { stock: string }) {
           ROEMedian={financials["ROE (10y Median)"]}
           dividendPayoutRatio={financials["Dividend Payout Ratio"]}
         />
-        <ChartROE ROE={ROE.ROE} />
+        {ROE && <ChartROE ROE={ROE.ROE} />}
       </div>
+      <Tooltip id="tooltip" />
     </motion.div>
   );
 }

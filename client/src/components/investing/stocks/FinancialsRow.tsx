@@ -1,4 +1,8 @@
-// import classes from './FinancialsRow.module.css';
+import {
+  fundamentalParametersExplanation,
+  fundamentalsColorsExplanation,
+  getTooltipAttributes,
+} from "../../../utils/tooltips";
 
 type FinancialsRowProps = {
   name: string;
@@ -6,7 +10,20 @@ type FinancialsRowProps = {
 };
 
 export default function FinancialsRow({ name, item }: FinancialsRowProps) {
-  const style = { color: "black" };
+  const tooltipExplanationProps = getTooltipAttributes(
+    fundamentalParametersExplanation[name]
+  );
+
+  const tooltipValuesProps = getTooltipAttributes(
+    fundamentalsColorsExplanation[name]
+  );
+
+  const style = {
+    color: "black",
+    width: "fit-content",
+    minWidth: "3rem",
+    // cursor: "help",
+  };
   const good = "rgb(0, 100, 0)";
   const acceptable = "rgb(180, 100, 0)";
   const bad = "rgb(140, 0, 0)";
@@ -14,8 +31,8 @@ export default function FinancialsRow({ name, item }: FinancialsRowProps) {
   if (item === null || item === undefined || item === "-") {
     return (
       <>
-        <td>{name}</td>
-        <td>-</td>
+        <td {...tooltipExplanationProps}>{name}</td>
+        <td {...tooltipValuesProps}>-</td>
       </>
     );
   }
@@ -27,8 +44,11 @@ export default function FinancialsRow({ name, item }: FinancialsRowProps) {
   if (name === "ROIC > WACC") {
     return (
       <>
-        <td>{name}</td>
-        <td style={{ color: (item as string).includes(">") ? good : bad }}>
+        <td {...tooltipExplanationProps}>{name}</td>
+        <td
+          style={{ color: (item as string).includes(">") ? good : bad }}
+          {...tooltipValuesProps}
+        >
           {item}
         </td>
       </>
@@ -105,8 +125,12 @@ export default function FinancialsRow({ name, item }: FinancialsRowProps) {
 
   return (
     <>
-      <td>{name}</td>
-      <td style={style}>{item}</td>
+      <td {...tooltipExplanationProps}>{name}</td>
+      <td>
+        <p style={style} {...tooltipValuesProps}>
+          {item}
+        </p>
+      </td>
     </>
   );
 }

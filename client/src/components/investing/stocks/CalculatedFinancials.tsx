@@ -57,7 +57,11 @@ export default function CalculatedFinancials(props: FinancialsProps) {
       <table className={classes["table-first"]}>
         <thead>
           <tr>
-            <td>
+            <td
+              data-tooltip-id="tooltip"
+              data-tooltip-float={true}
+              data-tooltip-content="Estimates are applicable for companies with stable ROE and predictability of future development. P/E ratio values above 25 are calculated as 25."
+            >
               <b>Estimates</b>
             </td>
           </tr>
