@@ -40,11 +40,11 @@ export default function FinancialsTable({ stock }: { stock: string }) {
   }
 
   if (tickersIsError) {
-    return <p>{(tickersError as Error).message}</p>;
+    return <p className={classes.error}>{(tickersError as Error).message}</p>;
   }
 
   if (isError) {
-    return <p>{(error as Error).message}</p>;
+    return <p className={classes.error}>{(error as Error).message}</p>;
   }
 
   const tickerInfo = tickers.filter(

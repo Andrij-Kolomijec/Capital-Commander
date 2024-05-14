@@ -14,11 +14,10 @@ export async function getTickers() {
   );
 
   if (!response.ok) {
-    const error = new Error(
-      "An error occurred while fetching tickers."
-    ) as FetchError;
+    const info = await response.json();
+    const error = new Error(info.error) as FetchError;
     error.code = response.status;
-    error.info = await response.json();
+    error.info = info;
     throw error;
   }
 
@@ -40,11 +39,10 @@ export async function getStockData(ticker: string) {
   );
 
   if (!response.ok) {
-    const error = new Error(
-      "An error occurred while fetching stock data."
-    ) as FetchError;
+    const info = await response.json();
+    const error = new Error(info.error) as FetchError;
     error.code = response.status;
-    error.info = await response.json();
+    error.info = info;
     throw error;
   }
 
