@@ -10,7 +10,7 @@ export async function getStockTickers(req: Request, res: Response) {
     const response = await fetch(process.env.NASDAQ!);
 
     if (!response.ok) {
-      const error = new Error("An error occurred while fetching data.");
+      const error = new Error("An error occurred while fetching tickers data.");
       throw error;
     }
 
@@ -139,8 +139,19 @@ async function getRestOfFinancials(req: Request, res: Response) {
   }
 }
 
+let lastRunTimestamp: number = 0;
+
 export async function getFinancials(req: Request, res: Response) {
   // await new Promise((resolve) => setTimeout(resolve, 10000));
+  const currentTime = Date.now();
+  const thirtySecondsAgo = currentTime - 30 * 1000;
+  if (lastRunTimestamp > thirtySecondsAgo) {
+    return res
+      .status(429)
+      .json({ error: "Too many requests. Please try again later." });
+  }
+  lastRunTimestamp = currentTime;
+
   const PEMedian = await getPEMedian(req, res);
   const RestOfFinancials = await getRestOfFinancials(req, res);
   const ROEMedian = await getROEMedian(req, res);
