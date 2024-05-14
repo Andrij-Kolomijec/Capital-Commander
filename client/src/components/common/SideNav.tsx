@@ -47,12 +47,27 @@ const variants = {
 export default function SideNav({ children }: { children: React.ReactNode }) {
   const [isOpen, toggleOpen] = useCycle(true, false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [shouldRenderChildren, setShouldRenderChildren] = useState(true);
   const ref = useRef(null);
   const { height } = useDimensions(ref);
 
   const handleSetAnimation = () => {
     setIsAnimating((prevState) => !prevState);
   };
+
+  const onAnimationComplete = () => {
+    if (!isOpen) {
+      setShouldRenderChildren(false);
+    }
+    handleSetAnimation();
+  };
+
+  function handleToggle() {
+    toggleOpen();
+    if (!isOpen) {
+      setShouldRenderChildren(true);
+    }
+  }
 
   return (
     <motion.nav
@@ -67,10 +82,10 @@ export default function SideNav({ children }: { children: React.ReactNode }) {
         className={classes.background}
         variants={sidebar}
         onAnimationStart={handleSetAnimation}
-        onAnimationComplete={handleSetAnimation}
+        onAnimationComplete={onAnimationComplete}
       />
-      <MenuToggle toggle={toggleOpen} disable={isAnimating} />
-      {children}
+      <MenuToggle toggle={handleToggle} disable={isAnimating} />
+      {shouldRenderChildren && children}
     </motion.nav>
   );
 }
