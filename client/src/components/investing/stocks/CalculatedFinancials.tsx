@@ -1,3 +1,4 @@
+import { getTooltipAttributes } from "../../../utils/tooltips";
 import classes from "./CalculatedFinancials.module.css";
 import { FinancialsProps } from "./FinancialsTable";
 
@@ -54,14 +55,15 @@ export default function CalculatedFinancials(props: FinancialsProps) {
 
   return (
     <div className={classes.wrapper}>
-      <table className={classes["table-first"]}>
+      <table
+        className={classes["table-first"]}
+        {...getTooltipAttributes(
+          "Estimates are applicable for companies with stable ROE and predictability of future development. P/E ratio values above 25 are calculated as 25."
+        )}
+      >
         <thead>
           <tr>
-            <td
-              data-tooltip-id="tooltip"
-              data-tooltip-float={true}
-              data-tooltip-content="Estimates are applicable for companies with stable ROE and predictability of future development. P/E ratio values above 25 are calculated as 25."
-            >
+            <td>
               <b>Estimates</b>
             </td>
           </tr>
