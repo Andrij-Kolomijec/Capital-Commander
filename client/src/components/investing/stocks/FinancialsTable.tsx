@@ -189,7 +189,7 @@ export default function FinancialsTable({ stock }: { stock: string }) {
             <a className="link" href={gurufocus}>
               Gurufocus
             </a>{" "}
-            or{" "}
+            and{" "}
             <a className="link" href={macrotrends}>
               Macrotrends
             </a>

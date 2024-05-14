@@ -130,11 +130,11 @@ export default function SearchTicker({ stock, setStock }: SearchProps) {
         className={classes.form}
         onSubmit={(e) => handleSubmit(e, inputValue)}
       >
-        <label htmlFor="search-ticker">Search for Ticker</label>
+        <label htmlFor="search-ticker">Search Ticker</label>
         <input
           type="text"
           id="search-ticker"
-          placeholder="input ticker symbol"
+          placeholder="MSFT"
           value={inputValue}
           onChange={handleSuggest}
         />
