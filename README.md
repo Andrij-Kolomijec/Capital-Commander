@@ -40,3 +40,4 @@
 ### Future Improvements:
 
 - **Scraping Optimization:** Explore options to overcome limitations in scraping data, such as exploring alternative data sources or subscription services or optimizing scraping algorithms.
+- **Additional Features:** Enhance the investing tab with additional functionalities related to ETFs and options. Expand the range of customizations available to users through the settings tab.
