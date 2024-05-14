@@ -15,8 +15,8 @@ import Investing from "./routes/investing/Investing";
 import InvestingSettings from "./routes/settings/InvestingSettings";
 import Overview from "./routes/investing/Overview";
 import Stocks from "./routes/investing/Stocks";
+import ExchangeTradedFunds from "./routes/investing/ExchangeTradedFunds";
 import Options from "./routes/investing/Options";
-import Commodities from "./routes/investing/Commodities";
 
 const router = createBrowserRouter([
   {
@@ -33,8 +33,8 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <Overview /> },
           { path: "stocks", element: <Stocks /> },
+          { path: "etfs", element: <ExchangeTradedFunds /> },
           { path: "options", element: <Options /> },
-          { path: "commodities", element: <Commodities /> },
         ],
       },
       {

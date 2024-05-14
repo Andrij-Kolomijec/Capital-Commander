@@ -12,10 +12,10 @@ export default function Investing() {
           <LinkNav to="/investing/stocks" text="Stocks" />
         </NavItem>
         <NavItem>
-          <LinkNav to="/investing/options" text="Options" />
+          <LinkNav to="/investing/etfs" text="ETFs" />
         </NavItem>
         <NavItem>
-          <LinkNav to="/investing/commodities" text="Commodities" />
+          <LinkNav to="/investing/options" text="Options" />
         </NavItem>
       </SideNav>
       <Outlet />

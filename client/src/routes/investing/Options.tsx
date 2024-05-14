@@ -1,5 +1,5 @@
-// import classes from './Options.module.css';
+import classes from "./Options.module.css";
 
 export default function Options() {
-  return <div>Options</div>;
+  return <section className={classes.options}>Options</section>;
 }
