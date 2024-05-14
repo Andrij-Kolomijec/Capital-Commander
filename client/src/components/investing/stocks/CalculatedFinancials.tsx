@@ -75,7 +75,7 @@ export default function CalculatedFinancials(props: FinancialsProps) {
           </tr>
           <tr>
             <td>Total dividend</td>
-            <td>{totalDividend}</td>
+            <td>{isNaN(totalDividend) ? "N/A" : totalDividend}</td>
           </tr>
           <tr>
             <td>Estimated price + dividend</td>
@@ -111,7 +111,7 @@ export default function CalculatedFinancials(props: FinancialsProps) {
                 <td>{index + 1 || "N/A"}</td>
                 <td>{row.totalEquityPerShare || "N/A"}</td>
                 <td>{row.eps || "N/A"}</td>
-                <td>{row.dividend}</td>
+                <td>{isNaN(row.dividend) ? "N/A" : row.dividend}</td>
               </tr>
             );
           })}

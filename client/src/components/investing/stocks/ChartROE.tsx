@@ -26,6 +26,10 @@ export type ChartROEProps = {
 };
 
 export default function ChartROE({ ROE }: ChartROEProps) {
+  if (!ROE) {
+    return <p>Graph data unavailable.</p>;
+  }
+
   const options = {};
   const chartData = {
     labels: ROE.map((i) => Object.keys(i)[0]).reverse(),

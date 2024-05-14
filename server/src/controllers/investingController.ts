@@ -152,9 +152,9 @@ export async function getFinancials(req: Request, res: Response) {
   }
   lastRunTimestamp = currentTime;
 
-  const PEMedian = await getPEMedian(req, res);
   const RestOfFinancials = await getRestOfFinancials(req, res);
   const ROEMedian = await getROEMedian(req, res);
+  const PEMedian = await getPEMedian(req, res);
   const financials = { ...PEMedian, ...ROEMedian, ...RestOfFinancials };
   res.status(200).json({ financials });
 }

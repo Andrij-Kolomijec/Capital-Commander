@@ -66,7 +66,7 @@ export default function Expenses() {
   }
 
   if (isFetching && !isFetched) {
-    return <Loader />;
+    return <Loader style={{ marginTop: "15%" }} />;
   }
 
   // working but unusable because of limited row height
