@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { motion, stagger, useAnimate } from "framer-motion";
+import { AnimatePresence, motion, stagger, useAnimate } from "framer-motion";
 import classes from "./PasswordChange.module.css";
 import {
   type PasswordData,
@@ -10,11 +10,13 @@ import {
 import Button from "../common/Button";
 import hide from "../../assets/icons/hide.svg";
 import show from "../../assets/icons/show.svg";
+import Modal from "../common/Modal";
 
 export default function PasswordChange() {
   const [passwordType, setPasswordType] = useState<"password" | "text">(
     "password"
   );
+  const [showModal, setShowModal] = useState(false);
   const [scope, animate] = useAnimate();
   const oldPassword = useRef<HTMLInputElement | null>(null);
   const newPassword = useRef<HTMLInputElement | null>(null);
@@ -23,7 +25,7 @@ export default function PasswordChange() {
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: changePassword,
     onSuccess: () => {
-      alert("Password changed successfully!");
+      setShowModal(true);
     },
   });
 
@@ -61,6 +63,21 @@ export default function PasswordChange() {
 
   return (
     <div className={classes.wrapper}>
+      <AnimatePresence>
+        {showModal && (
+          <Modal
+            title="Password changed successfully."
+            onClose={() => setShowModal(false)}
+          >
+            <Button
+              onClick={() => setShowModal(false)}
+              style={{ width: "50%" }}
+            >
+              Close
+            </Button>
+          </Modal>
+        )}
+      </AnimatePresence>
       <form ref={scope} className={classes.form} onSubmit={handlePassChange}>
         <div className={classes.input}>
           <input

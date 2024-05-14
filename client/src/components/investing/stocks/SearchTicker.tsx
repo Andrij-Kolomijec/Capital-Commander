@@ -3,6 +3,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import classes from "./SearchTicker.module.css";
 import { getTickers } from "../../../utils/http/investing";
 import ProgressBar from "./ProgressBar";
+import Modal from "../../common/Modal";
+import Button from "../../common/Button";
+import { AnimatePresence } from "framer-motion";
 
 type SearchProps = {
   stock: string;
@@ -24,6 +27,7 @@ export default function SearchTicker({ stock, setStock }: SearchProps) {
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [canSubmit, setCanSubmit] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -75,19 +79,46 @@ export default function SearchTicker({ stock, setStock }: SearchProps) {
     symbol: string
   ) {
     e.preventDefault();
-    if (canSubmit || history?.includes(symbol.toUpperCase())) {
-      setInputValue(symbol.toUpperCase());
-      setStock(symbol.toUpperCase().replace("/", "."));
+    symbol = symbol.toUpperCase().replace("/", ".");
+    if ((canSubmit && suggestions.length !== 0) || history?.includes(symbol)) {
+      setInputValue(symbol);
+      setStock(symbol);
       setSuggestions([]);
-      !history?.includes(symbol.toUpperCase()) && setCanSubmit(false);
+      !history?.includes(symbol) && setCanSubmit(false);
       mutate(symbol);
     } else {
-      alert("Please wait twenty seconds before submitting another ticker.");
+      setShowModal(true);
     }
   }
 
   return (
     <div className={classes.wrapper}>
+      <AnimatePresence>
+        {showModal &&
+          (suggestions.length === 0 ? (
+            <Modal title="Invalid Ticker" onClose={() => setShowModal(false)}>
+              <p>Entered symbol does not exist.</p>
+              <Button
+                onClick={() => setShowModal(false)}
+                style={{ width: "50%" }}
+              >
+                Close
+              </Button>
+            </Modal>
+          ) : (
+            <Modal title="Please Wait" onClose={() => setShowModal(false)}>
+              <p>
+                Please wait twenty seconds before submitting another ticker.
+              </p>
+              <Button
+                onClick={() => setShowModal(false)}
+                style={{ width: "50%" }}
+              >
+                Close
+              </Button>
+            </Modal>
+          ))}
+      </AnimatePresence>
       {!canSubmit && (
         <ProgressBar
           stock={stock}
