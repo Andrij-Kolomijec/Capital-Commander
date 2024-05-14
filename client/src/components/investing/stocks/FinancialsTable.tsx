@@ -80,6 +80,8 @@ export default function FinancialsTable({ stock }: { stock: string }) {
 
   const green = "rgb(0, 100, 0)";
   const red = "rgb(140, 0, 0)";
+  const gurufocus = `https://www.gurufocus.com/stock/${stock}`;
+  const macrotrends = `https://www.macrotrends.net/stocks/charts/${stock}/ticker/stock-price-history`;
 
   return (
     <motion.div
@@ -90,6 +92,14 @@ export default function FinancialsTable({ stock }: { stock: string }) {
       exit="hidden"
       className={classes.wrapper}
     >
+      <div
+        className={classes["info-tooltip"]}
+        data-tooltip-id="tooltip"
+        data-tooltip-content="Hover over an item to display addition information."
+        data-tooltip-delay-show={1000}
+      >
+        i
+      </div>
       <table className={classes.table}>
         <tbody>
           <tr>
@@ -173,7 +183,22 @@ export default function FinancialsTable({ stock }: { stock: string }) {
           dividendPayoutRatio={financials["Dividend Payout Ratio"]}
         />
         {ROE && <ChartROE ROE={ROE.ROE} />}
+        <div className={classes.additional}>
+          <p>
+            For additional information, please visit{" "}
+            <a className="link" href={gurufocus}>
+              Gurufocus
+            </a>{" "}
+            or{" "}
+            <a className="link" href={macrotrends}>
+              Macrotrends
+            </a>
+            .
+          </p>
+          <p></p>
+        </div>
       </div>
+
       <Tooltip id="tooltip" />
     </motion.div>
   );

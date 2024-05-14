@@ -64,3 +64,14 @@
   cursor: pointer;
   color: var(--active);
 }
+
+@media (max-width: 1200px) {
+  .form {
+    width: 60vw;
+  }
+  .history {
+    margin-top: 1rem;
+    position: static;
+    text-align: center;
+  }
+}

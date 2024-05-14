@@ -3,3 +3,17 @@
   width: 500px;
   margin-left: -100px;
 }
+
+@media (max-width: 1200px) {
+  .chart {
+    margin-left: 0;
+    height: auto;
+    width: auto;
+  }
+}
+
+@media (max-width: 550px) {
+  .chart {
+    display: none;
+  }
+}

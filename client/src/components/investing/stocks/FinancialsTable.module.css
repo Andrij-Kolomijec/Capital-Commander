@@ -7,6 +7,7 @@
   border-radius: 10px;
   background-color: rgba(182, 185, 154, 0.3);
   box-shadow: var(--shadow);
+  position: relative;
 }
 
 .column {
@@ -17,4 +18,37 @@
 
 .error {
   margin-top: 15%;
+}
+
+.info-tooltip {
+  border: 1px solid;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  font-weight: 600;
+  font-size: small;
+  color: rgba(0, 0, 0, 0.3);
+  text-align: center;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  cursor: help;
+}
+
+.additional {
+  font-size: small;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+@media (max-width: 1200px) {
+  .wrapper {
+    flex-direction: column;
+  }
+
+  .additional {
+    position: static;
+    text-align: center;
+  }
 }
