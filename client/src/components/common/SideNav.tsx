@@ -75,6 +75,14 @@ export default function SideNav({ children }: { children: React.ReactNode }) {
       animate={isOpen ? "open" : "closed"}
       variants={variants}
       custom={height}
+      drag
+      whileDrag={{ scale: 1.1 }}
+      dragConstraints={{
+        left: -20,
+        right: 250,
+        top: -50,
+        bottom: 300,
+      }}
       ref={ref}
       className={classes.nav}
     >

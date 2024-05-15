@@ -17,11 +17,3 @@
   filter: invert(20%) sepia(26%) saturate(5870%) hue-rotate(251deg)
     brightness(67%) contrast(134%);
 }
-
-@media (max-width: 350px) {
-  .button {
-    position: absolute;
-    top: -1rem;
-    left: -1rem;
-  }
-}

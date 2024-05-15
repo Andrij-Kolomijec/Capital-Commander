@@ -76,7 +76,7 @@
   }
 }
 
-@media (max-width: 630px) {
+@media (max-width: 850px) {
   .navigation {
     flex-wrap: wrap-reverse;
     justify-content: center;
@@ -88,8 +88,8 @@
   }
 }
 
-@media (max-width: 350px) {
+@media (max-width: 400px) {
   .links {
-    gap: 2rem;
+    gap: 1rem;
   }
 }

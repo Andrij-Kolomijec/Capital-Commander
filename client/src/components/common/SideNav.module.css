@@ -7,6 +7,7 @@
   align-items: center;
   left: 1rem;
   top: 11vh;
+  z-index: 1;
 }
 
 .background {
@@ -23,16 +24,15 @@
 }
 
 @media (max-width: 700px) {
-  .nav {
-    flex-direction: row;
-    height: 10%;
-    max-width: 90%;
+  .background {
+    background: rgba(182, 185, 154, 1);
   }
 }
 
-@media (max-width: 350px) {
-  .background {
-    background: none;
-    height: 60px;
+@media (max-width: 400px) {
+  .nav {
+    padding-bottom: 1rem;
+    top: 7vh;
+    left: 0;
   }
 }
