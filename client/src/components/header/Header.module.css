@@ -17,6 +17,7 @@
   ); */
   background: #8d8741;
   z-index: 1;
+  font-weight: bold;
 }
 
 .navigation > h1 {

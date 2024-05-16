@@ -8,6 +8,7 @@
   left: 1rem;
   top: 11vh;
   z-index: 1;
+  font-weight: bold;
 }
 
 .background {
