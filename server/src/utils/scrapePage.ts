@@ -1,7 +1,9 @@
 import { type Browser, type Page } from "puppeteer";
 
+const timeout = 60000;
+
 export async function scrapeMacrotrends(page: Page, browser: Browser) {
-  await page.waitForSelector(".table", { timeout: 30000 });
+  await page.waitForSelector(".table", { timeout });
 
   const tableData = await page.evaluate(() => {
     const table = document.querySelector(".table");
@@ -38,7 +40,7 @@ export async function scrapeMacrotrends(page: Page, browser: Browser) {
 }
 
 export async function scrapeGurufocus(page: Page, browser: Browser) {
-  await page.waitForSelector("#pettm_tools", { timeout: 30000 });
+  await page.waitForSelector("#pettm_tools", { timeout });
 
   const tableData = await page.evaluate(() => {
     const item = document.querySelector("#pettm_tools strong")?.textContent;

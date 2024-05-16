@@ -83,7 +83,7 @@ async function getRestOfFinancials(req: Request, res: Response) {
     "stock/" + ticker + "/financials"
   );
   try {
-    await page.waitForSelector("#data_table_row_18848", { timeout: 30000 });
+    await page.waitForSelector("#data_table_row_18848", { timeout: 60000 });
 
     const tableData = await page.evaluate(() => {
       function selectDOMItem(number: string) {
