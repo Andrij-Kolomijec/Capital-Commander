@@ -82,6 +82,13 @@ export default function Authentication() {
     visible: { opacity: 1, scale: 1 },
   };
 
+  const textTransition = {
+    type: "spring",
+    duration: 0.3,
+    bounce: 0.5,
+    stiffness: 130,
+  };
+
   return (
     <motion.section
       // layout
@@ -171,7 +178,7 @@ export default function Authentication() {
           )}
         </motion.div>
         {isLogin ? (
-          <motion.p variants={inputFields}>
+          <motion.p transition={textTransition} layout variants={inputFields}>
             Don't have an account yet? <br /> Click{" "}
             <Link className="link" to="?mode=signup">
               here
@@ -179,7 +186,7 @@ export default function Authentication() {
             to sign up.
           </motion.p>
         ) : (
-          <motion.p variants={inputFields}>
+          <motion.p transition={textTransition} layout variants={inputFields}>
             Already have an account? <br /> Click{" "}
             <Link className="link" to="?mode=login">
               here

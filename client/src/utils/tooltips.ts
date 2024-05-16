@@ -65,8 +65,7 @@ export const fundamentalsColorsExplanation: Record<string, string> = {
   lastsale: "Greater than 30 USD.",
   "Altman Z-Score": "Greater than 3.",
   "Beneish M-Score": "Less than -2.22.",
-  "Current Ratio":
-    "Depends on sector, but ideally should be less than 1, with 2 at most.",
+  "Current Ratio": "Greater than 1.5.",
   "Debt-to-Equity":
     "Depends on sector, but ideally should be less than 1, with 2 at most.",
   "Dividend Payout Ratio": "Less than 1.",

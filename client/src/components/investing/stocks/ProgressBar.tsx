@@ -38,7 +38,7 @@ export default function ProgressBar({
 
   useEffect(() => {
     if (isFetching) {
-      const fillDuration = 15;
+      const fillDuration = 11;
       const interval = setInterval(() => {
         setProgress((prevProgress) => prevProgress + 100 / fillDuration);
       }, 1000);
