@@ -96,7 +96,7 @@ export default function FinancialsRow({ name, item }: FinancialsRowProps) {
       style.color = item > 0 ? good : bad;
       break;
     case "ROE %":
-      style.color = item > 17 ? good : bad;
+      style.color = item > 15 ? good : bad;
       break;
     case "Goodwill / Total Equity":
       style.color = item < 0.3 ? good : bad;

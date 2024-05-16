@@ -94,9 +94,8 @@ export default function FinancialsTable({ stock }: { stock: string }) {
     >
       <div
         className={classes["info-tooltip"]}
-        data-tooltip-id="tooltip"
-        data-tooltip-content="Hover over an item to display addition information."
-        data-tooltip-delay-show={1000}
+        data-tooltip-id="info-tooltip"
+        data-tooltip-content="Hover over an item to display additional information."
       >
         i
       </div>
@@ -183,7 +182,10 @@ export default function FinancialsTable({ stock }: { stock: string }) {
           dividendPayoutRatio={financials["Dividend Payout Ratio"]}
         />
         {ROE && <ChartROE ROE={ROE.ROE} />}
-        <div className={classes.additional}>
+        <div
+          className={classes.additional}
+          style={!ROE ? { maxWidth: "300px", textAlign: "center" } : undefined}
+        >
           <p>
             For additional information, please visit{" "}
             <a className="link" href={gurufocus}>
@@ -200,6 +202,11 @@ export default function FinancialsTable({ stock }: { stock: string }) {
       </div>
 
       <Tooltip id="tooltip" />
+      <Tooltip
+        id="info-tooltip"
+        openOnClick={true}
+        closeEvents={{ mouseleave: true, blur: true }}
+      />
     </motion.div>
   );
 }
