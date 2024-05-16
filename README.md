@@ -15,17 +15,17 @@
 ### Features:
 
 - **Expense Tracking:** Replaces my old Excel sheets with this expense tracking system. It offers the flexibility to change base (default) currency (CZK, EUR, USD) according to real-time currency conversion rates from [CurrencyBeacon](https://currencybeacon.com/).
-<p style="text-align:center">
+<p align="center">
   <img src="https://raw.githubusercontent.com/Andrij-Kolomijec/Capital-Commander/main/client/src/assets/previews/preview-expenses.png" alt="Preview Expenses Screenshot"/>
 </p>
 
 - **Stock Fundamental Data:** Explore fundamental data on various stocks in the "Investing" section.
-<p style="text-align:center">
+<p align="center">
   <img src="https://raw.githubusercontent.com/Andrij-Kolomijec/Capital-Commander/main/client/src/assets/previews/preview-financials.gif" alt="Preview Investing Gif"/>
 </p>
 
 - **Account Management:** Allows to change password or delete account.
-<p style="text-align:center">
+<p align="center">
   <img src="https://raw.githubusercontent.com/Andrij-Kolomijec/Capital-Commander/main/client/src/assets/previews/preview-settings.png" alt="Preview Settings Screenshot"/>
 </p>
 
