@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import { type Request, type Response } from "express";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 import User from "../models/userModel";
 import Expense from "../models/expenseModel";
-import dotenv from "dotenv";
+import Portfolio from "../models/portfolioModel";
 import { type AuthRequest } from "../middleware/requireAuth";
 
 dotenv.config();
@@ -43,11 +44,16 @@ export async function userSignup(req: Request, res: Response) {
 
     const user = await User.signup(email, password);
 
+    const portfolio = await Portfolio.create({
+      stocks: [],
+      user: user._id,
+    });
+
     const token = createToken(user._id, rememberMe === "on");
 
     const baseCurrency = user!.baseCurrency;
 
-    res.status(200).json({ email, token, baseCurrency });
+    res.status(200).json({ email, token, baseCurrency, portfolio });
   } catch (error) {
     if (error instanceof Error) {
       res.status(422).json({ error: error.message });
@@ -78,6 +84,7 @@ export async function userDeletion(req: AuthRequest, res: Response) {
 
   const user = await User.findOneAndDelete({ _id: userId });
   const expenses = await Expense.deleteMany({ user: userId });
+  const portfolio = await Portfolio.findOneAndDelete({ user: userId });
 
   if (!user) {
     return res.status(404).json({ error: "User to delete not found." });
@@ -89,7 +96,13 @@ export async function userDeletion(req: AuthRequest, res: Response) {
       .json({ error: "User's expenses to delete not found." });
   }
 
-  res.status(200).json({ message: "User and their expenses deleted." });
+  if (!portfolio) {
+    return res.status(404).json({ error: "Portfolio to delete not found." });
+  }
+
+  res
+    .status(200)
+    .json({ message: "User, their expenses and portfolio deleted." });
 }
 
 export async function userBaseCurrencyChange(req: AuthRequest, res: Response) {
