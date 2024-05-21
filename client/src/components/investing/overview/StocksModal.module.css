@@ -1,0 +1,53 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.form-row > input {
+  text-align: center;
+  width: 100px;
+  height: 1.5rem;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--bgColor);
+}
+
+.buttons {
+  display: flex;
+  gap: 2vw;
+  justify-content: center;
+}
+
+.ticker-input {
+  position: relative;
+}
+
+.suggestions {
+  background-color: var(--bgLower);
+  border-radius: 2px;
+  font-size: small;
+  width: 100px;
+  max-height: 85px;
+  overflow: hidden;
+  position: absolute;
+  top: 25px;
+  right: 0;
+  z-index: 1;
+}
+
+.suggestions li {
+  padding: 1px 4px;
+  list-style-type: none;
+}
+
+.suggestions li:hover {
+  cursor: pointer;
+  background-color: var(--miscColor);
+}

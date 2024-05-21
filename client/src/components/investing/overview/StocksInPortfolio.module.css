@@ -1,0 +1,41 @@
+.table {
+  background-color: rgba(182, 185, 154, 0.3);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.header > * {
+  flex: 1;
+  width: 110px;
+  white-space: nowrap;
+}
+
+.plus-icon {
+  height: 15px;
+  padding: 5px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* filter: invert(62%) sepia(0%) saturate(641%) hue-rotate(148deg)
+    brightness(88%) contrast(80%); */
+  transition: 0.3s ease-in-out;
+}
+
+.plus-icon:hover {
+  cursor: pointer;
+  filter: invert(10%) sepia(60%) saturate(6518%) hue-rotate(265deg)
+    brightness(71%) contrast(121%);
+  transform: rotate(90deg);
+  scale: 1.8;
+}
