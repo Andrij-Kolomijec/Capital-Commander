@@ -1,7 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import classes from "./InputExpense.module.css";
-import { type ExpenseItem, createExpense } from "../../utils/http/expense";
+import {
+  type ExpenseItem,
+  createExpense,
+  FetchExpenseError,
+} from "../../utils/http/expense";
 import Button from "../common/Button";
+import { stagger, useAnimate, motion } from "framer-motion";
+import { useRef } from "react";
 
 export default function InputExpense({
   multiplier = 1,
@@ -10,7 +16,7 @@ export default function InputExpense({
 }) {
   const queryClient = useQueryClient();
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, isError, error } = useMutation({
     mutationFn: createExpense,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -20,8 +26,30 @@ export default function InputExpense({
     },
   });
 
+  const [scope, animate] = useAnimate();
+
+  const date = useRef<HTMLInputElement>(null);
+  const amount = useRef<HTMLInputElement>(null);
+  const description = useRef<HTMLInputElement | null>(null);
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (
+      !date.current?.value.trim() ||
+      !amount.current?.value.trim() ||
+      !description.current?.value.trim()
+    ) {
+      animate(
+        `.required`,
+        { x: [-15, 0] },
+        {
+          type: "spring",
+          duration: 0.3,
+          delay: stagger(0.1, { startDelay: 0.1 }),
+        }
+      );
+    }
 
     const formData = new FormData(e.currentTarget);
     // const data = Object.fromEntries(formData);
@@ -36,20 +64,62 @@ export default function InputExpense({
     mutate({ ...data });
   }
 
+  const style = {
+    transition: "transform 0.3s",
+  };
+
+  // if (isError) {
+  //   console.log(error.info.errors);
+  // }
+
   return (
-    <form className={classes.form} onSubmit={handleSubmit}>
-      <div>
+    <form ref={scope} className={classes.form} onSubmit={handleSubmit}>
+      {isError && (
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, scale: 0 },
+            visible: { opacity: 1, scale: 1 },
+          }}
+          initial="hidden"
+          animate="visible"
+          className={classes.error}
+        >
+          {Object.values((error as FetchExpenseError).info.errors).join(" ")}
+        </motion.p>
+      )}
+      <motion.div layout>
         <label htmlFor="expense-date">Date</label>
-        <input id="expense-date" type="date" name="date" />
-      </div>
-      <div>
+        <input
+          id="expense-date"
+          type="date"
+          name="date"
+          ref={date}
+          className="required"
+          style={style}
+        />
+      </motion.div>
+      <motion.div>
         <label htmlFor="expense-amount">Amount</label>
-        <input id="expense-amount" type="number" name="amount" />
-      </div>
-      <div>
+        <input
+          id="expense-amount"
+          type="number"
+          name="amount"
+          ref={amount}
+          className="required"
+          style={style}
+        />
+      </motion.div>
+      <motion.div>
         <label htmlFor="expense-description">Description</label>
-        <input id="expense-description" type="text" name="description" />
-      </div>
+        <input
+          id="expense-description"
+          type="text"
+          name="description"
+          ref={description}
+          className="required"
+          style={style}
+        />
+      </motion.div>
       <div>
         <label htmlFor="expense-notes">Notes</label>
         <input id="expense-notes" type="text" name="notes" title="Optional" />

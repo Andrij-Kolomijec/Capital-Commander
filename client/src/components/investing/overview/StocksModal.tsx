@@ -1,12 +1,13 @@
-import { AnimatePresence } from "framer-motion";
+import { useRef, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AnimatePresence, stagger, useAnimate, motion } from "framer-motion";
 import classes from "./StocksModal.module.css";
 import Modal from "../../common/Modal";
 import Button from "../../common/Button";
 import { StockProps } from "./StocksInPortfolio";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getTickers, updatePortfolio } from "../../../utils/http/investing";
-import { useState } from "react";
 import { TickerProps } from "../stocks/SearchTicker";
+import { type FetchExpenseError as FetchPortfolioError } from "../../../utils/http/expense";
 
 type StockModalProps = {
   show: boolean;
@@ -30,6 +31,7 @@ export default function StocksModal({
   const [inputValue, setInputValue] = useState(stock?.ticker || "");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [tickerError, setTickerError] = useState(false);
 
   const { data } = useQuery({
     queryKey: ["tickers"],
@@ -40,27 +42,58 @@ export default function StocksModal({
 
   const queryClient = useQueryClient();
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, isError, error } = useMutation({
     mutationFn: updatePortfolio,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["portfolio"],
       });
       setShow(false);
+      setInputValue("");
     },
   });
 
+  const [scope, animate] = useAnimate();
+
+  const ticker = useRef<HTMLInputElement>(null);
+  const quantity = useRef<HTMLInputElement>(null);
+  const avgPrice = useRef<HTMLInputElement | null>(null);
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const filteredData = data.filter((suggestion: TickerProps) =>
+      suggestion.symbol.toUpperCase().startsWith(inputValue.toUpperCase())
+    )[0].symbol;
+    if (filteredData !== inputValue.toUpperCase()) {
+      setTickerError(true);
+      return;
+    }
+    if (
+      !ticker.current?.value.trim() ||
+      !quantity.current?.value.trim() ||
+      !avgPrice.current?.value.trim()
+    ) {
+      animate(
+        `input`,
+        { x: [8, 0] },
+        {
+          type: "spring",
+          duration: 0.3,
+          delay: stagger(0.1, { startDelay: 0.1 }),
+        }
+      );
+    }
 
     const formData = new FormData(e.currentTarget);
     // const data = Object.fromEntries(formData);
-    const data = {
+    const inputData = {
       ticker: formData.get("ticker"),
       avgPrice: Number(formData.get("avgPrice")),
       quantity: Number(formData.get("quantity")),
     };
-    mutate(data as StockProps);
+    mutate(inputData as StockProps);
+    setTickerError(false);
+    setSuggestions([]);
   }
 
   const style = {
@@ -85,6 +118,7 @@ export default function StocksModal({
   ) {
     const value = e.currentTarget.innerText;
     setInputValue(value);
+    setTickerError(false);
   }
 
   function handleFocus() {
@@ -99,12 +133,13 @@ export default function StocksModal({
     <AnimatePresence>
       {show && (
         <Modal onClose={() => setShow(false)} title={title}>
-          <form className={classes.form} onSubmit={handleSubmit}>
+          <form ref={scope} className={classes.form} onSubmit={handleSubmit}>
             <div
               className={`${classes["form-row"]} ${classes["ticker-input"]}`}
             >
               <label htmlFor="ticker">Ticker</label>
               <input
+                ref={ticker}
                 type="text"
                 id="ticker"
                 name="ticker"
@@ -130,6 +165,7 @@ export default function StocksModal({
             <div className={classes["form-row"]}>
               <label htmlFor="quantity">Quantity</label>
               <input
+                ref={quantity}
                 type="number"
                 id="quantity"
                 name="quantity"
@@ -139,6 +175,7 @@ export default function StocksModal({
             <div className={classes["form-row"]}>
               <label htmlFor="price">Price</label>
               <input
+                ref={avgPrice}
                 type="number"
                 id="price"
                 name="avgPrice"
@@ -161,6 +198,39 @@ export default function StocksModal({
                   {rightButtonText}
                 </Button>
               </div>
+            </div>
+            <div className={classes.errors}>
+              {isError && (
+                <>
+                  {Object.entries(
+                    (error as FetchPortfolioError).info.errors
+                  ).map((error) => (
+                    <motion.p
+                      key={error[0]}
+                      variants={{
+                        hidden: { opacity: 0, scale: 0 },
+                        visible: { opacity: 1, scale: 1 },
+                      }}
+                      initial="hidden"
+                      animate="visible"
+                    >
+                      {error[1]}
+                    </motion.p>
+                  ))}
+                </>
+              )}
+              {tickerError && (
+                <motion.p
+                  variants={{
+                    hidden: { opacity: 0, scale: 0 },
+                    visible: { opacity: 1, scale: 1 },
+                  }}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  Invalid ticker.
+                </motion.p>
+              )}
             </div>
           </form>
         </Modal>

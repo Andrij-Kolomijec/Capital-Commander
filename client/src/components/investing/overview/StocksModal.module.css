@@ -17,6 +17,7 @@
   border: none;
   border-radius: 5px;
   background-color: var(--bgColor);
+  transition: transform 0.3s;
 }
 
 .buttons {
@@ -50,4 +51,17 @@
 .suggestions li:hover {
   cursor: pointer;
   background-color: var(--miscColor);
+}
+
+.errors {
+  align-self: center;
+  gap: 0;
+  text-align: center;
+  color: rgb(175, 0, 0);
+  text-shadow: 1px 1px 0px black;
+  max-width: 150px;
+}
+
+.errors p {
+  margin: 0;
 }

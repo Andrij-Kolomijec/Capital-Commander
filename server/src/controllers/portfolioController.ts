@@ -2,6 +2,13 @@ import { Response } from "express";
 import { type Document } from "mongoose";
 import Portfolio from "../models/portfolioModel";
 import { type AuthRequest } from "../middleware/requireAuth";
+import { isValidNumber, isValidText } from "../utils/validators";
+
+type ErrorProps = {
+  ticker?: string;
+  quantity?: string;
+  avgPrice?: string;
+};
 
 export async function getPortfolio(req: AuthRequest, res: Response) {
   const user = req.user._id.toString();
@@ -13,11 +20,37 @@ export async function updatePortfolio(req: AuthRequest, res: Response) {
   const { ticker, avgPrice, quantity } = req.body;
   const user = req.user._id.toString();
 
+  let errors: ErrorProps = {};
+
+  if (!isValidText(ticker) || isValidNumber(+ticker)) {
+    errors.ticker = "Invalid ticker.";
+  }
+
+  if (!isValidNumber(+avgPrice) || avgPrice <= 0) {
+    errors.avgPrice = "Invalid price.";
+  }
+
+  if (!isValidNumber(+quantity) || quantity <= 0) {
+    errors.quantity = "Invalid quantity.";
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return res.status(422).json({
+      message: "Updating portfolio failed due to validation errors.",
+      errors,
+    });
+  }
+
   try {
     let portfolio = await Portfolio.findOne({ user });
 
     if (!portfolio) {
-      return res.status(404).json({ message: "Portfolio not found." });
+      // return res.status(404).json({ message: "Portfolio not found." });
+      const portfolio = await Portfolio.create({
+        stocks: [],
+        user: user._id,
+      });
+      return res.status(200).json({ message: "Portfolio created.", portfolio });
     }
 
     const stock = portfolio.stocks.find((stock) => stock.ticker === ticker);
