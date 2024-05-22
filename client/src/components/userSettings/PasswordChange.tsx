@@ -5,7 +5,7 @@ import classes from "./PasswordChange.module.css";
 import {
   type PasswordData,
   changePassword,
-  type FetchError,
+  type FetchUserError,
 } from "../../utils/http/user";
 import Button from "../common/Button";
 import hide from "../../assets/icons/hide.svg";
@@ -127,7 +127,7 @@ export default function PasswordChange() {
           animate={{ opacity: 1, scale: 1 }}
           className={classes.error}
         >
-          {(error as FetchError).info.error}
+          {(error as FetchUserError).info.error}
         </motion.p>
       )}
     </div>

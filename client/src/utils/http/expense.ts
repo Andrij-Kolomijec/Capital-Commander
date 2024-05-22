@@ -1,5 +1,4 @@
 import { getAuthToken } from "../authJWT";
-import { type FetchError } from "./user";
 
 export type ExpenseItem = {
   _id?: number;
@@ -8,6 +7,16 @@ export type ExpenseItem = {
   amount: number;
   notes?: string;
   category?: string;
+};
+
+export type FetchExpenseError = Error & {
+  code: number;
+  info: {
+    message: string;
+    errors: {
+      [key: string]: string;
+    };
+  };
 };
 
 const expensesURL = import.meta.env.VITE_PORT_MAIN + "expenses/";
@@ -24,7 +33,7 @@ export async function fetchExpenses(): Promise<ExpenseItem[]> {
   if (!response.ok) {
     const error = new Error(
       "An error occurred while fetching data."
-    ) as FetchError;
+    ) as FetchExpenseError;
     error.code = response.status;
     error.info = await response.json();
     throw error;
@@ -50,7 +59,7 @@ export async function createExpense(expenseData: ExpenseItem) {
   if (!response.ok) {
     const error = new Error(
       "An error occurred while creating the expense."
-    ) as FetchError;
+    ) as FetchExpenseError;
     error.code = response.status;
     error.info = await response.json();
     throw error;
@@ -74,7 +83,7 @@ export async function deleteExpense({ id }: { id: number }) {
   if (!response.ok) {
     const error = new Error(
       "An error occurred while deleting the expense."
-    ) as FetchError;
+    ) as FetchExpenseError;
     error.code = response.status;
     error.info = await response.json();
     throw error;

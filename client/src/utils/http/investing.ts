@@ -1,6 +1,6 @@
 import { StockProps } from "../../components/investing/overview/StocksInPortfolio";
 import { getAuthToken } from "../authJWT";
-import { type FetchError } from "./user";
+import { type FetchUserError } from "./user";
 
 const investingURL = import.meta.env.VITE_PORT_MAIN + "investing/";
 
@@ -15,7 +15,7 @@ export async function getTickers() {
 
   if (!response.ok) {
     const info = await response.json();
-    const error = new Error(info.error) as FetchError;
+    const error = new Error(info.error) as FetchUserError;
     error.code = response.status;
     error.info = info;
     throw error;
@@ -37,7 +37,7 @@ export async function getStockData(ticker: string) {
 
   if (!response.ok) {
     const info = await response.json();
-    const error = new Error(info.error) as FetchError;
+    const error = new Error(info.error) as FetchUserError;
     error.code = response.status;
     error.info = info;
     throw error;
@@ -60,7 +60,7 @@ export async function fetchPortfolio() {
   if (!response.ok) {
     const error = new Error(
       "An error occurred while fetching portfolio."
-    ) as FetchError;
+    ) as FetchUserError;
     error.code = response.status;
     error.info = await response.json();
     throw error;
@@ -90,7 +90,7 @@ export async function updatePortfolio({
   if (!response.ok) {
     const error = new Error(
       "An error occurred while updating portfolio."
-    ) as FetchError;
+    ) as FetchUserError;
     error.code = response.status;
     error.info = await response.json();
     throw error;
@@ -114,7 +114,7 @@ export async function deleteTicker(ticker: string) {
   if (!response.ok) {
     const error = new Error(
       "An error occurred while deleting ticker."
-    ) as FetchError;
+    ) as FetchUserError;
     error.code = response.status;
     error.info = await response.json();
     throw error;

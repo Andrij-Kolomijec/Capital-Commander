@@ -1,6 +1,6 @@
 import { getAuthToken } from "../authJWT";
 
-export type FetchError = Error & {
+export type FetchUserError = Error & {
   code: number;
   info: { error: string };
 };
@@ -37,7 +37,7 @@ export async function authenticate({ userData, mode }: AuthData) {
   if (!response.ok) {
     const error = new Error(
       "An error occurred while authenticating."
-    ) as FetchError;
+    ) as FetchUserError;
     error.code = response.status;
     error.info = await response.json();
     throw error;
@@ -79,7 +79,7 @@ export async function changePassword({ passwordData }: PasswordData) {
   if (!response.ok) {
     const error = new Error(
       "An error occurred while changing the password."
-    ) as FetchError;
+    ) as FetchUserError;
     error.code = response.status;
     error.info = await response.json();
     throw error;
@@ -101,7 +101,7 @@ export async function deleteUser() {
   if (!response.ok) {
     const error = new Error(
       "An error occurred while deleting the user."
-    ) as FetchError;
+    ) as FetchUserError;
     error.code = response.status;
     error.info = await response.json();
     throw error;
@@ -134,7 +134,7 @@ export async function changeBaseCurrency({
   if (!response.ok) {
     const error = new Error(
       "An error occurred while changing base currency."
-    ) as FetchError;
+    ) as FetchUserError;
     error.code = response.status;
     error.info = await response.json();
     throw error;

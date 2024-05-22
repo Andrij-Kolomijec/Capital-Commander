@@ -1,5 +1,5 @@
 import { getAuthToken } from "../authJWT";
-import { type FetchError } from "./user";
+import { type FetchUserError } from "./user";
 
 export type CurrencyData = {
   date: Date;
@@ -26,7 +26,7 @@ async function fetchRatesFromAPI(base: string) {
   if (!response.ok) {
     const error = new Error(
       "An error occurred while fetching current currency data."
-    ) as FetchError;
+    ) as FetchUserError;
     error.code = response.status;
     error.info = await response.json();
     throw error;
@@ -58,7 +58,7 @@ async function updateCurrencyRates({
   if (!response.ok) {
     const error = new Error(
       "An error occurred while updating currency data."
-    ) as FetchError;
+    ) as FetchUserError;
     error.code = response.status;
     error.info = await response.json();
     throw error;
@@ -81,7 +81,7 @@ async function fetchRatesFromDB() {
   if (!response.ok) {
     const error = new Error(
       "An error occurred while fetching currency data."
-    ) as FetchError;
+    ) as FetchUserError;
     error.code = response.status;
     error.info = await response.json();
     throw error;

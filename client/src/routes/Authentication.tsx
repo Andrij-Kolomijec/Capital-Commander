@@ -3,7 +3,11 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { motion, stagger, useAnimate } from "framer-motion";
 import classes from "./Authentication.module.css";
-import { AuthData, authenticate, type FetchError } from "../utils/http/user";
+import {
+  AuthData,
+  authenticate,
+  type FetchUserError,
+} from "../utils/http/user";
 import Button from "../components/common/Button";
 import hide from "../assets/icons/hide.svg";
 import show from "../assets/icons/show.svg";
@@ -197,7 +201,7 @@ export default function Authentication() {
       </form>
       {isError && (
         <motion.p variants={inputFields} className={classes.error}>
-          {(error as FetchError).info.error}
+          {(error as FetchUserError).info.error}
         </motion.p>
       )}
     </motion.section>
