@@ -5,8 +5,12 @@ import classes from "./StocksModal.module.css";
 import Modal from "../../common/Modal";
 import Button from "../../common/Button";
 import { StockProps } from "./StocksInPortfolio";
-import { getTickers, updatePortfolio } from "../../../utils/http/investing";
-import { TickerProps } from "../stocks/SearchTicker";
+import {
+  fetchPortfolio,
+  getTickers,
+  updatePortfolio,
+} from "../../../utils/http/investing";
+import { type TickerProps } from "../stocks/SearchTicker";
 import { type FetchExpenseError as FetchPortfolioError } from "../../../utils/http/expense";
 
 type StockModalProps = {
@@ -29,7 +33,7 @@ export default function StocksModal({
   rightButtonText,
 }: StockModalProps) {
   const [inputValue, setInputValue] = useState(stock?.ticker || "");
-  const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] = useState<TickerProps[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [tickerError, setTickerError] = useState(false);
 
@@ -37,6 +41,13 @@ export default function StocksModal({
     queryKey: ["tickers"],
     queryFn: getTickers,
     staleTime: 1000 * 60 * 60 * 24 * 2,
+    placeholderData: [],
+  });
+
+  const { data: portfolio } = useQuery({
+    queryKey: ["portfolio"],
+    queryFn: fetchPortfolio,
+    staleTime: 1000 * 60 * 5,
     placeholderData: [],
   });
 
@@ -49,7 +60,7 @@ export default function StocksModal({
         queryKey: ["portfolio"],
       });
       setShow(false);
-      setInputValue("");
+      if (!stock) setInputValue("");
     },
   });
 
@@ -61,13 +72,12 @@ export default function StocksModal({
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const filteredData = data.filter((suggestion: TickerProps) =>
-      suggestion.symbol.toUpperCase().startsWith(inputValue.toUpperCase())
-    )[0].symbol;
-    if (filteredData !== inputValue.toUpperCase()) {
-      setTickerError(true);
-      return;
-    }
+    const filteredData = data.find(
+      (suggestion: TickerProps) =>
+        suggestion.symbol === inputValue.toUpperCase()
+    );
+    if (!filteredData) setTickerError(true);
+
     if (
       !ticker.current?.value.trim() ||
       !quantity.current?.value.trim() ||
@@ -91,14 +101,26 @@ export default function StocksModal({
       avgPrice: Number(formData.get("avgPrice")),
       quantity: Number(formData.get("quantity")),
     };
+
+    const prevValues = portfolio.find(
+      (stock: StockProps) => stock.ticker === inputData.ticker
+    );
+
+    if (prevValues && !stock) {
+      inputData.avgPrice =
+        Math.round(
+          ((prevValues.avgPrice * prevValues.quantity +
+            inputData.avgPrice * inputData.quantity) /
+            (inputData.quantity + prevValues.quantity)) *
+            100
+        ) / 100;
+      inputData.quantity = prevValues.quantity + inputData.quantity;
+    }
+
     mutate(inputData as StockProps);
     setTickerError(false);
     setSuggestions([]);
   }
-
-  const style = {
-    width: "70px",
-  };
 
   function handleSuggest(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
@@ -129,6 +151,10 @@ export default function StocksModal({
     setTimeout(() => setShowSuggestions(false), 100);
   }
 
+  const buttonStyle = {
+    width: "70px",
+  };
+
   return (
     <AnimatePresence>
       {show && (
@@ -143,6 +169,7 @@ export default function StocksModal({
                 type="text"
                 id="ticker"
                 name="ticker"
+                autoComplete="off"
                 value={inputValue}
                 onChange={handleSuggest}
                 onFocus={handleFocus}
@@ -184,14 +211,14 @@ export default function StocksModal({
             </div>
             <div className={classes.buttons}>
               <div className={classes["left-button"]}>
-                <Button type="button" onClick={onClick} style={style}>
+                <Button type="button" onClick={onClick} style={buttonStyle}>
                   {leftButtonText}
                 </Button>
               </div>
-              <div className={classes["right-button"]} style={style}>
+              <div className={classes["right-button"]} style={buttonStyle}>
                 <Button
                   type="submit"
-                  style={style}
+                  style={buttonStyle}
                   loader={isPending}
                   disabled={isPending}
                 >
