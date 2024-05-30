@@ -43,6 +43,10 @@ export default async function createPage(
     }
   });
 
+  if (url.includes("financials")) {
+    await gurufocusLogin(page);
+  }
+
   await page.goto(
     (url.includes("financials") || url.includes("term/pettm/")
       ? process.env.GURUFOCUS
@@ -55,4 +59,15 @@ export default async function createPage(
   await navigationPromise;
 
   return page;
+}
+
+async function gurufocusLogin(page: Page) {
+  await page.goto(process.env.GURUFOCUS + "login");
+
+  await page.type("#login-dialog-name-input", process.env.GURUFOCUS_USERNAME!);
+  await page.type("#login-dialog-pass-input", process.env.GURUFOCUS_PASSWORD!);
+
+  await page.click(".el-button--submit");
+
+  await page.waitForNavigation();
 }
