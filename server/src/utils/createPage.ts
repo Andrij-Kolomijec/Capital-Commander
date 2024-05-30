@@ -61,13 +61,17 @@ export default async function createPage(
   return page;
 }
 
+const waitTime = 60000;
+
 async function gurufocusLogin(page: Page) {
   await page.goto(process.env.GURUFOCUS + "login", {
     waitUntil: "domcontentloaded",
-    timeout: 60000,
+    timeout: waitTime,
   });
 
+  await page.waitForSelector("#login-dialog-name-input", { timeout: waitTime });
   await page.type("#login-dialog-name-input", process.env.GURUFOCUS_USERNAME!);
+  await page.waitForSelector("#login-dialog-pass-input", { timeout: waitTime });
   await page.type("#login-dialog-pass-input", process.env.GURUFOCUS_PASSWORD!);
 
   await page.click(".el-button--submit");
