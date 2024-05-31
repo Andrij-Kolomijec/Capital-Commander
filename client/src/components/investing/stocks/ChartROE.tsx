@@ -27,7 +27,7 @@ export type ChartROEProps = {
 
 export default function ChartROE({ ROE }: ChartROEProps) {
   if (!ROE) {
-    return <p>Graph data unavailable.</p>;
+    return <p className={classes.error}>Graph data unavailable.</p>;
   }
 
   const options = {};

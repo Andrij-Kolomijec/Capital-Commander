@@ -51,7 +51,11 @@ export default function CalculatedFinancials(props: FinancialsProps) {
   const profitIn7YearsInPercent =
     Math.round(((estPriceDividend - price) / price) * 100) / 100;
   const yearlyProfitInPercent =
-    Math.round(((profitIn7YearsInPercent + 1) ** (1 / 7) - 1) * 10000) / 10000;
+    profitIn7YearsInPercent > 0
+      ? Math.round(((profitIn7YearsInPercent + 1) ** (1 / 7) - 1) * 10000) /
+        10000
+      : -Math.round(((-profitIn7YearsInPercent + 1) ** (1 / 7) - 1) * 10000) /
+        10000;
 
   return (
     <div className={classes.wrapper}>

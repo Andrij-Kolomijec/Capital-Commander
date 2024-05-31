@@ -4,6 +4,10 @@
   margin-left: -100px;
 }
 
+.error {
+  padding-bottom: 2rem;
+}
+
 @media (max-width: 1200px) {
   .chart {
     margin-left: 0;
