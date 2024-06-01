@@ -66,7 +66,7 @@ async function updateCurrencyRates({
 
   const { rates } = await response.json();
 
-  return rates;
+  return [rates];
 }
 
 async function fetchRatesFromDB() {
