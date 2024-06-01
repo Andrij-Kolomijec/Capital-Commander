@@ -107,9 +107,7 @@ export default function SearchTicker({ stock, setStock }: SearchProps) {
             </Modal>
           ) : (
             <Modal title="Please Wait" onClose={() => setShowModal(false)}>
-              <p>
-                Please wait twenty seconds before submitting another ticker.
-              </p>
+              <p>Please wait a few seconds before submitting another ticker.</p>
               <Button
                 onClick={() => setShowModal(false)}
                 style={{ width: "50%" }}
