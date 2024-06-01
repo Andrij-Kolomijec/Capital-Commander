@@ -8,7 +8,8 @@ puppeteer.use(StealthPlugin()).use(AdblockerPlugin());
 
 export default async function createPage(
   browser: Browser,
-  url: string
+  url: string,
+  login = false
 ): Promise<Page> {
   const userAgent = new UserAgent();
 
@@ -43,9 +44,7 @@ export default async function createPage(
     }
   });
 
-  if (url.includes("financials")) {
-    await gurufocusLogin(page);
-  }
+  if (login) await gurufocusLogin(page);
 
   await page.goto(
     (url.includes("financials") || url.includes("term/pettm/")
@@ -64,6 +63,7 @@ export default async function createPage(
 const timeout = 60000;
 
 async function gurufocusLogin(page: Page) {
+  console.log("Logging in...");
   try {
     await page.goto(process.env.GURUFOCUS + "login", {
       waitUntil: "domcontentloaded",

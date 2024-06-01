@@ -78,12 +78,15 @@ async function getRestOfFinancials(req: Request, res: Response) {
     ignoreDefaultArgs: ["--disable-extensions"],
   });
 
-  const page: Page = await createPage(
-    browser,
-    "stock/" + ticker + "/financials"
-  );
+  let page: Page = await createPage(browser, "stock/" + ticker + "/financials");
+
   try {
-    await page.waitForSelector("#data_table_row_18848", { timeout: 60000 });
+    try {
+      await page.waitForSelector("#data_table_row_18848", { timeout: 60000 });
+    } catch (error) {
+      page = await createPage(browser, "stock/" + ticker + "/financials", true);
+      await page.waitForSelector("#data_table_row_18838", { timeout: 60000 });
+    }
 
     const tableData = await page.evaluate(() => {
       function selectDOMItem(number: string) {
@@ -135,7 +138,7 @@ async function getRestOfFinancials(req: Request, res: Response) {
 
     return keyValuePairs;
   } catch (error) {
-    console.log(error);
+    console.log("Select DOM item error: ", error);
   }
 }
 
