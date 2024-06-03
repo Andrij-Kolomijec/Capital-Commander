@@ -19,7 +19,7 @@
   <img src="https://raw.githubusercontent.com/Andrij-Kolomijec/Capital-Commander/main/client/src/assets/previews/preview-expenses.png" alt="Preview Expenses Screenshot"/>
 </p>
 
-- **Stock Fundamental Data:** Explore fundamental data on various stocks in the "Investing" section.
+- **Portfolio and Stock Fundamental Data:** Explore fundamental data on various stocks in the "Investing" section and create your own stock portfolio.
 <p align="center">
   <img src="https://raw.githubusercontent.com/Andrij-Kolomijec/Capital-Commander/main/client/src/assets/previews/preview-financials.gif" alt="Preview Investing Gif"/>
 </p>

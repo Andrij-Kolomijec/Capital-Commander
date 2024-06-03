@@ -18,8 +18,9 @@ export default function About() {
       </Reveal>
       <Reveal>
         <p>
-          Another feature is displaying fundamental data on stocks in the
-          "Investing" section.
+          More features can be found in the "Investing" section - creating and
+          monitoring custom stock portfolio and displaying fundamental stock
+          data.
         </p>
       </Reveal>
       <Reveal>
