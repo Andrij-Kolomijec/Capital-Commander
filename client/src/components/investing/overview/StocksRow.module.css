@@ -22,3 +22,19 @@
   filter: invert(10%) sepia(60%) saturate(6518%) hue-rotate(265deg)
     brightness(71%) contrast(121%);
 }
+
+.edit:focus {
+  outline: 3px solid var(--active);
+  border-radius: 5px;
+  opacity: 1;
+}
+
+.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}

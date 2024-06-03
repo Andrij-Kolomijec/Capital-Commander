@@ -4,6 +4,11 @@
   transition: 200ms;
 }
 
+.icon:focus {
+  outline: 3px solid var(--active);
+  border-radius: 5px;
+}
+
 .icon:hover {
   cursor: pointer;
   filter: invert(10%) sepia(60%) saturate(6518%) hue-rotate(265deg)

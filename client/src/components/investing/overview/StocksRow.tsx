@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import classes from "./StocksRow.module.css";
 import { getTickers, deleteTicker } from "../../../utils/http/investing";
 import { type TickerProps } from "../stocks/SearchTicker";
@@ -55,8 +56,8 @@ export default function StocksRow({ stock }: { stock: StockProps }) {
 
   function handleDelete(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
-    deleteStock(stock.ticker);
     setShowModal(false);
+    deleteStock(stock.ticker);
   }
 
   function handleOpenEdit() {
@@ -64,9 +65,26 @@ export default function StocksRow({ stock }: { stock: StockProps }) {
     setTimeout(() => setMouseHovered(false), 100);
   }
 
+  function handleIconKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleOpenEdit();
+    }
+  }
+
   return (
-    <div
+    <motion.div
       key={stock.ticker}
+      variants={{
+        visible: {
+          opacity: 1,
+          scale: [0.8, 1.1, 1],
+          transition: { duration: 0.5 },
+        },
+      }}
+      exit={{ x: 50, opacity: 0, transition: { duration: 0.2 } }}
+      transition={{ type: "spring" }}
+      layout
       className={classes.row}
       onMouseEnter={() => setMouseHovered(true)}
       onMouseLeave={() => setMouseHovered(false)}
@@ -80,20 +98,22 @@ export default function StocksRow({ stock }: { stock: StockProps }) {
         leftButtonText="Delete"
         rightButtonText="Done"
       />
-      {mouseHovered && (
-        <Icon
-          src={editIcon}
-          alt="Edit Icon"
-          title="Edit"
-          className={classes.edit}
-          onClick={handleOpenEdit}
-        />
-      )}
+      <Icon
+        src={editIcon}
+        alt="Edit Icon"
+        tabIndex={0}
+        title="Edit"
+        className={`${classes.edit} ${
+          mouseHovered ? classes.visible : classes.hidden
+        }`}
+        onClick={handleOpenEdit}
+        onKeyDown={handleIconKeyDown}
+      />
       <span>{stock.ticker}</span>
       <span>{stock.quantity}</span>
       <span>{stock.avgPrice}</span>
       <span>{currentPrice}</span>
       <span>{profit} %</span>
-    </div>
+    </motion.div>
   );
 }

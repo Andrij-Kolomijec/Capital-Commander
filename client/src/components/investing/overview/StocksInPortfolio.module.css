@@ -38,6 +38,12 @@
   scale: 1.8;
 }
 
+.plus-icon:focus {
+  outline: 3px solid var(--active);
+  border-radius: 50%;
+  opacity: 1;
+}
+
 @media (max-width: 600px) {
   .table {
     font-size: small;

@@ -15,6 +15,10 @@ export default function Modal({
   onClose,
   ...props
 }: ModalProps) {
+  function handlePressEscape(e: React.KeyboardEvent<HTMLDialogElement>) {
+    e.key === "Escape" && onClose();
+  }
+
   return createPortal(
     <>
       <div className={classes.backdrop} onClick={onClose} />
@@ -36,6 +40,7 @@ export default function Modal({
         }}
         open
         className={classes.modal}
+        onKeyDown={handlePressEscape}
         {...props}
       >
         <h2>{title}</h2>
