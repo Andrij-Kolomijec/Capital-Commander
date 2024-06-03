@@ -1,3 +1,10 @@
 .overview {
   text-align: center;
+  position: relative;
+}
+
+@media (max-width: 1050px) {
+  /* .overview {
+    position: fixed;
+  } */
 }

@@ -4,3 +4,9 @@
   align-items: center;
   gap: 1rem;
 }
+
+@media (max-width: 600px) {
+  .wrapper > h1 {
+    color: transparent;
+  }
+}

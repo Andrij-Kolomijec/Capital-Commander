@@ -27,8 +27,6 @@
   position: absolute;
   top: 0;
   left: 0;
-  /* filter: invert(62%) sepia(0%) saturate(641%) hue-rotate(148deg)
-    brightness(88%) contrast(80%); */
   transition: 0.3s ease-in-out;
 }
 
@@ -38,4 +36,20 @@
     brightness(71%) contrast(121%);
   transform: rotate(90deg);
   scale: 1.8;
+}
+
+@media (max-width: 600px) {
+  .table {
+    font-size: small;
+  }
+  .header > * {
+    width: 70px;
+  }
+}
+
+@media (max-width: 400px) {
+  .header > * {
+    width: 50px;
+    white-space: wrap;
+  }
 }
