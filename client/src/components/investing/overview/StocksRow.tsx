@@ -90,8 +90,8 @@ export default function StocksRow({ stock }: { stock: StockProps }) {
         />
       )}
       <span>{stock.ticker}</span>
-      <span>{stock.avgPrice}</span>
       <span>{stock.quantity}</span>
+      <span>{stock.avgPrice}</span>
       <span>{currentPrice}</span>
       <span>{profit} %</span>
     </div>

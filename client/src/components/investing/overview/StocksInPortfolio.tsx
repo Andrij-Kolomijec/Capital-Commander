@@ -11,17 +11,11 @@ export type StockProps = {
   ticker: string;
   avgPrice: number;
   quantity: number;
+  currentPrice?: number;
 };
 
 export default function StocksInPortfolio() {
   const [showModal, setShowModal] = useState(false);
-
-  const { data } = useQuery({
-    queryKey: ["portfolio"],
-    queryFn: fetchPortfolio,
-    staleTime: 1000 * 60 * 5,
-    placeholderData: [],
-  });
 
   const { isFetching, isFetched } = useQuery({
     queryKey: ["tickers"],
@@ -30,11 +24,18 @@ export default function StocksInPortfolio() {
     placeholderData: [],
   });
 
+  const { data: portfolio } = useQuery({
+    queryKey: ["portfolio"],
+    queryFn: fetchPortfolio,
+    staleTime: 1000 * 60 * 5,
+    placeholderData: [],
+  });
+
   if (isFetching && !isFetched) {
     return <Loader />;
   }
 
-  if (!data) {
+  if (!portfolio) {
     return <p>No data available.</p>;
   }
 
@@ -55,12 +56,12 @@ export default function StocksInPortfolio() {
       />
       <div className={classes.header}>
         <h4>Ticker</h4>
-        <h4>Average Price</h4>
         <h4>Quantity</h4>
+        <h4>Buy Price</h4>
         <h4>Current Price</h4>
-        <h4>Profit / Loss</h4>
+        <h4>Profit</h4>
       </div>
-      {data.map((item: StockProps) => (
+      {portfolio.map((item: StockProps) => (
         <StocksRow stock={item} key={item.ticker} />
       ))}
       <img
