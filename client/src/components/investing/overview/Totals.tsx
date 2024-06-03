@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import classes from "./Totals.module.css";
 import { fetchPortfolio, getTickers } from "../../../utils/http/investing";
-import { type TickerProps } from "./SearchTicker";
-import { type StockProps } from "../overview/StocksInPortfolio";
+import { type TickerProps } from "../stocks/SearchTicker";
+import { type StockProps } from "./StocksInPortfolio";
 
 export default function Totals() {
   const {
@@ -52,7 +53,11 @@ export default function Totals() {
     100;
 
   return (
-    <section className={classes.totals}>
+    <motion.section
+      initial={{ opacity: 0, x: 30 }}
+      animate={{ opacity: 1, x: 0 }}
+      className={classes.totals}
+    >
       <div>
         <h4>Market value</h4>
         <p>
@@ -64,8 +69,8 @@ export default function Totals() {
       </div>
       <div>
         <h4>Returns</h4>
-        <p>{Math.round(totalChange * 100) / 100} %</p>
+        <p>{Math.round(totalChange * 100) / 100 || 0} %</p>
       </div>
-    </section>
+    </motion.section>
   );
 }

@@ -76,7 +76,9 @@ export default function StocksModal({
       (suggestion: TickerProps) =>
         suggestion.symbol === inputValue.toUpperCase()
     );
-    if (!filteredData) setTickerError(true);
+    if (!filteredData) {
+      return setTickerError(true);
+    }
 
     if (
       !ticker.current?.value.trim() ||
@@ -170,6 +172,7 @@ export default function StocksModal({
                 id="ticker"
                 name="ticker"
                 autoComplete="off"
+                autoFocus
                 value={inputValue}
                 onChange={handleSuggest}
                 onFocus={handleFocus}

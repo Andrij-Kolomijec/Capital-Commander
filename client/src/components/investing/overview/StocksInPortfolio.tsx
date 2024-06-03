@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import classes from "./StocksInPortfolio.module.css";
 import { fetchPortfolio, getTickers } from "../../../utils/http/investing";
 import Loader from "../../common/Loader";
@@ -45,7 +46,28 @@ export default function StocksInPortfolio() {
   }
 
   return (
-    <div className={classes.table}>
+    <motion.div
+      variants={{
+        visible: {
+          scale: 1,
+          opacity: 1,
+          transition: { staggerChildren: 0.03 },
+        },
+        hidden: { scale: 0, opacity: 0 },
+      }}
+      initial="hidden"
+      animate="visible"
+      layout
+      className={classes.table}
+    >
+      <img
+        src={plusIcon}
+        alt="Plus Icon"
+        tabIndex={0}
+        className={classes["plus-icon"]}
+        onClick={() => setShowModal(true)}
+        onKeyDown={(e) => e.key === "Enter" && setShowModal(true)}
+      />
       <StocksModal
         show={showModal}
         setShow={setShowModal}
@@ -54,22 +76,16 @@ export default function StocksInPortfolio() {
         leftButtonText="Cancel"
         rightButtonText="Add"
       />
-      <div className={classes.header}>
+      <motion.div layout className={classes.header}>
         <h4>Ticker</h4>
         <h4>Quantity</h4>
         <h4>Buy Price</h4>
         <h4>Current Price</h4>
         <h4>Profit</h4>
-      </div>
+      </motion.div>
       {portfolio.map((item: StockProps) => (
         <StocksRow stock={item} key={item.ticker} />
       ))}
-      <img
-        src={plusIcon}
-        alt="Plus Icon"
-        className={classes["plus-icon"]}
-        onClick={() => setShowModal(true)}
-      />
-    </div>
+    </motion.div>
   );
 }

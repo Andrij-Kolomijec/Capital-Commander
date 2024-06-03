@@ -1,5 +1,5 @@
 import Portfolio from "../../components/investing/overview/Portfolio";
-import Totals from "../../components/investing/stocks/Totals";
+import Totals from "../../components/investing/overview/Totals";
 import classes from "./Overview.module.css";
 
 export default function Overview() {
